@@ -1,38 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Bookclub Client
+
+This is a React.js application built with Next.js, designed to provide interactive experience to readers of wide-ranging interests.
 
 ## Getting Started
 
-First, run the development server:
+The following steps will enable you to run a Bookclub web client locally.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+### Prerequisites
+
+- NodeJs
+- A running backend of Bookclub
+
+### Process
+
+1. Clone this repository to your local machine.
+2. Navigate to the project directory.
+3. Create a .env.local file and add the backend url as follows:
+
+```.env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:4000/graphql
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Install the necessary dependencies by running the command: `npm install` or `yarn install`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Usage
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Once the installation is complete, you can run the application locally by executing the following command: `npm run dev` or `yarn dev`. This will start the development server and allow you to access the application in your web browser at `http://localhost:3000`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The Project Name application makes use of the following technologies:
 
-## Learn More
+- React.js
+- Next.js
+- Chakra UI
+- Apollo Client
 
-To learn more about Next.js, take a look at the following resources:
+## Contact
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If you have any questions, suggestions, or feedback, feel free to reach out to us on [email](mailto:juniorfelix8825@outlook.com).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Happy coding!
