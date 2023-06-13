@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.ts",
+    "precommit": "lint-staged"
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",
@@ -38,6 +39,7 @@
     "@graphql-codegen/client-preset": "4.0.0",
     "@graphql-codegen/introspection": "4.0.0",
     "@types/lodash-es": "^4.17.7",
+    "lint-staged": "^13.2.2",
     "prettier": "2.8.8",
     "typescript": "^5.1.3"
   }

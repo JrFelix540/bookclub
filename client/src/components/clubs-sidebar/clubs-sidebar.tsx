@@ -13,10 +13,8 @@ export const ClubsSidebar = () => {
       </Text>
       <List>
         {data?.allCommunities.map((comm) => (
-          <StyledItem>
-            <Link key={comm.id} href={`/clubs/${comm.id}`}>
-              {comm.name}
-            </Link>
+          <StyledItem key={comm.id}>
+            <Link href={`/clubs/${comm.id}`}>{comm.name}</Link>
           </StyledItem>
         ))}
       </List>

@@ -46,7 +46,9 @@ export default class UserCommentResolver {
     @Ctx() { token }: MyContext
   ) {
     const userId = getUserIdFromToken(token, TokenType.Auth);
-
+    if (!userId) {
+      return false;
+    }
     const upvote = await commentUpvoteRepository.findOne({
       where: { commentId: userComment.id, creatorId: userId },
     });
@@ -64,6 +66,9 @@ export default class UserCommentResolver {
     @Ctx() { token }: MyContext
   ) {
     const userId = getUserIdFromToken(token, TokenType.Auth);
+    if (!userId) {
+      return null;
+    }
     const upvote = await commentUpvoteRepository.findOne({
       where: { commentId: userComment.id, creatorId: userId },
     });
@@ -213,7 +218,7 @@ export default class UserCommentResolver {
     @Arg("postId") postId: number,
     @Ctx() { token }: MyContext
   ): Promise<UserCommentResponse> {
-    let userId = getUserIdFromToken(token, TokenType.Auth);
+    const userId = getUserIdFromToken(token, TokenType.Auth);
 
     if (!userId) {
       return {

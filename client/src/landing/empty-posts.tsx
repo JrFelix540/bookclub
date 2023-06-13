@@ -18,8 +18,8 @@ export const EmptyPosts = () => {
           </Text>
         ) : (
           <Text textAlign="center">
-            It seems like you're not logged in! Login to get a customized feed
-            with all your favorite bookclubs.
+            It seems like you&apos;re not logged in! Login to get a customized
+            feed with all your favorite bookclubs.
           </Text>
         )}
       </Content>

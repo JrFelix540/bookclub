@@ -59,7 +59,7 @@ export default class PostResolver {
   @FieldResolver(() => String)
   @FieldResolver(() => Boolean)
   isOwner(@Root() post: Post, @Ctx() { token }: MyContext) {
-    let userId = getUserIdFromToken(token, TokenType.Auth);
+    const userId = getUserIdFromToken(token, TokenType.Auth);
 
     if (userId === post.creatorId) {
       return true;
@@ -254,7 +254,7 @@ export default class PostResolver {
     @Arg("cursor", () => String, { nullable: true })
     cursor: string | null
   ): Promise<PaginatedPosts> {
-    let userId = getUserIdFromToken(token, TokenType.Auth);
+    const userId = getUserIdFromToken(token, TokenType.Auth);
     if (!userId) {
       return {
         posts: [],

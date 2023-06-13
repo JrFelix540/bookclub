@@ -221,7 +221,7 @@ export class CommunityResolver {
     @Ctx() { token }: MyContext,
     @Arg("communityId") communityId: number
   ): Promise<BooleanFieldResponse> {
-    let userId = getUserIdFromToken(token, TokenType.Auth);
+    const userId = getUserIdFromToken(token, TokenType.Auth);
 
     if (!userId) {
       return {
