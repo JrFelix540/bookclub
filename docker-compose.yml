@@ -35,7 +35,7 @@ services:
     volumes:
       - ./client:/app
     env_file:
-      - ./client/env/.env.development
+      - ./client/.env.local
     ports:
       - 3000:3000
 
