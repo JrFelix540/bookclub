@@ -1,0 +1,18 @@
+query CommunityPosts($limit: Int!, $communityId: Float!, $cursor: String) {
+  communityPosts(limit: $limit, communityId: $communityId, cursor: $cursor) {
+    errors {
+      field
+      message
+    }
+    hasMore
+    posts {
+      id
+      title
+      content
+      creator {
+        username
+      }
+      points
+    }
+  }
+}

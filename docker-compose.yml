@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  db:
+    image: postgres:15.2-bullseye
+    restart: always
+    environment:
+      POSTGRES_DB: bookclub
+      POSTGRES_USER: master
+      POSTGRES_PASSWORD: root
+    ports:
+      - 5432:5432
+    volumes:
+      - bookclub-postgres-data:/var/lib/postgres/data
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/env/.env.development
+    ports:
+      - 4000:4000
+    restart: always
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - api
+    volumes:
+      - ./client:/app
+    env_file:
+      - ./client/env/.env.development
+    ports:
+      - 3000:3000
+
+volumes:
+  bookclub-postgres-data:

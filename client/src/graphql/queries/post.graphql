@@ -1,0 +1,23 @@
+query Post($postId: Float!) {
+  post(id: $postId) {
+    id
+    title
+    content
+    hasVoted
+    isOwner
+    points
+    creator {
+      username
+    }
+    comments {
+      creator {
+        username
+      }
+      content
+    }
+    community {
+      id
+      name
+    }
+  }
+}

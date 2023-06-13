@@ -1,0 +1,13 @@
+query Community($communityId: Float!) {
+  community(id: $communityId) {
+    id
+    name
+    description
+    members {
+      id
+      username
+    }
+    dateCreated
+    memberIds
+  }
+}

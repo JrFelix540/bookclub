@@ -1,0 +1,10 @@
+export { default as Author } from "./Author";
+export { default as Book } from "./Book";
+export { default as Genre } from "./Genre";
+export { default as Post } from "./Post";
+export { default as Review } from "./Review";
+export { default as Shelf } from "./Shelf";
+export { default as Upvote } from "./Upvote";
+export { default as User } from "./User";
+export { default as UserComment } from "./UserComment";
+export { default as CommentUpvote } from "./CommentUpvote";

@@ -1,0 +1,73 @@
+import {
+  FormControl,
+  FormLabel,
+  Input as ChakraInput,
+  Textarea as ChakraTextarea,
+  FormErrorMessage,
+} from "@chakra-ui/react";
+import { ChangeEvent } from "react";
+
+export interface InputProps {
+  label?: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
+  id: string;
+  name: string;
+  type: string;
+  value: any;
+  error?: string;
+}
+
+export const Input: React.FC<InputProps> = ({
+  id,
+  name,
+  type,
+  value,
+  label,
+  error,
+  onChange,
+  onBlur,
+}) => {
+  return (
+    <FormControl isInvalid={!!error}>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <ChakraInput
+        id={id}
+        type={type}
+        value={value}
+        name={name}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+    </FormControl>
+  );
+};
+
+type TextareaProps = Omit<InputProps, "onChange" | "onBlur" | "type"> & {
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+};
+export const Textarea: React.FC<TextareaProps> = ({
+  id,
+  name,
+  value,
+  label,
+  error,
+  onChange,
+  onBlur,
+}) => {
+  return (
+    <FormControl isInvalid={!!error}>
+      <FormLabel htmlFor={id}>{label}</FormLabel>
+      <ChakraTextarea
+        id={id}
+        value={value}
+        name={name}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+    </FormControl>
+  );
+};

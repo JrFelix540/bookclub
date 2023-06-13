@@ -1,0 +1,23 @@
+query FeedPosts($limit: Int!, $cursor: String) {
+  myCommunitiesPosts(limit: $limit, cursor: $cursor) {
+    errors {
+      field
+      message
+    }
+    hasMore
+    posts {
+      id
+      title
+      content
+      points
+      hasVoted
+      community {
+        id
+        name
+      }
+      creator {
+        username
+      }
+    }
+  }
+}
