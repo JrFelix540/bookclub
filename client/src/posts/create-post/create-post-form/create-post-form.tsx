@@ -19,15 +19,21 @@ export const CreatePostForm = () => {
 
   const { data } = useQuery(MyCommunitiesDocument);
 
+  const defaultClubId =
+    data?.meWithCommunities?.memberCommunities[0].id.toString();
+
   const formik = useFormik({
     initialValues: {
-      communityId: "0",
+      communityId: defaultClubId || "",
       title: "",
       content: "",
     },
     onSubmit: async (values, { setErrors }) => {
       const { data: postData } = await createPost({
-        variables: { ...values, communityId: parseInt(values.communityId) },
+        variables: {
+          ...values,
+          communityId: parseInt(values.communityId),
+        },
         refetchQueries: [ClubsDocument],
       });
       if (postData?.createPost.errors) {
@@ -36,6 +42,7 @@ export const CreatePostForm = () => {
       router.push(`/posts/${postData?.createPost.post?.id}`);
     },
     validationSchema: createPostSchema,
+    enableReinitialize: true,
   });
 
   return (
