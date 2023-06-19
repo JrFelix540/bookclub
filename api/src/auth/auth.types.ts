@@ -1,4 +1,4 @@
-import { Field, Float, ObjectType } from "type-graphql";
+import { Field, Float, ObjectType, ResolverData } from "type-graphql";
 
 @ObjectType()
 export class FieldError {
@@ -45,4 +45,14 @@ export class AuthenticatedUser {
 
   @Field(() => String, { nullable: true })
   username: string;
+}
+
+export type CustomAuthChecker<ContextType> = (
+  resolverData: ResolverData<ContextType>
+) => Promise<boolean>;
+
+export interface SignUpPayload {
+  username: string;
+  email: string;
+  password: string;
 }

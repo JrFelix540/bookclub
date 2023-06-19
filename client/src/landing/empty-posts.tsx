@@ -4,7 +4,7 @@ import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 
-export const EmptyPosts = () => {
+export const EmptyPosts: React.FC = () => {
   const { data } = useQuery(MeDocument);
 
   return (

@@ -1,7 +1,7 @@
 import bycrypt from "bcryptjs";
 import { Arg, Mutation, Resolver } from "type-graphql";
 import { userRepository } from "../database/database";
-import { User } from "../entities";
+import { User } from "../user/user.entity";
 import { sendMail } from "../utils/sendMail";
 import { AuthResponse, BooleanResponse } from "./auth.types";
 import { validateUserRegisterInput } from "./auth.utils";

@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType, Float } from "type-graphql";
-import { Book, Post, User } from "../entities";
+import { Post } from "../post/post.entity";
+import { User } from "../user/user.entity";
 import {
   BaseEntity,
   Entity,
@@ -54,17 +55,6 @@ export class Community extends BaseEntity {
   @Field(() => [Float])
   @Column("int", { array: true, nullable: true })
   memberIds: number[];
-
-  @Field(() => [Book])
-  @ManyToMany(() => Book, (book) => book.favoritedCommunities, {
-    onDelete: "SET NULL",
-  })
-  @JoinTable()
-  favoriteBooks: Book[];
-
-  @Field(() => [Int])
-  @Column("int", { array: true, nullable: true })
-  favoriteBookIds: number[];
 
   @Field()
   @CreateDateColumn()

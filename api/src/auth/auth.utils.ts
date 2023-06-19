@@ -1,11 +1,13 @@
-import { UserRegisterInput } from "src/resolvers/user";
 import { signUpSchema } from "./auth.schema";
-import { FieldError } from "./auth.types";
+import { FieldError, SignUpPayload } from "./auth.types";
+import { MyContext } from "../types";
+import { AuthChecker } from "type-graphql";
+import { TokenType, getUserIdFromToken } from "./token";
 
 export const ACCESS_TOKEN_HEADER_NAME = "Authorization";
 
 export const validateUserRegisterInput = async (
-  input: UserRegisterInput
+  input: SignUpPayload
 ): Promise<FieldError[]> => {
   try {
     signUpSchema.validateSync(input, { abortEarly: false });
@@ -17,4 +19,16 @@ export const validateUserRegisterInput = async (
     }));
     return errors;
   }
+};
+
+export const authChecker: AuthChecker<MyContext> = ({ context }) => {
+  if (!context.token) {
+    return false;
+  }
+  const userId = getUserIdFromToken(context.token, TokenType.Auth);
+  if (!userId) {
+    return false;
+  }
+  context.res.locals.userId = userId;
+  return true;
 };

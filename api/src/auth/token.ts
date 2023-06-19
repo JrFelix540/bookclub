@@ -58,12 +58,6 @@ export const getUserIdFromToken = (
   token: string,
   type: TokenType
 ): number | null => {
-  if (!token) {
-    throw new Error("Empty token");
-  }
-  if (token.split(" ")[1]) {
-    return null;
-  }
   const decodedToken = verifyToken(token.split(" ")[1]);
   if (!decodedToken) {
     throw new Error("Couldn't find token");

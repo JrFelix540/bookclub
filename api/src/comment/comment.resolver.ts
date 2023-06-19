@@ -1,56 +1,33 @@
 import {
   Arg,
+  Authorized,
   Ctx,
-  Field,
   FieldResolver,
   Int,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
   Root,
 } from "type-graphql";
-import { FieldError } from "../auth/auth.types";
-import { TokenType, getUserIdFromToken } from "../auth/token";
 import {
+  commentRepository,
   commentUpvoteRepository,
-  userCommentRepository,
   userRepository,
 } from "../database/database";
-import { CommentUpvote, Post, User, UserComment } from "../entities";
+import { CommentUpvote } from "../comment-upvote/comment-upvote.entity";
+import { Post } from "../post/post.entity";
+import { User } from "../user/user.entity";
+import { Comment } from "./comment.entity";
 import { MyContext } from "../types";
+import { CommentUpvoteResponse, UserCommentResponse } from "./comment.type";
 
-@ObjectType()
-export class UserCommentResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => UserComment, { nullable: true })
-  comment?: UserComment;
-}
-
-@ObjectType()
-export class CommentUpvoteResponse {
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-
-  @Field(() => CommentUpvote, { nullable: true })
-  commentUpvote?: CommentUpvote;
-}
-
-@Resolver(UserComment)
-export default class UserCommentResolver {
+@Resolver(Comment)
+export class CommentResolver {
+  @Authorized()
   @FieldResolver(() => Boolean)
-  async hasVoted(
-    @Root() userComment: UserComment,
-    @Ctx() { token }: MyContext
-  ) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return false;
-    }
+  async hasVoted(@Root() comment: Comment, @Ctx() { res }: MyContext) {
     const upvote = await commentUpvoteRepository.findOne({
-      where: { commentId: userComment.id, creatorId: userId },
+      where: { commentId: comment.id, creatorId: res.locals.userId },
     });
 
     if (upvote) {
@@ -60,17 +37,11 @@ export default class UserCommentResolver {
     }
   }
 
+  @Authorized()
   @FieldResolver(() => Int, { nullable: true })
-  async voteStatus(
-    @Root() userComment: UserComment,
-    @Ctx() { token }: MyContext
-  ) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return null;
-    }
+  async voteStatus(@Root() comment: Comment, @Ctx() { res }: MyContext) {
     const upvote = await commentUpvoteRepository.findOne({
-      where: { commentId: userComment.id, creatorId: userId },
+      where: { commentId: comment.id, creatorId: res.locals.userId },
     });
 
     if (!upvote) {
@@ -79,42 +50,30 @@ export default class UserCommentResolver {
     return upvote.value === 1 ? upvote.value : -1;
   }
 
+  @Authorized()
   @FieldResolver(() => Boolean)
-  async isOwner(@Root() userComment: UserComment, @Ctx() { token }: MyContext) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    const comment = await userCommentRepository.findOne({
+  async isOwner(@Root() comment: Comment, @Ctx() { res }: MyContext) {
+    const searchedComment = await commentRepository.findOne({
       relations: ["creator"],
-      where: { id: userComment.id },
+      where: { id: comment.id },
     });
 
-    if (comment?.creator.id === userId) {
+    if (searchedComment?.creator.id === res.locals.userId) {
       return true;
     } else {
       return false;
     }
   }
 
+  @Authorized()
   @Mutation(() => CommentUpvoteResponse)
   async voteComment(
     @Arg("commentId") commentId: number,
     @Arg("value", () => Int) value: number,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ): Promise<CommentUpvoteResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
-    const user = await userRepository.findOneBy({ id: userId });
-    const comment = await userCommentRepository.findOneBy({ id: commentId });
+    const user = await userRepository.findOneBy({ id: res.locals.userId });
+    const comment = await commentRepository.findOneBy({ id: commentId });
 
     if (!comment) {
       return {
@@ -149,7 +108,7 @@ export default class UserCommentResolver {
     }
 
     const upvote = await commentUpvoteRepository.findOne({
-      where: { commentId: commentId, creatorId: userId },
+      where: { commentId: commentId, creatorId: res.locals.userId },
     });
 
     if (upvote) {
@@ -174,7 +133,7 @@ export default class UserCommentResolver {
         comment.points = comment.points + value * 2;
 
         try {
-          await userCommentRepository.save(comment);
+          await commentRepository.save(comment);
         } catch (err) {
           console.log(err);
         }
@@ -202,7 +161,7 @@ export default class UserCommentResolver {
     comment.points = comment.points + value;
 
     try {
-      await userCommentRepository.save(comment);
+      await commentRepository.save(comment);
     } catch (err) {
       console.log(err);
     }
@@ -212,26 +171,15 @@ export default class UserCommentResolver {
     };
   }
 
+  @Authorized()
   @Mutation(() => UserCommentResponse)
   async createComment(
     @Arg("content") content: string,
     @Arg("postId") postId: number,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ): Promise<UserCommentResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
     const user = await User.findOne({
-      where: { id: userId },
+      where: { id: res.locals.userId },
     });
     if (!user) {
       return {
@@ -257,31 +205,29 @@ export default class UserCommentResolver {
       };
     }
 
-    const userComment = new UserComment();
-    userComment.post = post;
-    userComment.creator = user;
-    userComment.content = content;
+    const comment = new Comment();
+    comment.post = post;
+    comment.creator = user;
+    comment.content = content;
 
     try {
-      await userComment.save();
+      await comment.save();
     } catch (err) {
       console.log(err);
     }
 
     return {
-      comment: userComment,
+      comment,
     };
   }
 
-  @Query(() => [UserComment], { nullable: true })
-  async postComments(
-    @Arg("postId") postId: number
-  ): Promise<UserComment[] | null> {
+  @Query(() => [Comment], { nullable: true })
+  async postComments(@Arg("postId") postId: number): Promise<Comment[] | null> {
     const post = await Post.findOneBy({ id: postId });
     if (!post) {
       return null;
     }
-    const comments = await userCommentRepository.find({
+    const comments = await commentRepository.find({
       relations: ["post", "creator"],
       where: { post: { id: post.id } },
     });
@@ -289,17 +235,13 @@ export default class UserCommentResolver {
     return comments;
   }
 
+  @Authorized()
   @Mutation(() => Boolean)
   async deleteComment(
     @Arg("commentId") commentId: number,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (!userId) {
-      return false;
-    }
-    const comment = await userCommentRepository.findOne({
+    const comment = await commentRepository.findOne({
       where: { id: commentId },
       relations: ["creator"],
     });
@@ -308,13 +250,13 @@ export default class UserCommentResolver {
       return false;
     }
 
-    if (comment.creator.id !== userId) {
+    if (comment.creator.id !== res.locals.userId) {
       console.log(`User not authorized`);
       return false;
     }
 
     try {
-      await userCommentRepository.delete({ id: commentId });
+      await commentRepository.delete({ id: commentId });
     } catch (err) {
       console.log(err);
       return false;

@@ -1,7 +1,10 @@
-import { Field, ObjectType } from "type-graphql";
+import { Post } from "../post/post.entity";
+import { Comment } from "../comment/comment.entity";
+import { PostUpvote } from "../post-upvote/post-upvote.entity";
+import { ObjectType, Field } from "type-graphql";
 import {
-  BaseEntity,
   Entity,
+  BaseEntity,
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
@@ -9,12 +12,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Review, Post, Upvote, UserComment } from "./";
 import { Community } from "../community/community.entity";
 
 @ObjectType()
 @Entity()
-export default class User extends BaseEntity {
+export class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -43,23 +45,17 @@ export default class User extends BaseEntity {
   })
   memberCommunities: Community[];
 
-  @Field(() => [Review])
-  @OneToMany(() => Review, (review) => review.creator, {
+  @Field(() => [PostUpvote])
+  @OneToMany(() => PostUpvote, (postUpvote) => postUpvote.creator, {
     onDelete: "CASCADE",
   })
-  reviews: Review[];
+  upvotes: PostUpvote[];
 
-  @Field(() => [Upvote])
-  @OneToMany(() => Upvote, (upvote) => upvote.creator, {
+  @Field(() => [Comment])
+  @OneToMany(() => Comment, (comment) => comment.creator, {
     onDelete: "CASCADE",
   })
-  upvotes: Upvote[];
-
-  @Field(() => [UserComment])
-  @OneToMany(() => UserComment, (userComment) => userComment.creator, {
-    onDelete: "CASCADE",
-  })
-  comments: UserComment[];
+  comments: Comment[];
 
   @Field(() => [Post])
   @OneToMany(() => Post, (post) => post.creator, {

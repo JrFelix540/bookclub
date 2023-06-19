@@ -1,67 +1,35 @@
 import {
   Arg,
+  Authorized,
   Ctx,
-  Field,
   FieldResolver,
   Int,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
   Root,
 } from "type-graphql";
-import { FieldError } from "../auth/auth.types";
-import { TokenType, getUserIdFromToken } from "../auth/token";
 import { Community } from "../community/community.entity";
 import {
   AppDataSource,
   communityRepository,
   postUpvoteRepository,
 } from "../database/database";
-import { Post, Upvote, User } from "../entities";
+import { Post } from "./post.entity";
+import { User } from "../user/user.entity";
 import { MyContext } from "../types";
-
-const userRepository = AppDataSource.getRepository(User);
+import { PaginatedPosts, PostResponse, UpvoteResponse } from "./post.types";
+import { PostUpvote } from "../post-upvote/post-upvote.entity";
+import { userRepository } from "../database/database";
 
 const allRelations = ["community", "comments", "upvotes"];
 
-@ObjectType()
-export class PostResponse {
-  @Field(() => Post, { nullable: true })
-  post?: Post;
-
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-}
-
-@ObjectType()
-export class UpvoteResponse {
-  @Field(() => Upvote, { nullable: true })
-  upvote?: Upvote;
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-}
-
-@ObjectType()
-export class PaginatedPosts {
-  @Field(() => [Post], { nullable: true })
-  posts: Post[];
-
-  @Field(() => Boolean)
-  hasMore: boolean;
-
-  @Field(() => [FieldError], { nullable: true })
-  errors?: FieldError[];
-}
-
 @Resolver(Post)
-export default class PostResolver {
-  @FieldResolver(() => String)
+export class PostResolver {
+  @Authorized()
   @FieldResolver(() => Boolean)
-  isOwner(@Root() post: Post, @Ctx() { token }: MyContext) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (userId === post.creatorId) {
+  isOwner(@Root() post: Post, @Ctx() { res }: MyContext) {
+    if (res.locals.userId === post.creatorId) {
       return true;
     } else {
       return false;
@@ -78,9 +46,9 @@ export default class PostResolver {
     return communityRepository.findOneBy({ id: post.communityId });
   }
 
+  @Authorized()
   @FieldResolver(() => Boolean)
-  async joinStatus(@Root() post: Post, @Ctx() { token }: MyContext) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
+  async joinStatus(@Root() post: Post, @Ctx() { res }: MyContext) {
     const community = await communityRepository.findOneBy({
       id: post.communityId,
     });
@@ -90,7 +58,7 @@ export default class PostResolver {
     }
 
     const found = community.memberIds.find(
-      (commId: number) => commId === userId
+      (commId: number) => commId === res.locals.userId
     );
 
     if (found) {
@@ -100,16 +68,13 @@ export default class PostResolver {
     }
   }
 
+  @Authorized()
   @FieldResolver(() => Int, { nullable: true })
-  async hasVoted(@Root() post: Post, @Ctx() { token }: MyContext) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return null;
-    }
+  async hasVoted(@Root() post: Post, @Ctx() { res }: MyContext) {
     const upvote = await postUpvoteRepository.findOne({
       where: {
         postId: post.id,
-        creatorId: userId,
+        creatorId: res.locals.userId,
       },
     });
     return upvote ? upvote.value : null;
@@ -117,28 +82,12 @@ export default class PostResolver {
 
   @Mutation(() => UpvoteResponse)
   async vote(
-    @Ctx() { token }: MyContext,
+    @Ctx() { res }: MyContext,
     @Arg("postId", () => Int) postId: number,
     @Arg("value", () => Int) value: number
   ): Promise<UpvoteResponse> {
-    // Check if the person has voted on the post
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
-    const checkUpvote = await Upvote.findOne({
-      where: { creatorId: userId, postId: postId },
-    });
-
     const post = await Post.findOneBy({ id: postId });
-    const user = await User.findOneBy({ id: userId });
+    const user = await User.findOneBy({ id: res.locals.userId });
 
     if (!user) {
       return {
@@ -160,6 +109,9 @@ export default class PostResolver {
         ],
       };
     }
+    const checkUpvote = await postUpvoteRepository.findOne({
+      where: { creatorId: res.locals.userId, postId: postId },
+    });
 
     if (checkUpvote) {
       if (checkUpvote.value !== value) {
@@ -189,7 +141,7 @@ export default class PostResolver {
       };
     }
 
-    const upvote = new Upvote();
+    const upvote = new PostUpvote();
     upvote.postId = postId;
     upvote.post = post;
     upvote.creatorId = user.id;
@@ -247,20 +199,14 @@ export default class PostResolver {
     };
   }
 
+  @Authorized()
   @Query(() => PaginatedPosts)
   async myCommunitiesPosts(
-    @Ctx() { token }: MyContext,
+    @Ctx() { res }: MyContext,
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true })
     cursor: string | null
   ): Promise<PaginatedPosts> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return {
-        posts: [],
-        hasMore: false,
-      };
-    }
     const realLimit = Math.min(20, limit);
     const realLimitPlusOne = Math.min(20, limit) + 1;
     const replacements: any[] = [realLimitPlusOne];
@@ -268,7 +214,7 @@ export default class PostResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
     const user = await userRepository.findOne({
-      where: { id: userId },
+      where: { id: res.locals.userId },
       relations: ["memberCommunities"],
     });
     if (!user) {
@@ -351,25 +297,14 @@ export default class PostResolver {
     return post[0];
   }
 
+  @Authorized()
   @Mutation(() => PostResponse)
   async createPost(
     @Arg("title") title: string,
     @Arg("content") content: string,
     @Arg("communityId", () => Int) communityId: number,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ): Promise<PostResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
     if (communityId === undefined) {
       return {
         errors: [
@@ -396,7 +331,7 @@ export default class PostResolver {
     }
 
     const user = await userRepository.findOne({
-      where: { id: userId },
+      where: { id: res.locals.userId },
       relations: ["memberCommunities"],
     });
 
@@ -445,24 +380,14 @@ export default class PostResolver {
     };
   }
 
+  @Authorized()
   @Mutation(() => PostResponse)
   async updatePost(
     @Arg("id") id: number,
     @Arg("title", () => String, { nullable: true }) title: string,
     @Arg("content", () => String, { nullable: true }) content: string,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ): Promise<PostResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
     const post = await Post.findOneBy({ id });
     if (!post) {
       return {
@@ -474,7 +399,7 @@ export default class PostResolver {
         ],
       };
     }
-    if (post?.creatorId !== userId) {
+    if (post?.creatorId !== res.locals.userId) {
       return {
         errors: [
           {
@@ -504,22 +429,19 @@ export default class PostResolver {
     };
   }
 
+  @Authorized()
   @Mutation(() => Boolean)
   async deletePost(
     @Arg("id", () => Int) id: number,
-    @Ctx() { token }: MyContext
+    @Ctx() { res }: MyContext
   ): Promise<Boolean> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return false;
-    }
     const post = await Post.findOneBy({ id });
     if (!post) {
       console.log(`post not found`);
       return true;
     }
 
-    if (post.creatorId !== userId) {
+    if (post.creatorId !== res.locals.userId) {
       console.log(`User not owner`);
       return true;
     }

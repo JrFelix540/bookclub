@@ -1,5 +1,7 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { Upvote, User, UserComment } from "./";
+import { User } from "../user/user.entity";
+import { PostUpvote } from "../post-upvote/post-upvote.entity";
+import { Comment } from "../comment/comment.entity";
 import { Community } from "../community/community.entity";
 
 import {
@@ -15,7 +17,7 @@ import {
 
 @ObjectType()
 @Entity()
-export default class Post extends BaseEntity {
+export class Post extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,17 +48,17 @@ export default class Post extends BaseEntity {
   @Column({ nullable: true })
   communityId: number;
 
-  @Field(() => [UserComment])
-  @OneToMany(() => UserComment, (userComment) => userComment.post, {
+  @Field(() => [Comment])
+  @OneToMany(() => Comment, (comment) => comment.post, {
     onDelete: "CASCADE",
   })
-  comments: UserComment[];
+  comments: Comment[];
 
-  @Field(() => [Upvote], { nullable: true })
-  @OneToMany(() => Upvote, (upvote) => upvote.post, {
+  @Field(() => [PostUpvote], { nullable: true })
+  @OneToMany(() => PostUpvote, (postUpvote) => postUpvote.post, {
     onDelete: "CASCADE",
   })
-  upvotes: Upvote[];
+  postUpvotes: PostUpvote[];
 
   @Field(() => Int)
   @Column({ default: 0 })

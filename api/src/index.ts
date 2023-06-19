@@ -8,10 +8,13 @@ import http from "http";
 import { buildSchema } from "type-graphql";
 import { AuthResolver } from "./auth/auth.resolver";
 import { CommunityResolver } from "./community/community.resolver";
+import { PostResolver } from "./post/post.resolver";
+import { CommentResolver } from "./comment/comment.resolver";
 import { getEnvironmentVariables } from "./config/env";
 import { AppDataSource } from "./database/database";
-import { PostResolver, UserCommentResolver, UserResolver } from "./resolvers";
+import { UserResolver } from "./user/user.resolver";
 import { MyContext } from "./types";
+import { authChecker } from "./auth/auth.utils";
 
 const env = getEnvironmentVariables();
 
@@ -26,9 +29,11 @@ const main = async () => {
         UserResolver,
         CommunityResolver,
         PostResolver,
-        UserCommentResolver,
+        CommentResolver,
         AuthResolver,
       ],
+      authChecker: authChecker,
+      authMode: "error",
     }),
   });
 
@@ -53,8 +58,9 @@ const main = async () => {
     // an Apollo Server instance and optional configuration options
 
     expressMiddleware(server, {
-      context: async ({ req }) => {
+      context: async ({ req, res }) => {
         return {
+          res,
           token: req.headers.authorization || "",
         };
       },

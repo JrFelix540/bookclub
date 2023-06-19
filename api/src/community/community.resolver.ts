@@ -1,5 +1,6 @@
 import {
   Arg,
+  Authorized,
   Ctx,
   FieldResolver,
   Int,
@@ -9,14 +10,13 @@ import {
   Root,
 } from "type-graphql";
 import { In } from "typeorm";
-import { getUserIdFromToken, TokenType } from "../auth/token";
 import { communityRepository, userRepository } from "../database/database";
-import { User } from "../entities";
+import { User } from "../user/user.entity";
 import { MyContext } from "../types";
 import { Community } from "./community.entity";
 import { BooleanFieldResponse, CommunityResponse } from "./community.types";
 
-const allRelations: string[] = ["posts", "favoriteBooks"];
+const allRelations: string[] = ["posts"];
 
 @Resolver(Community)
 export class CommunityResolver {
@@ -30,11 +30,12 @@ export class CommunityResolver {
     return userRepository.findBy({ id: In(community.memberIds) });
   }
 
+  @Authorized()
   @FieldResolver(() => Boolean)
-  hasJoined(@Root() community: Community, @Ctx() { token }: MyContext) {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    const found = community.memberIds.find((commId) => commId === userId);
+  hasJoined(@Root() community: Community, @Ctx() { res }: MyContext) {
+    const found = community.memberIds.find(
+      (commId) => commId === res.locals.userId
+    );
 
     if (found) {
       return true;
@@ -71,25 +72,15 @@ export class CommunityResolver {
     return community;
   }
 
+  @Authorized()
   @Mutation(() => CommunityResponse)
   async createCommunity(
-    @Ctx() { token }: MyContext,
+    @Ctx() { res }: MyContext,
     @Arg("name") name: string,
     @Arg("description") description: string
   ): Promise<CommunityResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "token",
-            message: "Token not verified",
-          },
-        ],
-      };
-    }
     const user = await User.findOne({
-      where: { id: userId },
+      where: { id: res.locals.userId },
     });
 
     if (!user) {
@@ -133,25 +124,13 @@ export class CommunityResolver {
     };
   }
 
+  @Authorized()
   @Mutation(() => BooleanFieldResponse)
   async joinCommunity(
-    @Ctx() { token }: MyContext,
+    @Ctx() { res }: MyContext,
     @Arg("id", () => Int) id: number
   ): Promise<BooleanFieldResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-    if (!userId) {
-      return {
-        ok: false,
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
-
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await User.findOne({ where: { id: res.locals.userId } });
     if (!user) {
       return {
         errors: [
@@ -218,24 +197,10 @@ export class CommunityResolver {
 
   @Mutation(() => BooleanFieldResponse)
   async leaveCommunity(
-    @Ctx() { token }: MyContext,
+    @Ctx() { res }: MyContext,
     @Arg("communityId") communityId: number
   ): Promise<BooleanFieldResponse> {
-    const userId = getUserIdFromToken(token, TokenType.Auth);
-
-    if (!userId) {
-      return {
-        ok: false,
-        errors: [
-          {
-            field: "User",
-            message: "User not authenticated",
-          },
-        ],
-      };
-    }
-
-    const user = await User.findOneBy({ id: userId });
+    const user = await User.findOneBy({ id: res.locals.userId });
     if (!user) {
       return {
         errors: [
