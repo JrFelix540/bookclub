@@ -2,12 +2,27 @@ import {
   ApolloClient,
   InMemoryCache,
   NormalizedCacheObject,
+  createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash-es/isEqual";
 
 const token =
   typeof window !== "undefined" ? window.localStorage.getItem("token") : "";
+
+const httpLink = createHttpLink({
+  uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}`,
+    },
+  };
+});
 
 export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
@@ -16,7 +31,7 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | null;
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    uri: process.env.NEXT_PUBLIC_BACKEND_URL,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     credentials: "include",
     headers: {

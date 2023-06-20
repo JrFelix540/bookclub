@@ -6,13 +6,12 @@ import styled from "@emotion/styled";
 import { updateAfterVote } from "./upvote.utils";
 
 interface UpvoteProps {
-  hasVoted: number;
+  hasVoted: number | null | undefined;
   points: number;
   postId: number;
 }
 
 export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
-  console.log("points", hasVoted);
   const [vote] = useMutation(VoteDocument);
   const handleUpvote = async () => {
     await vote({

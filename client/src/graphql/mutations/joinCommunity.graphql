@@ -1,0 +1,9 @@
+mutation JoinCommunity($communityId: Int!) {
+  joinCommunity(id: $communityId) {
+    ok
+    errors {
+      field
+      message
+    }
+  }
+}

@@ -1,39 +1,41 @@
 import { Upvote } from "@/components/upvote/upvote";
-import { PostDocument } from "@/generated/graphql";
-import { useQuery } from "@apollo/client";
+import { PostQuery } from "@/generated/graphql";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
 
-export const PostMeta: React.FC<{ postId: number }> = ({ postId }) => {
-  const { data, loading } = useQuery(PostDocument, { variables: { postId } });
+type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
+export const PostMeta: React.FC<PostMetaProps> = ({
+  id,
+  points,
+  hasVoted,
+  community,
+  creator,
+  title,
+  content,
+  comments,
+}) => {
   return (
     <Container>
       <DetailsContainer>
-        <Upvote
-          hasVoted={data?.post.hasVoted}
-          points={data?.post?.points}
-          postId={postId}
-        />
+        <Upvote hasVoted={hasVoted} points={points} postId={id} />
         <ContentContainer>
           <ContentHeader>
             <Text fontSize="sm">
               Posted in{" "}
-              <Link href={`/club/${data?.post?.community.id}`}>
-                c/{data?.post?.community.name}
-              </Link>{" "}
-              by u/{data?.post?.creator.username}
+              <Link href={`/club/${community.id}`}>c/{community.name}</Link> by
+              u/{creator.username}
             </Text>
           </ContentHeader>
           <ContentBody>
-            <Text fontSize="2xl">{data?.post?.title}</Text>
-            <Text>{data?.post?.content}</Text>
-            <PostComments postId={postId} />
+            <Text fontSize="2xl">{title}</Text>
+            <Text>{content}</Text>
           </ContentBody>
         </ContentContainer>
       </DetailsContainer>
+      <PostComments postId={id} comments={comments} />
     </Container>
   );
 };

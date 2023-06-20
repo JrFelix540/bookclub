@@ -1,29 +1,17 @@
 import { FullClub } from "@/clubs/full-club/full-club";
-import { CommunityDocument } from "@/generated/graphql";
-import {
-  addApolloState,
-  initializeApollo,
-} from "@/providers/apollo/apollo-client";
 import { GetServerSideProps } from "next";
 
 export default FullClub;
 
-export const getServerSideProps: GetServerSideProps<{ id: string }> = async ({
+export const getServerSideProps: GetServerSideProps<{ id: number }> = async ({
   params,
 }) => {
   const { id } = params as { id: string };
-  const communityId = id;
-  const client = initializeApollo();
-  await client.query({
-    query: CommunityDocument,
-    variables: {
-      communityId: parseInt(communityId),
-    },
-  });
+  const communityId = parseFloat(id);
 
-  return addApolloState(client, {
+  return {
     props: {
       id: communityId,
     },
-  });
+  };
 };

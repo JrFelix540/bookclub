@@ -1,17 +1,20 @@
-import { MeDocument } from "@/generated/graphql";
-import { useQuery } from "@apollo/client";
-import styled from "@emotion/styled";
-import { CreateComment } from "../create-comment/create-comment";
-import { Text } from "@chakra-ui/react";
-import Link from "next/link";
 import { PrimaryButton } from "@/components/primary-button/primary-button";
-import { Comment } from "../comment/comment";
+import { MeDocument, PostQuery } from "@/generated/graphql";
+import { useQuery } from "@apollo/client";
+import { Text } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import Link from "next/link";
+import { CreateComment } from "../create-comment/create-comment";
 
-interface PostCommentsProps {
+type PostCommentsProps = {
   postId: number;
-}
+  comments: PostQuery["post"]["comments"];
+};
 
-export const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
+export const PostComments: React.FC<PostCommentsProps> = ({
+  postId,
+  comments,
+}) => {
   const { data, loading } = useQuery(MeDocument);
 
   return (
@@ -24,9 +27,12 @@ export const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
         </Link>
       )}
       <CommentsContainer>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment) => (
+          <CommentContainer key={comment.id}>
+            <Text fontSize={"xs"}>Posted by u/{comment.creator.username}</Text>
+            <Text>{comment.content}</Text>
+          </CommentContainer>
+        ))}
       </CommentsContainer>
     </Container>
   );
@@ -42,4 +48,10 @@ const CommentsContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "15px",
+});
+
+const CommentContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  borderBottom: "1px solid #eaeaea",
 });

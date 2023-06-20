@@ -6,10 +6,12 @@ query Post($postId: Float!) {
     hasVoted
     isOwner
     points
+    joinStatus
     creator {
       username
     }
     comments {
+      id
       creator {
         username
       }
@@ -18,6 +20,8 @@ query Post($postId: Float!) {
     community {
       id
       name
+      description
+      dateCreated
     }
   }
 }

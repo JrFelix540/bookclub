@@ -8,9 +8,6 @@ fragment RegularPost on Post {
     id
     username
   }
-  upvotes {
-    value
-  }
   community {
     id
     name

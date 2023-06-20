@@ -9,5 +9,6 @@ query Community($communityId: Float!) {
     }
     dateCreated
     memberIds
+    hasJoined
   }
 }

@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { getEnvironmentVariables } from "../config/env";
-import { GraphQLError } from "graphql";
 
 const ACCESS_TOKEN_DURATION = "1d";
 const RESET_TOKEN_DURATION = "1h";
@@ -44,13 +43,13 @@ export const generateResetToken = (tokenBody: { userId: number }) => {
   }
 };
 
-export const verifyToken = (token: string): JwtToken => {
+export const verifyToken = (token: string): JwtToken | null => {
   try {
     const decodedToken = jwt.verify(token, env.JWT_SECRET) as JwtToken;
     return decodedToken;
   } catch (e) {
-    console.log("failed to verify token");
-    throw new GraphQLError(e);
+    console.log("failed to verify token", e);
+    return null;
   }
 };
 
@@ -60,10 +59,11 @@ export const getUserIdFromToken = (
 ): number | null => {
   const decodedToken = verifyToken(token.split(" ")[1]);
   if (!decodedToken) {
-    throw new Error("Couldn't find token");
+    return null;
   }
   if (decodedToken.type !== type) {
-    throw new Error("Wrong token type");
+    console.log("Wrong token type");
+    return null;
   }
   return decodedToken.userId;
 };

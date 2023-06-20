@@ -43,28 +43,6 @@ export type AuthenticatedUser = {
   username?: Maybe<Scalars["String"]["output"]>;
 };
 
-export type Author = {
-  __typename?: "Author";
-  books: Array<Book>;
-  createdAt: Scalars["String"]["output"];
-  firstName: Scalars["String"]["output"];
-  id: Scalars["Float"]["output"];
-  lastName: Scalars["String"]["output"];
-};
-
-export type Book = {
-  __typename?: "Book";
-  authors: Array<Author>;
-  createdAt: Scalars["String"]["output"];
-  favoritedCommunities: Array<Community>;
-  genres: Array<Book>;
-  id: Scalars["Float"]["output"];
-  reviews: Array<Review>;
-  shelf: Shelf;
-  title: Scalars["String"]["output"];
-  updatedAt: Scalars["String"]["output"];
-};
-
 export type BooleanFieldResponse = {
   __typename?: "BooleanFieldResponse";
   errors?: Maybe<Array<FieldError>>;
@@ -77,9 +55,26 @@ export type BooleanResponse = {
   ok?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
+export type Comment = {
+  __typename?: "Comment";
+  commentIds: Array<Scalars["Int"]["output"]>;
+  commentUpvotes: CommentUpvote;
+  content: Scalars["String"]["output"];
+  createdAt: Scalars["String"]["output"];
+  creator: User;
+  hasVoted: Scalars["Boolean"]["output"];
+  id: Scalars["Float"]["output"];
+  isOwner: Scalars["Boolean"]["output"];
+  parentCommentId: Scalars["Int"]["output"];
+  points: Scalars["Float"]["output"];
+  post: Post;
+  updatedAt: Scalars["String"]["output"];
+  voteStatus?: Maybe<Scalars["Int"]["output"]>;
+};
+
 export type CommentUpvote = {
   __typename?: "CommentUpvote";
-  comment: UserComment;
+  comment: Comment;
   commentId: Scalars["Int"]["output"];
   creator: User;
   creatorId: Scalars["Int"]["output"];
@@ -99,8 +94,6 @@ export type Community = {
   creatorId: Scalars["Int"]["output"];
   dateCreated: Scalars["String"]["output"];
   description: Scalars["String"]["output"];
-  favoriteBookIds: Array<Scalars["Int"]["output"]>;
-  favoriteBooks: Array<Book>;
   hasJoined: Scalars["Boolean"]["output"];
   id: Scalars["Float"]["output"];
   memberIds: Array<Scalars["Float"]["output"]>;
@@ -225,7 +218,7 @@ export type PaginatedPosts = {
 
 export type Post = {
   __typename?: "Post";
-  comments: Array<UserComment>;
+  comments: Array<Comment>;
   community: Community;
   communityId: Scalars["Int"]["output"];
   content: Scalars["String"]["output"];
@@ -237,9 +230,9 @@ export type Post = {
   isOwner: Scalars["Boolean"]["output"];
   joinStatus: Scalars["Boolean"]["output"];
   points: Scalars["Int"]["output"];
+  postUpvotes?: Maybe<Array<PostUpvote>>;
   title: Scalars["String"]["output"];
   updatedAt: Scalars["String"]["output"];
-  upvotes?: Maybe<Array<Upvote>>;
   voteStatus?: Maybe<Scalars["Int"]["output"]>;
 };
 
@@ -247,6 +240,15 @@ export type PostResponse = {
   __typename?: "PostResponse";
   errors?: Maybe<Array<FieldError>>;
   post?: Maybe<Post>;
+};
+
+export type PostUpvote = {
+  __typename?: "PostUpvote";
+  creator: User;
+  creatorId: Scalars["Int"]["output"];
+  post: Post;
+  postId: Scalars["Int"]["output"];
+  value: Scalars["Int"]["output"];
 };
 
 export type Query = {
@@ -259,7 +261,7 @@ export type Query = {
   meWithCommunities?: Maybe<User>;
   myCommunitiesPosts: PaginatedPosts;
   post: Post;
-  postComments?: Maybe<Array<UserComment>>;
+  postComments?: Maybe<Array<Comment>>;
   postWithIds: Array<Post>;
   posts: PaginatedPosts;
   users: Array<User>;
@@ -293,44 +295,15 @@ export type QueryPostsArgs = {
   limit: Scalars["Int"]["input"];
 };
 
-export type Review = {
-  __typename?: "Review";
-  book: Book;
-  content: Scalars["String"]["output"];
-  createdAt: Scalars["String"]["output"];
-  creator: User;
-  id: Scalars["Float"]["output"];
-  updatedAt: Scalars["String"]["output"];
-  value: Scalars["Float"]["output"];
-};
-
-export type Shelf = {
-  __typename?: "Shelf";
-  books: Array<Book>;
-  createdAt: Scalars["String"]["output"];
-  id: Scalars["Float"]["output"];
-  type: Scalars["String"]["output"];
-  updatedAt: Scalars["String"]["output"];
-};
-
-export type Upvote = {
-  __typename?: "Upvote";
-  creator: User;
-  creatorId: Scalars["Int"]["output"];
-  post: Post;
-  postId: Scalars["Int"]["output"];
-  value: Scalars["Int"]["output"];
-};
-
 export type UpvoteResponse = {
   __typename?: "UpvoteResponse";
   errors?: Maybe<Array<FieldError>>;
-  upvote?: Maybe<Upvote>;
+  upvote?: Maybe<PostUpvote>;
 };
 
 export type User = {
   __typename?: "User";
-  comments: Array<UserComment>;
+  comments: Array<Comment>;
   createdAt: Scalars["String"]["output"];
   createdCommunities: Array<Community>;
   email: Scalars["String"]["output"];
@@ -338,32 +311,14 @@ export type User = {
   memberCommunities: Array<Community>;
   password: Scalars["String"]["output"];
   posts: Array<Post>;
-  reviews: Array<Review>;
   updatedAt: Scalars["String"]["output"];
-  upvotes: Array<Upvote>;
+  upvotes: Array<PostUpvote>;
   username: Scalars["String"]["output"];
-};
-
-export type UserComment = {
-  __typename?: "UserComment";
-  commentIds: Array<Scalars["Int"]["output"]>;
-  commentUpvotes: CommentUpvote;
-  content: Scalars["String"]["output"];
-  createdAt: Scalars["String"]["output"];
-  creator: User;
-  hasVoted: Scalars["Boolean"]["output"];
-  id: Scalars["Float"]["output"];
-  isOwner: Scalars["Boolean"]["output"];
-  parentCommentId: Scalars["Int"]["output"];
-  points: Scalars["Float"]["output"];
-  post: Post;
-  updatedAt: Scalars["String"]["output"];
-  voteStatus?: Maybe<Scalars["Int"]["output"]>;
 };
 
 export type UserCommentResponse = {
   __typename?: "UserCommentResponse";
-  comment?: Maybe<UserComment>;
+  comment?: Maybe<Comment>;
   errors?: Maybe<Array<FieldError>>;
 };
 
@@ -375,7 +330,6 @@ export type RegularPostFragment = {
   points: number;
   hasVoted?: number | null;
   creator: { __typename?: "User"; id: number; username: string };
-  upvotes?: Array<{ __typename?: "Upvote"; value: number }> | null;
   community: { __typename?: "Community"; id: number; name: string };
 } & { " $fragmentName"?: "RegularPostFragment" };
 
@@ -438,6 +392,23 @@ export type ForgetPasswordMutationVariables = Exact<{
 export type ForgetPasswordMutation = {
   __typename?: "Mutation";
   forgetPassword: { __typename?: "BooleanResponse"; ok?: boolean | null };
+};
+
+export type JoinCommunityMutationVariables = Exact<{
+  communityId: Scalars["Int"]["input"];
+}>;
+
+export type JoinCommunityMutation = {
+  __typename?: "Mutation";
+  joinCommunity: {
+    __typename?: "BooleanFieldResponse";
+    ok?: boolean | null;
+    errors?: Array<{
+      __typename?: "FieldError";
+      field: string;
+      message: string;
+    }> | null;
+  };
 };
 
 export type ResetPasswordMutationVariables = Exact<{
@@ -524,7 +495,7 @@ export type VoteMutation = {
       message: string;
     }> | null;
     upvote?: {
-      __typename?: "Upvote";
+      __typename?: "PostUpvote";
       creatorId: number;
       postId: number;
       value: number;
@@ -552,6 +523,7 @@ export type CommunityQuery = {
     description: string;
     dateCreated: string;
     memberIds: Array<number>;
+    hasJoined: boolean;
     members: Array<{ __typename?: "User"; id: number; username: string }>;
   };
 };
@@ -650,13 +622,21 @@ export type PostQuery = {
     hasVoted?: number | null;
     isOwner: boolean;
     points: number;
+    joinStatus: boolean;
     creator: { __typename?: "User"; username: string };
     comments: Array<{
-      __typename?: "UserComment";
+      __typename?: "Comment";
+      id: number;
       content: string;
       creator: { __typename?: "User"; username: string };
     }>;
-    community: { __typename?: "Community"; id: number; name: string };
+    community: {
+      __typename?: "Community";
+      id: number;
+      name: string;
+      description: string;
+      dateCreated: string;
+    };
   };
 };
 
@@ -714,16 +694,6 @@ export const RegularPostFragmentDoc = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "username" } },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "upvotes" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "value" } },
               ],
             },
           },
@@ -1039,6 +1009,71 @@ export const ForgetPasswordDocument = {
 } as unknown as DocumentNode<
   ForgetPasswordMutation,
   ForgetPasswordMutationVariables
+>;
+export const JoinCommunityDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "JoinCommunity" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "communityId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "joinCommunity" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "communityId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "ok" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "errors" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "field" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  JoinCommunityMutation,
+  JoinCommunityMutationVariables
 >;
 export const ResetPasswordDocument = {
   kind: "Document",
@@ -1558,6 +1593,7 @@ export const CommunityDocument = {
                 },
                 { kind: "Field", name: { kind: "Name", value: "dateCreated" } },
                 { kind: "Field", name: { kind: "Name", value: "memberIds" } },
+                { kind: "Field", name: { kind: "Name", value: "hasJoined" } },
               ],
             },
           },
@@ -1932,6 +1968,7 @@ export const PostDocument = {
                 { kind: "Field", name: { kind: "Name", value: "hasVoted" } },
                 { kind: "Field", name: { kind: "Name", value: "isOwner" } },
                 { kind: "Field", name: { kind: "Name", value: "points" } },
+                { kind: "Field", name: { kind: "Name", value: "joinStatus" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "creator" },
@@ -1951,6 +1988,7 @@ export const PostDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "creator" },
@@ -1979,6 +2017,14 @@ export const PostDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "dateCreated" },
+                      },
                     ],
                   },
                 },

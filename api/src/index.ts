@@ -33,7 +33,7 @@ const main = async () => {
         AuthResolver,
       ],
       authChecker: authChecker,
-      authMode: "error",
+      authMode: "null",
     }),
   });
 

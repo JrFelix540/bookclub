@@ -18,29 +18,17 @@ import Link from "next/link";
 export const Menu = () => {
   const [signOut] = useMutation(SignOutDocument);
   const logout = async () => {
-    await signOut({
-      refetchQueries: [FeedPostsDocument],
-      update(cache) {
-        cache.writeQuery<MeQuery>({
-          query: MeDocument,
-          data: {
-            __typename: "Query",
-            me: {
-              id: null,
-              username: null,
-            },
-          },
-        });
-      },
-    });
     localStorage.clear();
+    await signOut({
+      refetchQueries: [MeDocument],
+    });
   };
   return (
     <ChakraMenu>
       <MenuButton as={Button} variant="ghost" rightIcon={<ChevronDownIcon />} />
       <MenuList>
         <MenuItem>
-          <Link href="/clubs/create">Create a Book Club</Link>
+          <Link href="/clubs/create">Create a book Club</Link>
         </MenuItem>
         <MenuItem>
           <Link href="/posts/create">Create a post</Link>

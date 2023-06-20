@@ -22,12 +22,12 @@ import { PaginatedPosts, PostResponse, UpvoteResponse } from "./post.types";
 import { PostUpvote } from "../post-upvote/post-upvote.entity";
 import { userRepository } from "../database/database";
 
-const allRelations = ["community", "comments", "upvotes"];
+const allRelations = ["community", "comments", "postUpvotes"];
 
 @Resolver(Post)
 export class PostResolver {
   @Authorized()
-  @FieldResolver(() => Boolean)
+  @FieldResolver(() => Boolean, { nullable: true })
   isOwner(@Root() post: Post, @Ctx() { res }: MyContext) {
     if (res.locals.userId === post.creatorId) {
       return true;
@@ -47,7 +47,7 @@ export class PostResolver {
   }
 
   @Authorized()
-  @FieldResolver(() => Boolean)
+  @FieldResolver(() => Boolean, { nullable: true })
   async joinStatus(@Root() post: Post, @Ctx() { res }: MyContext) {
     const community = await communityRepository.findOneBy({
       id: post.communityId,
@@ -80,6 +80,7 @@ export class PostResolver {
     return upvote ? upvote.value : null;
   }
 
+  @Authorized()
   @Mutation(() => UpvoteResponse)
   async vote(
     @Ctx() { res }: MyContext,

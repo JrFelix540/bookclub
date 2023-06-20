@@ -1,33 +1,53 @@
+import {
+  ClubsDocument,
+  JoinCommunityDocument,
+  PostDocument,
+} from "@/generated/graphql";
+import { useMutation } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
+import Link from "next/link";
 import { PrimaryButton } from "../primary-button/primary-button";
-import { useQuery } from "@apollo/client";
-import {
-  ClubsDocument,
-  CommunityDocument,
-  MeDocument,
-} from "@/generated/graphql";
 
-export const ClubSidebar: React.FC<{ clubId: number }> = ({ clubId }) => {
-  const { data } = useQuery(CommunityDocument, {
-    variables: { communityId: clubId },
+interface ClubSidebarProps {
+  id: number;
+  name: string;
+  description: string;
+  dateCreated: string;
+  hasJoined: boolean;
+}
+
+export const ClubSidebar: React.FC<ClubSidebarProps> = ({
+  id,
+  name,
+  description,
+  dateCreated,
+  hasJoined,
+}) => {
+  const [joinClub] = useMutation(JoinCommunityDocument, {
+    variables: { communityId: id },
+    refetchQueries: [PostDocument, ClubsDocument],
   });
-  const { data: MeData } = useQuery(MeDocument);
 
+  const join = () => {
+    joinClub();
+  };
   return (
     <Container>
       <TitleContainer>
         <Image src="/book.png" alt="logo" width={20} height={20} />
-        <Text>c/{data?.community.name}</Text>
+        <Link href={`/clubs/${id}`}>
+          <Text>c/{name}</Text>
+        </Link>
       </TitleContainer>
-      <Text>{data?.community.description}</Text>
-      <Text>Created on {data?.community.dateCreated}</Text>
-      {/* {isMember ? (
+      <Text>{description}</Text>
+      <Text>Created on {dateCreated}</Text>
+      {hasJoined ? (
         <JoinedContainer>Joined</JoinedContainer>
       ) : (
-        <PrimaryButton>Join Club</PrimaryButton>
-      )} */}
+        <PrimaryButton onClick={join}>Join Club</PrimaryButton>
+      )}
     </Container>
   );
 };

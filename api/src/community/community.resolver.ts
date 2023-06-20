@@ -31,7 +31,7 @@ export class CommunityResolver {
   }
 
   @Authorized()
-  @FieldResolver(() => Boolean)
+  @FieldResolver(() => Boolean, { nullable: true })
   hasJoined(@Root() community: Community, @Ctx() { res }: MyContext) {
     const found = community.memberIds.find(
       (commId) => commId === res.locals.userId

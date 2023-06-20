@@ -9,21 +9,25 @@ import { ClubSidebar } from "@/components/club-sidebar/club-sidebar";
 import { NextPage } from "next";
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
 import { Text } from "@chakra-ui/react";
+import { ClubLoading } from "./club-loading";
+import { ErrorPage } from "@/layouts/error";
 
-export const FullClub: NextPage<{ id: string }> = ({ id }) => {
-  const communityId = parseInt(id);
+export const FullClub: NextPage<{ id: number }> = ({ id }) => {
   const { data: meData, loading: meLoading } = useQuery(MeDocument);
   const { data: communityData, loading: communityLoading } = useQuery(
     CommunityDocument,
-    { variables: { communityId } }
-  );
-  const title = `BookClub | ${communityData?.community.name}` || "";
-  const isMember = communityData?.community.memberIds.find(
-    (id) => id === meData?.me?.id
+    { variables: { communityId: id } }
   );
 
+  if (!communityData) {
+    return communityLoading ? <ClubLoading /> : <ErrorPage />;
+  }
+
+  const title = `${communityData.community.name}` || "";
+  const description = `${communityData.community.name}: ${communityData.community.description}`;
+
   return (
-    <BaseLayout title={title}>
+    <BaseLayout title={title} description={description}>
       <NavBar {...meData?.me} />
       <BodyContainer>
         <Content>
@@ -33,14 +37,20 @@ export const FullClub: NextPage<{ id: string }> = ({ id }) => {
             </ClubTitle>
             <ClubPosts
               club={{
-                id: communityData?.community.id as number,
-                name: communityData?.community.name || "",
+                id: communityData.community.id as number,
+                name: communityData.community.name || "",
               }}
             />
           </PostsContainer>
 
           <SidebarsContainer>
-            <ClubSidebar clubId={communityId} />
+            <ClubSidebar
+              id={communityData.community.id}
+              name={communityData.community.name}
+              dateCreated={communityData.community.dateCreated}
+              description={communityData.community.description}
+              hasJoined={communityData.community.hasJoined}
+            />
             <ClubsSidebar />
           </SidebarsContainer>
         </Content>
