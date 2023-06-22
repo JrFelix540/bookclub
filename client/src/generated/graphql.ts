@@ -94,7 +94,7 @@ export type Community = {
   creatorId: Scalars["Int"]["output"];
   dateCreated: Scalars["String"]["output"];
   description: Scalars["String"]["output"];
-  hasJoined: Scalars["Boolean"]["output"];
+  hasJoined?: Maybe<Scalars["Boolean"]["output"]>;
   id: Scalars["Float"]["output"];
   memberIds: Array<Scalars["Float"]["output"]>;
   members: Array<User>;
@@ -227,8 +227,8 @@ export type Post = {
   creatorId: Scalars["Int"]["output"];
   hasVoted?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["Float"]["output"];
-  isOwner: Scalars["Boolean"]["output"];
-  joinStatus: Scalars["Boolean"]["output"];
+  isOwner?: Maybe<Scalars["Boolean"]["output"]>;
+  joinStatus?: Maybe<Scalars["Boolean"]["output"]>;
   points: Scalars["Int"]["output"];
   postUpvotes?: Maybe<Array<PostUpvote>>;
   title: Scalars["String"]["output"];
@@ -259,7 +259,7 @@ export type Query = {
   communityPosts?: Maybe<PaginatedPosts>;
   me?: Maybe<AuthenticatedUser>;
   meWithCommunities?: Maybe<User>;
-  myCommunitiesPosts: PaginatedPosts;
+  myCommunitiesPosts?: Maybe<PaginatedPosts>;
   post: Post;
   postComments?: Maybe<Array<Comment>>;
   postWithIds: Array<Post>;
@@ -523,7 +523,7 @@ export type CommunityQuery = {
     description: string;
     dateCreated: string;
     memberIds: Array<number>;
-    hasJoined: boolean;
+    hasJoined?: boolean | null;
     members: Array<{ __typename?: "User"; id: number; username: string }>;
   };
 };
@@ -562,7 +562,7 @@ export type FeedPostsQueryVariables = Exact<{
 
 export type FeedPostsQuery = {
   __typename?: "Query";
-  myCommunitiesPosts: {
+  myCommunitiesPosts?: {
     __typename?: "PaginatedPosts";
     hasMore: boolean;
     errors?: Array<{
@@ -580,7 +580,7 @@ export type FeedPostsQuery = {
       community: { __typename?: "Community"; id: number; name: string };
       creator: { __typename?: "User"; username: string };
     }> | null;
-  };
+  } | null;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
@@ -620,9 +620,9 @@ export type PostQuery = {
     title: string;
     content: string;
     hasVoted?: number | null;
-    isOwner: boolean;
+    isOwner?: boolean | null;
     points: number;
-    joinStatus: boolean;
+    joinStatus?: boolean | null;
     creator: { __typename?: "User"; username: string };
     comments: Array<{
       __typename?: "Comment";

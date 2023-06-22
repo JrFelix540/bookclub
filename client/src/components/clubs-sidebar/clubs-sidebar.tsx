@@ -3,16 +3,21 @@ import { useQuery } from "@apollo/client";
 import { List, ListItem, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
+import { LoadingClubSidebar } from "../club-sidebar/club-sidebar.loading";
 
 export const ClubsSidebar = () => {
   const { data, loading } = useQuery(ClubsDocument);
+  if (!data) {
+    return loading ? <LoadingClubSidebar /> : <p>Something has occurred.</p>;
+  }
+
   return (
     <Container>
       <Text align="center" fontSize="xl" fontWeight="bold">
         Our BookClubs
       </Text>
       <List>
-        {data?.allCommunities.map((comm) => (
+        {data.allCommunities.map((comm) => (
           <StyledItem key={comm.id}>
             <Link href={`/clubs/${comm.id}`}>{comm.name}</Link>
           </StyledItem>

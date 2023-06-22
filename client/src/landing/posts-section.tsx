@@ -1,11 +1,17 @@
 import { PostPreview } from "@/components/post-preview/post-preview";
-import { FeedPostsDocument, PostsDocument } from "@/generated/graphql";
+import {
+  FeedPostsDocument,
+  FeedPostsQuery,
+  PostsDocument,
+  PostsQuery,
+} from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { Button } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React from "react";
 import { EmptyPosts } from "./empty-posts";
+import { PostsLoading } from "./posts-loading";
 
 interface Post {
   id: number;
@@ -29,12 +35,16 @@ export const PostsSection: React.FC = () => {
     variables: { limit: 10 },
   });
 
-  let renderedPosts: Array<Post> | null | undefined;
+  if (loading) {
+    return <PostsLoading />;
+  }
+
+  let renderedPosts: PostsQuery["posts"]["posts"];
 
   if (feed === "user") {
-    renderedPosts = data?.myCommunitiesPosts.posts;
+    renderedPosts = data.myCommunitiesPosts?.posts || [];
   } else {
-    renderedPosts = data?.posts.posts;
+    renderedPosts = data.posts.posts;
   }
 
   const isPostsEmpty =

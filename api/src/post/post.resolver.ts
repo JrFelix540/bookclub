@@ -201,7 +201,7 @@ export class PostResolver {
   }
 
   @Authorized()
-  @Query(() => PaginatedPosts)
+  @Query(() => PaginatedPosts, { nullable: true })
   async myCommunitiesPosts(
     @Ctx() { res }: MyContext,
     @Arg("limit", () => Int) limit: number,

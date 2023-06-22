@@ -10,7 +10,7 @@ interface PostPreviewProps {
   creator: string;
   points: number;
   club: { id: number; name: string };
-  hasVoted: number;
+  hasVoted: number | undefined | null;
 }
 
 export const PostPreview: React.FC<PostPreviewProps> = ({
