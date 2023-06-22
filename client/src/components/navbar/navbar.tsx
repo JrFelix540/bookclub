@@ -1,17 +1,22 @@
-import { Avatar, Text } from "@chakra-ui/react";
+import { Avatar, Text, Skeleton, SkeletonCircle } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Logo } from "../Logo/Logo";
 import { PrimaryButton } from "../primary-button/primary-button";
 import { MainContainer } from "../main-container/main-container";
 import { Menu } from "../menu/menu";
+import { NavbarLoading } from "./navbar.loading";
 
-interface NavBarProps {
+interface NavbarProps {
   id?: number | undefined | null;
   username?: string | undefined | null;
+  loading: boolean;
 }
 
-export const NavBar: React.FC<NavBarProps> = ({ username }) => {
+export const Navbar: React.FC<NavbarProps> = ({ username, loading }) => {
+  if (loading) {
+    return <NavbarLoading />;
+  }
   return (
     <Header>
       <Container>

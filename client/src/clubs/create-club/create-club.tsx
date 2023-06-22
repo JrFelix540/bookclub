@@ -1,5 +1,5 @@
 import { MainContainer } from "@/components/main-container/main-container";
-import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Navbar } from "@/components/navbar/navbar";
 import { RulesSidebar } from "@/components/rules-sidebar/rules-sidebar";
 import { MeDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
@@ -10,10 +10,10 @@ import { CreateClubForm } from "./create-club-form/create-club-form";
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
 
 export const CreateClub = () => {
-  const { data } = useQuery(MeDocument);
+  const { data, loading } = useQuery(MeDocument);
   return (
     <BaseLayout title="BookClub | Create a Club">
-      <NavBar {...data?.me} />
+      <Navbar loading={loading} {...data?.me} />
       <BodyContainer>
         <ContentContainer>
           <FormContainer>

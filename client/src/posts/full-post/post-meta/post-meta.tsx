@@ -58,7 +58,7 @@ const DetailsContainer = styled("div")({
 const ContentContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
+  gap: "5px",
 });
 
 const ContentHeader = styled("div")({
@@ -68,5 +68,5 @@ const ContentHeader = styled("div")({
 const ContentBody = styled("div")({
   display: "flex",
   flexDirection: "column",
-  gap: "20px",
+  gap: "5px",
 });

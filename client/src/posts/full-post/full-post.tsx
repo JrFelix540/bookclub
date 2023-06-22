@@ -1,23 +1,18 @@
 import { ClubSidebar } from "@/components/club-sidebar/club-sidebar";
 import { MainContainer } from "@/components/main-container/main-container";
-import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Navbar } from "@/components/navbar/navbar";
 import { MeDocument, PostDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
+import { ErrorPage } from "@/layouts/error";
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
-import React from "react";
-import { PostMeta } from "./post-meta/post-meta";
 import { NextPage } from "next";
-import { ErrorPage } from "@/layouts/error";
 import { PostLoading } from "./post-loading/post-loading";
+import { PostMeta } from "./post-meta/post-meta";
 
 export const FullPost: NextPage<{ id: number }> = ({ id }) => {
-  const { data: me } = useQuery(MeDocument);
-  const {
-    data: postData,
-    error,
-    loading,
-  } = useQuery(PostDocument, {
+  const { data: me, loading: meLoading } = useQuery(MeDocument);
+  const { data: postData, loading } = useQuery(PostDocument, {
     variables: { postId: id },
   });
 
@@ -28,7 +23,7 @@ export const FullPost: NextPage<{ id: number }> = ({ id }) => {
   const title = postData.post.title;
   return (
     <BaseLayout title={title}>
-      <NavBar {...me?.me} />
+      <Navbar loading={meLoading} {...me?.me} />
       <BodyContainer>
         <ContentContainer>
           <PostMeta

@@ -1,5 +1,5 @@
 import { MainContainer } from "@/components/main-container/main-container";
-import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Navbar } from "@/components/navbar/navbar";
 import { MeDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
 import { useQuery } from "@apollo/client";
@@ -9,10 +9,10 @@ import { Text } from "@chakra-ui/react";
 import { CreatePostSidebar } from "./create-post-sidebar/create-post-sidebar";
 
 export const CreatePost: React.FC = () => {
-  const { data } = useQuery(MeDocument);
+  const { data, loading } = useQuery(MeDocument);
   return (
     <BaseLayout title="BookClub | Create Post">
-      <NavBar {...data?.me} />
+      <Navbar {...data?.me} loading={loading} />
       <BodyContainer>
         <ContentContainer>
           <FormContainer>

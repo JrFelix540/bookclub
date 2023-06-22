@@ -22,9 +22,11 @@ export const PostComments: React.FC<PostCommentsProps> = ({
       {data?.me?.id ? (
         <CreateComment postId={postId} />
       ) : (
-        <Link href="/auth/sign-up">
-          <PrimaryButton>Add a Comment</PrimaryButton>
-        </Link>
+        <AddCommentContainer>
+          <Link href="/auth/sign-up">
+            <PrimaryButton>Add a Comment</PrimaryButton>
+          </Link>
+        </AddCommentContainer>
       )}
       <CommentsContainer>
         {comments.map((comment) => (
@@ -42,6 +44,11 @@ const Container = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+});
+
+const AddCommentContainer = styled("div")({
+  display: "flex",
+  justifyContent: "flex-end",
 });
 
 const CommentsContainer = styled("div")({

@@ -1,5 +1,5 @@
 import { MainContainer } from "@/components/main-container/main-container";
-import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Navbar } from "@/components/navbar/navbar";
 import { CommunityDocument, MeDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
 import { useQuery } from "@apollo/client";
@@ -28,7 +28,7 @@ export const FullClub: NextPage<{ id: number }> = ({ id }) => {
 
   return (
     <BaseLayout title={title} description={description}>
-      <NavBar {...meData?.me} />
+      <Navbar loading={meLoading} {...meData?.me} />
       <BodyContainer>
         <Content>
           <PostsContainer>

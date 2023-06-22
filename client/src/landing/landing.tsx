@@ -1,6 +1,6 @@
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
 import { MainContainer } from "@/components/main-container/main-container";
-import { NavBar } from "@/components/nav-bar/nav-bar";
+import { Navbar } from "@/components/navbar/navbar";
 import { MeDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
 import { useQuery } from "@apollo/client";
@@ -13,7 +13,7 @@ export const Landing: React.FC = () => {
 
   return (
     <BaseLayout title="Bookclub | Home">
-      <NavBar {...data?.me} />
+      <Navbar {...data?.me} loading={loading} />
       <BodyContainer>
         <Content>
           <PostsSection />
