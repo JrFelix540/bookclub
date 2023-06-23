@@ -19,12 +19,12 @@ export const NavbarLoading = () => {
   );
 };
 
-const Header = styled("header")({
+const Header = styled("header")(({ theme }) => ({
   position: "absolute",
   width: "100%",
-  background: "#fff",
+  background: theme.palette.background.secondary,
   padding: "20px 0",
-});
+}));
 
 const Container = styled(MainContainer)({
   display: "flex",

@@ -1,14 +1,25 @@
 import Image from "next/image";
-import logoPic from "../../../public/book.png";
 import { Text } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
 export const Logo = () => {
   return (
-    <div className="flex items-center">
-      <Image src={logoPic} alt="BookClub Logo" height={40} width={40} />
-      <Text fontSize="sm" color="#0f3057">
-        Bookclub
-      </Text>
-    </div>
+    <Container>
+      <Image src={"/logo.png"} alt="BookClub Logo" height={40} width={40} />
+      <StyledText>Bookclub</StyledText>
+    </Container>
   );
 };
+
+const Container = styled("div")({
+  display: "flex",
+  alignItems: "center",
+  gap: "10px",
+});
+
+const StyledText = styled(Text)(({ theme }) => ({
+  color: theme.palette.white,
+  fontWeight: 900,
+  lineHeight: "38px",
+  fontSize: "26px",
+}));

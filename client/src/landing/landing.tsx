@@ -5,8 +5,8 @@ import { MeDocument } from "@/generated/graphql";
 import { BaseLayout } from "@/layouts/base-layout";
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
-import { PostsSection } from "./posts-section";
-import { SideBar } from "./sidebar";
+import { PostsSection } from "./posts-section/posts-section";
+import { SideBar } from "./sidebar/sidebar";
 
 export const Landing: React.FC = () => {
   const { data, loading } = useQuery(MeDocument);
@@ -29,8 +29,7 @@ export const Landing: React.FC = () => {
 
 const BodyContainer = styled("div")({
   minHeight: "100vh",
-  backgroundColor: "gray",
-  paddingTop: "120px",
+  paddingTop: "20px",
 });
 
 const Content = styled(MainContainer)({

@@ -1,10 +1,11 @@
-import { Avatar, Text, Skeleton, SkeletonCircle } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Logo } from "../Logo/Logo";
-import { PrimaryButton } from "../primary-button/primary-button";
+import { Avatar } from "../avatar/avatar";
 import { MainContainer } from "../main-container/main-container";
 import { Menu } from "../menu/menu";
+import { PrimaryButton } from "../primary-button/primary-button";
 import { NavbarLoading } from "./navbar.loading";
 
 interface NavbarProps {
@@ -28,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({ username, loading }) => {
             {username ? (
               <>
                 <ProfileContainer>
-                  <Avatar size={"sm"} />
+                  <Avatar size={"sm"} value={username} />
                   <Text>{username}</Text>
                 </ProfileContainer>
                 <Menu />
@@ -50,12 +51,11 @@ export const Navbar: React.FC<NavbarProps> = ({ username, loading }) => {
   );
 };
 
-const Header = styled("header")({
-  position: "absolute",
+const Header = styled("header")(({ theme }) => ({
   width: "100%",
-  background: "#fff",
+  background: theme.palette.background.secondary,
   padding: "20px 0",
-});
+}));
 
 const Container = styled(MainContainer)({
   display: "flex",

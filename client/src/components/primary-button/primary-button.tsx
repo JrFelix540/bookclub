@@ -1,9 +1,11 @@
 import { Button, ButtonProps } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 
 export const PrimaryButton = ({ children, ...others }: ButtonProps) => {
-  return (
-    <Button backgroundColor="#0f3057" color="#fff" {...others}>
-      {children}
-    </Button>
-  );
+  return <StyledButton {...others}>{children}</StyledButton>;
 };
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  backgroundColor: theme.palette.primary,
+  color: theme.palette.white,
+}));

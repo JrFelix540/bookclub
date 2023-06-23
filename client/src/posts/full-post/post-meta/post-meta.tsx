@@ -4,6 +4,7 @@ import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
+import { Avatar } from "@/components/avatar/avatar";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -22,15 +23,15 @@ export const PostMeta: React.FC<PostMetaProps> = ({
       <DetailsContainer>
         <Upvote hasVoted={hasVoted} points={points} postId={id} />
         <ContentContainer>
-          <ContentHeader>
-            <Text fontSize="sm">
-              Posted in{" "}
-              <Link href={`/club/${community.id}`}>c/{community.name}</Link> by
-              u/{creator.username}
-            </Text>
-          </ContentHeader>
           <ContentBody>
             <Text fontSize="2xl">{title}</Text>
+            <UserProfile>
+              <Avatar size="sm" value={creator.username} />
+              <Text size="xs">
+                Posted by {creator.username} in{" "}
+                <Link href={`/clubs/${id}`}>{community.name}</Link>
+              </Text>
+            </UserProfile>
             <Text>{content}</Text>
           </ContentBody>
         </ContentContainer>
@@ -40,15 +41,15 @@ export const PostMeta: React.FC<PostMetaProps> = ({
   );
 };
 
-const Container = styled("div")({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "15px",
-  backgroundColor: "#fff",
+  backgroundColor: theme.palette.background.secondary,
   padding: "10px 20px",
   borderRadius: "10px",
   marginBottom: "10px",
-});
+}));
 
 const DetailsContainer = styled("div")({
   display: "flex",
@@ -61,12 +62,14 @@ const ContentContainer = styled("div")({
   gap: "5px",
 });
 
-const ContentHeader = styled("div")({
-  display: "flex",
-});
-
 const ContentBody = styled("div")({
   display: "flex",
   flexDirection: "column",
+  gap: "15px",
+});
+
+const UserProfile = styled("div")({
+  display: "flex",
   gap: "5px",
+  alignItems: "center",
 });

@@ -13,13 +13,13 @@ export const LoadingPostPreview = () => {
   );
 };
 
-const Container = styled("div")({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   gap: "15px",
-  backgroundColor: "#fff",
+  backgroundColor: theme.palette.background.secondary,
   padding: "10px",
   borderRadius: "15px",
-});
+}));
 
 const PostMeta = styled("div")({
   display: "flex",

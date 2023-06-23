@@ -9,21 +9,21 @@ export const RulesSidebar = () => {
       </Text>
       <List>
         <StyledItem>1. Be respectful to others.</StyledItem>
-        <StyledItem>2. No Hateful language in</StyledItem>
-        <StyledItem>3. Have fun and enjoy</StyledItem>
+        <StyledItem>2. No hateful language.</StyledItem>
+        <StyledItem>3. Have fun and enjoy.</StyledItem>
       </List>
     </Container>
   );
 };
 
-const Container = styled("div")({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  background: "#fff",
+  background: theme.palette.background.secondary,
   padding: "10px 15px",
   borderRadius: "15px",
-});
+}));
 
 const StyledItem = styled(ListItem)({
   padding: "10px",

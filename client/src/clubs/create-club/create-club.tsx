@@ -14,44 +14,37 @@ export const CreateClub = () => {
   return (
     <BaseLayout title="BookClub | Create a Club">
       <Navbar loading={loading} {...data?.me} />
-      <BodyContainer>
-        <ContentContainer>
-          <FormContainer>
-            <Text fontSize="2xl" fontWeight="bold">
-              Create a Book Club
-            </Text>
-            <CreateClubForm />
-          </FormContainer>
-          <SidebarsContainer>
-            <RulesSidebar />
-            <ClubsSidebar />
-          </SidebarsContainer>
-        </ContentContainer>
-      </BodyContainer>
+      <ContentContainer>
+        <FormContainer>
+          <Text fontSize="2xl" fontWeight="bold">
+            Create a Book Club
+          </Text>
+          <CreateClubForm />
+        </FormContainer>
+        <SidebarsContainer>
+          <RulesSidebar />
+          <ClubsSidebar />
+        </SidebarsContainer>
+      </ContentContainer>
     </BaseLayout>
   );
 };
-
-const BodyContainer = styled("div")({
-  minHeight: "100vh",
-  backgroundColor: "gray",
-  paddingTop: "120px",
-});
 
 const ContentContainer = styled(MainContainer)({
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
   gap: "20px",
+  paddingTop: "20px",
 });
 
-const FormContainer = styled("div")({
-  backgroundColor: "#fff",
+const FormContainer = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.secondary,
   padding: "10px 15px",
   display: "flex",
   flexDirection: "column",
   gap: "20px",
   borderRadius: "15px",
-});
+}));
 
 const SidebarsContainer = styled("div")({
   display: "flex",

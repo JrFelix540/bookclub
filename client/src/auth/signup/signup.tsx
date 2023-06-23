@@ -8,7 +8,7 @@ export const SignUp: React.FC = () => {
     <>
       <PageHead title="Sign Up" />
       <AuthLayout>
-        <Heading fontSize="2xl">Sign Up for BookClub</Heading>
+        <Heading fontSize="2xl">Sign Up for Bookclub</Heading>
         <SignUpForm />
       </AuthLayout>
     </>

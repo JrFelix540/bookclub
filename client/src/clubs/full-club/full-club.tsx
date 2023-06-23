@@ -29,46 +29,39 @@ export const FullClub: NextPage<{ id: number }> = ({ id }) => {
   return (
     <BaseLayout title={title} description={description}>
       <Navbar loading={meLoading} {...meData?.me} />
-      <BodyContainer>
-        <Content>
-          <PostsContainer>
-            <ClubTitle>
-              <Text fontSize="3xl">c/{communityData?.community.name}</Text>
-            </ClubTitle>
-            <ClubPosts
-              club={{
-                id: communityData.community.id as number,
-                name: communityData.community.name || "",
-              }}
-            />
-          </PostsContainer>
+      <Content>
+        <PostsContainer>
+          <ClubTitle>
+            <Text fontSize="3xl">c/{communityData?.community.name}</Text>
+          </ClubTitle>
+          <ClubPosts
+            club={{
+              id: communityData.community.id as number,
+              name: communityData.community.name || "",
+            }}
+          />
+        </PostsContainer>
 
-          <SidebarsContainer>
-            <ClubSidebar
-              id={communityData.community.id}
-              name={communityData.community.name}
-              dateCreated={communityData.community.dateCreated}
-              description={communityData.community.description}
-              hasJoined={communityData.community.hasJoined}
-            />
-            <ClubsSidebar />
-          </SidebarsContainer>
-        </Content>
-      </BodyContainer>
+        <SidebarsContainer>
+          <ClubSidebar
+            id={communityData.community.id}
+            name={communityData.community.name}
+            dateCreated={communityData.community.dateCreated}
+            description={communityData.community.description}
+            hasJoined={communityData.community.hasJoined}
+          />
+          <ClubsSidebar />
+        </SidebarsContainer>
+      </Content>
     </BaseLayout>
   );
 };
-
-const BodyContainer = styled("div")({
-  minHeight: "100vh",
-  backgroundColor: "gray",
-  paddingTop: "120px",
-});
 
 const Content = styled(MainContainer)({
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
   gap: "20px",
+  paddingTop: "20px",
 });
 
 const SidebarsContainer = styled("div")({
@@ -77,12 +70,13 @@ const SidebarsContainer = styled("div")({
   gap: "10px",
 });
 
-const ClubTitle = styled("div")({
-  backgroundColor: "#fff",
+const ClubTitle = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.secondary,
   padding: "10px",
   display: "flex",
   justifyContent: "center",
-});
+  borderRadius: "15px",
+}));
 
 const PostsContainer = styled("div")({
   display: "flex",

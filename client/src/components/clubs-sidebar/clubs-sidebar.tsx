@@ -27,14 +27,14 @@ export const ClubsSidebar = () => {
   );
 };
 
-const Container = styled("div")({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  background: "#fff",
+  background: theme.palette.background.secondary,
   padding: "10px 15px",
   borderRadius: "15px",
-});
+}));
 
 const StyledItem = styled(ListItem)({
   padding: "10px",

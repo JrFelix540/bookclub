@@ -7,7 +7,7 @@ export const SideBar = () => {
   return (
     <Container>
       <ImageContainer>
-        <Image src="/book.png" alt="logo" width={40} height={40} />
+        <Image src="/logo.png" alt="logo" width={40} height={40} />
         <Text>Home</Text>
       </ImageContainer>
       <Text>
@@ -26,14 +26,14 @@ export const SideBar = () => {
   );
 };
 
-const Container = styled("div")({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   gap: "15px",
   padding: "10px 15px",
   borderRadius: "15px",
-  backgroundColor: "#fff",
-});
+  backgroundColor: theme.palette.background.secondary,
+}));
 
 const ImageContainer = styled("div")({
   display: "flex",

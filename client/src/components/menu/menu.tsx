@@ -13,6 +13,7 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 import Link from "next/link";
 
 export const Menu = () => {
@@ -20,25 +21,52 @@ export const Menu = () => {
   const logout = async () => {
     localStorage.clear();
     await signOut({
+      update: (cache) => {
+        cache.writeQuery<MeQuery>({
+          query: MeDocument,
+          data: {
+            __typename: "Query",
+            me: {
+              id: null,
+              username: null,
+            },
+          },
+        });
+      },
       refetchQueries: [MeDocument],
     });
   };
   return (
     <ChakraMenu>
-      <MenuButton as={Button} variant="ghost" rightIcon={<ChevronDownIcon />} />
-      <MenuList>
-        <MenuItem>
-          <Link href="/clubs/create">Create a book Club</Link>
-        </MenuItem>
-        <MenuItem>
+      <MenuButton
+        as={Button}
+        variant="ghost"
+        rightIcon={<ChevronDownIcon color={"#f7f7f7"} />}
+      />
+      <StyledMenuList>
+        <StyledMenuItem>
+          <Link href="/clubs/create">Create a book club</Link>
+        </StyledMenuItem>
+        <StyledMenuItem>
           <Link href="/posts/create">Create a post</Link>
-        </MenuItem>
-        <MenuItem>
-          <Button variant={"ghost"} onClick={logout}>
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <Button variant={"ghost"} color="white" onClick={logout}>
             Log Out
           </Button>
-        </MenuItem>
-      </MenuList>
+        </StyledMenuItem>
+      </StyledMenuList>
     </ChakraMenu>
   );
 };
+
+const StyledMenuList = styled(MenuList)(({ theme }) => ({
+  background: theme.palette.background.secondary,
+  border: "none",
+}));
+
+const StyledMenuItem = styled(MenuList)(({ theme }) => ({
+  background: theme.palette.background.secondary,
+  border: "none",
+  paddingLeft: "10px",
+}));

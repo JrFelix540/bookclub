@@ -24,45 +24,38 @@ export const FullPost: NextPage<{ id: number }> = ({ id }) => {
   return (
     <BaseLayout title={title}>
       <Navbar loading={meLoading} {...me?.me} />
-      <BodyContainer>
-        <ContentContainer>
-          <PostMeta
-            id={postData.post.id}
-            title={postData.post.title}
-            content={postData.post.content}
-            community={postData.post.community}
-            comments={postData.post.comments}
-            creator={postData.post.creator}
-            isOwner={postData.post.isOwner}
-            joinStatus={postData.post.joinStatus}
-            points={postData.post.points}
-            hasVoted={postData.post.hasVoted}
+      <ContentContainer>
+        <PostMeta
+          id={postData.post.id}
+          title={postData.post.title}
+          content={postData.post.content}
+          community={postData.post.community}
+          comments={postData.post.comments}
+          creator={postData.post.creator}
+          isOwner={postData.post.isOwner}
+          joinStatus={postData.post.joinStatus}
+          points={postData.post.points}
+          hasVoted={postData.post.hasVoted}
+        />
+        <SidebarsContainer>
+          <ClubSidebar
+            id={postData.post.community.id}
+            name={postData.post.community.name}
+            dateCreated={postData.post.community.dateCreated}
+            description={postData.post.community.description}
+            hasJoined={postData.post.joinStatus}
           />
-          <SidebarsContainer>
-            <ClubSidebar
-              id={postData.post.community.id}
-              name={postData.post.community.name}
-              dateCreated={postData.post.community.dateCreated}
-              description={postData.post.community.description}
-              hasJoined={postData.post.joinStatus}
-            />
-          </SidebarsContainer>
-        </ContentContainer>
-      </BodyContainer>
+        </SidebarsContainer>
+      </ContentContainer>
     </BaseLayout>
   );
 };
-
-const BodyContainer = styled("main")({
-  minHeight: "100vh",
-  backgroundColor: "gray",
-  paddingTop: "120px",
-});
 
 const ContentContainer = styled(MainContainer)({
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
   gap: "20px",
+  paddingTop: "20px",
 });
 
 const SidebarsContainer = styled("div")({
