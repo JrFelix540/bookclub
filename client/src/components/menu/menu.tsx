@@ -45,7 +45,7 @@ export const Menu = () => {
       />
       <StyledMenuList>
         <StyledMenuItem>
-          <Link href="/clubs/create">Create a book club</Link>
+          <Link href="/clubs/create">Create a bookclub</Link>
         </StyledMenuItem>
         <StyledMenuItem>
           <Link href="/posts/create">Create a post</Link>

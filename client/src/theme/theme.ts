@@ -22,6 +22,10 @@ const theme: CustomTheme = {
       tertiary: "#2C353D",
     },
     white: "#ffffff",
+    gray: {
+      light: "#EDF2F7",
+      dark: "#1A202C",
+    },
   },
   styles: {
     global: (props: StyleFunctionProps) => ({

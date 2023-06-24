@@ -1,3 +1,4 @@
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
 import { Button, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
@@ -12,14 +13,16 @@ export const SideBar = () => {
       </ImageContainer>
       <Text>
         Welcome to your personalized feed! Here, you will find the content from
-        BookClubs you like. Carry on :)
+        Bookclubs you like. Carry on :)
       </Text>
       <ButtonsContainer>
         <Link href="/posts/create">
-          <Button w="100%">Create Post</Button>
+          <SecondaryButton w="100%">Create Post</SecondaryButton>
         </Link>
         <Link href="/clubs/create">
-          <Button w="100%">Create Community</Button>
+          <SecondaryButton w="100%" variant="outline" color="inherit">
+            Create Bookclub
+          </SecondaryButton>
         </Link>
       </ButtonsContainer>
     </Container>
