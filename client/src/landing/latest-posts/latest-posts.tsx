@@ -1,11 +1,11 @@
-import { PostsDocument } from "@/generated/graphql";
-import { useQuery } from "@apollo/client";
-import { PostsLoading } from "@/components/posts-loading/posts-loading";
 import { PostPreview } from "@/components/post-preview/post-preview";
+import { PostsLoading } from "@/components/posts-loading/posts-loading";
+import { LatestPostsDocument } from "@/generated/graphql";
 import { ErrorPage } from "@/layouts/error";
+import { useQuery } from "@apollo/client";
 
 export const LatestPosts = () => {
-  const { data, error, loading } = useQuery(PostsDocument, {
+  const { data, error, loading } = useQuery(LatestPostsDocument, {
     variables: { limit: 10 },
   });
   if (error) {
@@ -17,7 +17,7 @@ export const LatestPosts = () => {
   }
   return (
     <>
-      {data?.posts?.posts?.map((post) => (
+      {data.latestPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
           club={post.community}

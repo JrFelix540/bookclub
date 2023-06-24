@@ -13,6 +13,7 @@ import { Community } from "../community/community.entity";
 import {
   AppDataSource,
   communityRepository,
+  postRepository,
   postUpvoteRepository,
 } from "../database/database";
 import { Post } from "./post.entity";
@@ -169,7 +170,7 @@ export class PostResolver {
   }
 
   @Query(() => PaginatedPosts)
-  async posts(
+  async latestPosts(
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true })
     cursor: string | null
@@ -193,6 +194,27 @@ export class PostResolver {
     `,
       replacements
     );
+
+    return {
+      posts: posts.slice(0, realLimit),
+      hasMore: posts.length === realLimitPlusOne,
+    };
+  }
+
+  @Query(() => PaginatedPosts, { nullable: true })
+  async popularPosts(
+    @Arg("limit", () => Int) limit: number,
+    @Arg("cursor", () => Int, { nullable: true }) cursor: number | null
+  ): Promise<PaginatedPosts> {
+    const realLimit = Math.min(50, limit);
+    const realLimitPlusOne = realLimit + 1;
+
+    const posts = await postRepository
+      .createQueryBuilder("post")
+      .orderBy("post.points", "DESC")
+      .skip(cursor ? cursor : 0)
+      .take(realLimitPlusOne)
+      .getMany();
 
     return {
       posts: posts.slice(0, realLimit),

@@ -1,11 +1,11 @@
 import { PostPreview } from "@/components/post-preview/post-preview";
 import { PostsLoading } from "@/components/posts-loading/posts-loading";
-import { PostsDocument } from "@/generated/graphql";
+import { PopularPostsDocument } from "@/generated/graphql";
 import { ErrorPage } from "@/layouts/error";
 import { useQuery } from "@apollo/client";
 
 export const PopularPosts = () => {
-  const { data, error, loading } = useQuery(PostsDocument, {
+  const { data, error, loading } = useQuery(PopularPostsDocument, {
     variables: { limit: 10 },
   });
 
@@ -14,11 +14,11 @@ export const PopularPosts = () => {
   }
 
   if (!data) {
-    return loading ? <PostsLoading /> : <p>Wait a minute</p>;
+    return loading ? <PostsLoading /> : <ErrorPage />;
   }
   return (
     <>
-      {data?.posts?.posts?.map((post) => (
+      {data.popularPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
           club={post.community}

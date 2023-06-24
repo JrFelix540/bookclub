@@ -258,14 +258,15 @@ export type Query = {
   communitiesWithIds: Array<Community>;
   community: Community;
   communityPosts?: Maybe<PaginatedPosts>;
+  latestPosts: PaginatedPosts;
   me?: Maybe<AuthenticatedUser>;
   meWithCommunities?: Maybe<User>;
   myCommunitiesPosts?: Maybe<PaginatedPosts>;
   popularCommunities: Array<Community>;
+  popularPosts?: Maybe<PaginatedPosts>;
   post: Post;
   postComments?: Maybe<Array<Comment>>;
   postWithIds: Array<Post>;
-  posts: PaginatedPosts;
   users: Array<User>;
 };
 
@@ -279,8 +280,18 @@ export type QueryCommunityPostsArgs = {
   limit: Scalars["Int"]["input"];
 };
 
+export type QueryLatestPostsArgs = {
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+};
+
 export type QueryMyCommunitiesPostsArgs = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+};
+
+export type QueryPopularPostsArgs = {
+  cursor?: InputMaybe<Scalars["Int"]["input"]>;
   limit: Scalars["Int"]["input"];
 };
 
@@ -290,11 +301,6 @@ export type QueryPostArgs = {
 
 export type QueryPostCommentsArgs = {
   postId: Scalars["Float"]["input"];
-};
-
-export type QueryPostsArgs = {
-  cursor?: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
 };
 
 export type UpvoteResponse = {
@@ -586,6 +592,34 @@ export type FeedPostsQuery = {
   } | null;
 };
 
+export type LatestPostsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type LatestPostsQuery = {
+  __typename?: "Query";
+  latestPosts: {
+    __typename?: "PaginatedPosts";
+    hasMore: boolean;
+    errors?: Array<{
+      __typename?: "FieldError";
+      field: string;
+      message: string;
+    }> | null;
+    posts?: Array<{
+      __typename?: "Post";
+      id: number;
+      content: string;
+      title: string;
+      points: number;
+      hasVoted?: number | null;
+      community: { __typename?: "Community"; id: number; name: string };
+      creator: { __typename?: "User"; id: number; username: string };
+    }> | null;
+  };
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
@@ -623,6 +657,34 @@ export type PopularCommunitiesQuery = {
   }>;
 };
 
+export type PopularPostsQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  cursor?: InputMaybe<Scalars["Int"]["input"]>;
+}>;
+
+export type PopularPostsQuery = {
+  __typename?: "Query";
+  popularPosts?: {
+    __typename?: "PaginatedPosts";
+    hasMore: boolean;
+    errors?: Array<{
+      __typename?: "FieldError";
+      field: string;
+      message: string;
+    }> | null;
+    posts?: Array<{
+      __typename?: "Post";
+      id: number;
+      content: string;
+      title: string;
+      points: number;
+      hasVoted?: number | null;
+      community: { __typename?: "Community"; id: number; name: string };
+      creator: { __typename?: "User"; id: number; username: string };
+    }> | null;
+  } | null;
+};
+
 export type PostQueryVariables = Exact<{
   postId: Scalars["Float"]["input"];
 }>;
@@ -652,34 +714,6 @@ export type PostQuery = {
       description: string;
       dateCreated: string;
     };
-  };
-};
-
-export type PostsQueryVariables = Exact<{
-  limit: Scalars["Int"]["input"];
-  cursor?: InputMaybe<Scalars["String"]["input"]>;
-}>;
-
-export type PostsQuery = {
-  __typename?: "Query";
-  posts: {
-    __typename?: "PaginatedPosts";
-    hasMore: boolean;
-    errors?: Array<{
-      __typename?: "FieldError";
-      field: string;
-      message: string;
-    }> | null;
-    posts?: Array<{
-      __typename?: "Post";
-      id: number;
-      content: string;
-      title: string;
-      points: number;
-      hasVoted?: number | null;
-      community: { __typename?: "Community"; id: number; name: string };
-      creator: { __typename?: "User"; username: string };
-    }> | null;
   };
 };
 
@@ -1881,6 +1915,141 @@ export const FeedPostsDocument = {
     },
   ],
 } as unknown as DocumentNode<FeedPostsQuery, FeedPostsQueryVariables>;
+export const LatestPostsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "LatestPosts" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "latestPosts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cursor" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cursor" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "errors" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "field" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "hasMore" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "posts" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "content" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "community" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "creator" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "points" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasVoted" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LatestPostsQuery, LatestPostsQueryVariables>;
 export const MeDocument = {
   kind: "Document",
   definitions: [
@@ -1975,6 +2144,141 @@ export const PopularCommunitiesDocument = {
   PopularCommunitiesQuery,
   PopularCommunitiesQueryVariables
 >;
+export const PopularPostsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PopularPosts" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "cursor" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "popularPosts" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "cursor" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "cursor" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "errors" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "field" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "hasMore" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "posts" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "content" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "community" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "creator" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "username" },
+                            },
+                          ],
+                        },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "points" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasVoted" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PopularPostsQuery, PopularPostsQueryVariables>;
 export const PostDocument = {
   kind: "Document",
   definitions: [
@@ -2088,134 +2392,3 @@ export const PostDocument = {
     },
   ],
 } as unknown as DocumentNode<PostQuery, PostQueryVariables>;
-export const PostsDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "Posts" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "limit" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "cursor" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "posts" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "limit" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "limit" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "cursor" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "cursor" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "errors" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "field" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "hasMore" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "posts" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "content" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "community" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "creator" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "username" },
-                            },
-                          ],
-                        },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "title" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "points" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "hasVoted" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<PostsQuery, PostsQueryVariables>;

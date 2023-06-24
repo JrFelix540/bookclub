@@ -15,11 +15,11 @@ export const PostsSection: React.FC = () => {
     <Container>
       <PostsHeading>
         <Tab selected={feed === "latest"} onClick={() => setFeed("latest")}>
-          <Image src="/new-posts.png" alt="feed" width={15} height={15} />
+          <Image src="/latest-posts.png" alt="feed" width={25} height={25} />
           Newest
         </Tab>
         <Tab selected={feed === "popular"} onClick={() => setFeed("popular")}>
-          <Image src="/popular-posts.png" alt="feed" width={15} height={15} />
+          <Image src="/trending-posts.png" alt="feed" width={25} height={25} />
           Popular
         </Tab>
 

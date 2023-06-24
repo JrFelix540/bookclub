@@ -1,5 +1,5 @@
-query Posts($limit: Int!, $cursor: String) {
-  posts(limit: $limit, cursor: $cursor) {
+query PopularPosts($limit: Int!, $cursor: Int) {
+  popularPosts(limit: $limit, cursor: $cursor) {
     errors {
       field
       message
@@ -13,6 +13,7 @@ query Posts($limit: Int!, $cursor: String) {
         name
       }
       creator {
+        id
         username
       }
       title
