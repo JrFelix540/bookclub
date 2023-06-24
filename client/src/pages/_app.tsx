@@ -1,5 +1,4 @@
 import { useApollo } from "@/providers/apollo/use-apollo.hook";
-import "@/styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
