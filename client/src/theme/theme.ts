@@ -27,7 +27,6 @@ const theme: CustomTheme = {
     global: (props: StyleFunctionProps) => ({
       body: {
         bg: mode("#1E252B", "#1E252B")(props),
-        fontFamily: "Source Sans 3",
         color: "#F7F7F7",
         colorScheme: "dark",
       },
