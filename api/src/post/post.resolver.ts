@@ -82,7 +82,7 @@ export class PostResolver {
   }
 
   @Authorized()
-  @Mutation(() => UpvoteResponse)
+  @Mutation(() => UpvoteResponse, { nullable: true })
   async vote(
     @Ctx() { res }: MyContext,
     @Arg("postId", () => Int) postId: number,

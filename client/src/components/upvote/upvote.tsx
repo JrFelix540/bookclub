@@ -1,9 +1,10 @@
-import { VoteDocument, VoteMutation } from "@/generated/graphql";
-import { ApolloCache, gql, useMutation } from "@apollo/client";
+import { MeDocument, VoteDocument, VoteMutation } from "@/generated/graphql";
+import { ApolloCache, gql, useMutation, useQuery } from "@apollo/client";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { IconButton } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { updateAfterVote } from "./upvote.utils";
+import { useRouter } from "next/router";
 
 interface UpvoteProps {
   hasVoted: number | null | undefined;
@@ -12,8 +13,14 @@ interface UpvoteProps {
 }
 
 export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
+  const router = useRouter();
+  const { data } = useQuery(MeDocument);
+
   const [vote] = useMutation(VoteDocument);
   const handleUpvote = async () => {
+    if (!data?.me) {
+      router.push("/auth/sign-up");
+    }
     await vote({
       variables: { postId, value: 1 },
       update: (cache) => {
@@ -23,6 +30,9 @@ export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
   };
 
   const handleDownVote = async () => {
+    if (!data?.me) {
+      router.push("/auth/sign-up");
+    }
     await vote({
       variables: { postId, value: -1 },
       update: (cache) => {
