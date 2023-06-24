@@ -8,9 +8,6 @@ import { setContext } from "@apollo/client/link/context";
 import merge from "deepmerge";
 import isEqual from "lodash-es/isEqual";
 
-const token =
-  typeof window !== "undefined" ? window.localStorage.getItem("token") : "";
-
 const httpLink = createHttpLink({
   uri: process.env.NEXT_PUBLIC_BACKEND_URL,
 });
@@ -19,7 +16,10 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${token}`,
+      authorization:
+        typeof window !== "undefined"
+          ? `Bearer ${localStorage.getItem("token")}`
+          : "Bearer ",
     },
   };
 });
@@ -34,9 +34,6 @@ function createApolloClient() {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
     credentials: "include",
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
   });
 }
 
