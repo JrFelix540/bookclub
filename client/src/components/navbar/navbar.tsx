@@ -7,6 +7,7 @@ import { MainContainer } from "../main-container/main-container";
 import { Menu } from "../menu/menu";
 import { PrimaryButton } from "../primary-button/primary-button";
 import { NavbarLoading } from "./navbar.loading";
+import { SecondaryButton } from "../secondary-button/secondary-button";
 
 interface NavbarProps {
   id?: number | undefined | null;
@@ -36,11 +37,12 @@ export const Navbar: React.FC<NavbarProps> = ({ username, loading }) => {
               </>
             ) : (
               <>
+                <Link href={"/auth/sign-in"}>
+                  <SecondaryButton>Sign In</SecondaryButton>
+                </Link>
+
                 <Link href={"/auth/sign-up"}>
                   <PrimaryButton>Sign Up</PrimaryButton>
-                </Link>
-                <Link href={"/auth/sign-in"}>
-                  <PrimaryButton>Sign In</PrimaryButton>
                 </Link>
               </>
             )}

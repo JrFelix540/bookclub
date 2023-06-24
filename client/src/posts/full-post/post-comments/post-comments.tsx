@@ -1,10 +1,10 @@
-import { PrimaryButton } from "@/components/primary-button/primary-button";
 import { MeDocument, PostQuery } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { CreateComment } from "../create-comment/create-comment";
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
 
 type PostCommentsProps = {
   postId: number;
@@ -24,7 +24,7 @@ export const PostComments: React.FC<PostCommentsProps> = ({
       ) : (
         <AddCommentContainer>
           <Link href="/auth/sign-up">
-            <PrimaryButton>Add a Comment</PrimaryButton>
+            <SecondaryButton variant="outline">Add a Comment</SecondaryButton>
           </Link>
         </AddCommentContainer>
       )}

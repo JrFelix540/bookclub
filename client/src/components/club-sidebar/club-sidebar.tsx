@@ -7,11 +7,10 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import Image from "next/image";
 import Link from "next/link";
-import { PrimaryButton } from "../primary-button/primary-button";
-import { Avatar } from "../avatar/avatar";
 import { useRouter } from "next/router";
+import { Avatar } from "../avatar/avatar";
+import { SecondaryButton } from "../secondary-button/secondary-button";
 
 interface ClubSidebarProps {
   id: number;
@@ -54,7 +53,7 @@ export const ClubSidebar: React.FC<ClubSidebarProps> = ({
       {hasJoined ? (
         <JoinedContainer>Joined</JoinedContainer>
       ) : (
-        <PrimaryButton onClick={join}>Join Club</PrimaryButton>
+        <SecondaryButton onClick={join}>Join Club</SecondaryButton>
       )}
     </Container>
   );
@@ -77,7 +76,7 @@ const TitleContainer = styled("div")({
 });
 
 const JoinedContainer = styled("div")(({ theme }) => ({
-  border: `2px solid ${theme.palette.primary}`,
+  border: `2px solid ${theme.palette.gray.light}`,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
