@@ -3,12 +3,17 @@ import { Jdenticon } from "../jdenticon/jdenticon";
 
 interface AvatarProps {
   size?: "sm" | "md" | "lg";
+  square?: boolean;
   value: string;
 }
 
-export const Avatar: React.FC<AvatarProps> = ({ size = "md", value }) => {
+export const Avatar: React.FC<AvatarProps> = ({
+  size = "md",
+  value,
+  square,
+}) => {
   return (
-    <ChakraAvatar size={size}>
+    <ChakraAvatar size={size} borderRadius={square ? "4" : "50%"}>
       <Jdenticon value={value} />
     </ChakraAvatar>
   );

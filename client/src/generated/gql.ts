@@ -45,6 +45,8 @@ const documents = {
   "query Me {\n  me {\n    id\n    username\n  }\n}": types.MeDocument,
   "query myCommunities {\n  meWithCommunities {\n    memberCommunities {\n      id\n      name\n    }\n  }\n}":
     types.MyCommunitiesDocument,
+  "query PopularCommunities {\n  popularCommunities {\n    name\n    id\n    numberOfMembers\n  }\n}":
+    types.PopularCommunitiesDocument,
   "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    comments {\n      id\n      creator {\n        username\n      }\n      content\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
     types.PostDocument,
   "query Posts($limit: Int!, $cursor: String) {\n  posts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      community {\n        id\n        name\n      }\n      creator {\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}":
@@ -167,6 +169,12 @@ export function graphql(
 export function graphql(
   source: "query myCommunities {\n  meWithCommunities {\n    memberCommunities {\n      id\n      name\n    }\n  }\n}"
 ): (typeof documents)["query myCommunities {\n  meWithCommunities {\n    memberCommunities {\n      id\n      name\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "query PopularCommunities {\n  popularCommunities {\n    name\n    id\n    numberOfMembers\n  }\n}"
+): (typeof documents)["query PopularCommunities {\n  popularCommunities {\n    name\n    id\n    numberOfMembers\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

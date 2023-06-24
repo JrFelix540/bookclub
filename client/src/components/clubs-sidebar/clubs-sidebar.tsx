@@ -1,25 +1,32 @@
-import { ClubsDocument } from "@/generated/graphql";
+import { ClubsDocument, PopularCommunitiesDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { List, ListItem, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { LoadingClubSidebar } from "../club-sidebar/club-sidebar.loading";
+import { Avatar } from "../avatar/avatar";
 
 export const ClubsSidebar = () => {
-  const { data, loading } = useQuery(ClubsDocument);
+  const { data, loading } = useQuery(PopularCommunitiesDocument);
   if (!data) {
     return loading ? <LoadingClubSidebar /> : <p>Something has occurred.</p>;
   }
 
   return (
     <Container>
-      <Text align="center" fontSize="xl" fontWeight="bold">
-        Our BookClubs
+      <Text align="left" fontSize="xl" fontWeight="bold">
+        Trending Bookclubs
       </Text>
       <List>
-        {data.allCommunities.map((comm) => (
+        {data.popularCommunities.map((comm) => (
           <StyledItem key={comm.id}>
-            <Link href={`/clubs/${comm.id}`}>{comm.name}</Link>
+            <StyledLink href={`/clubs/${comm.id}`}>
+              <Avatar value={comm.name} size="md" square={true} />
+              <TextContainer>
+                <Name>{comm.name}</Name>
+                <Description>{comm.numberOfMembers} members</Description>
+              </TextContainer>
+            </StyledLink>
           </StyledItem>
         ))}
       </List>
@@ -37,6 +44,29 @@ const Container = styled("div")(({ theme }) => ({
 }));
 
 const StyledItem = styled(ListItem)({
-  padding: "10px",
-  borderBottom: "1px solid #e7e7de",
+  padding: "10px 0",
 });
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  display: "flex",
+  gap: "5px",
+}));
+
+const TextContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "5px",
+});
+
+const Name = styled(Text)({
+  fontSize: "16px",
+  fontWeight: 600,
+  lineHeight: "18px",
+});
+
+const Description = styled(Text)(({ theme }) => ({
+  color: theme.palette.text.tertiary,
+  fontSize: "12px",
+  lineHeight: "16px",
+}));

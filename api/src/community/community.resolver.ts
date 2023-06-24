@@ -55,6 +55,20 @@ export class CommunityResolver {
     return `${month} ${day}, ${year}`;
   }
 
+  @FieldResolver(() => Int)
+  numberOfMembers(@Root() community: Community) {
+    return community.memberIds.length;
+  }
+
+  @Query(() => [Community])
+  async popularCommunities() {
+    const communities = await communityRepository.find({
+      take: 5,
+    });
+
+    return communities;
+  }
+
   @Query(() => [Community])
   async allCommunities() {
     const communities = await communityRepository.find({

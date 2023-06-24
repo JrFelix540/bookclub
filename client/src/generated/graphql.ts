@@ -99,6 +99,7 @@ export type Community = {
   memberIds: Array<Scalars["Float"]["output"]>;
   members: Array<User>;
   name: Scalars["String"]["output"];
+  numberOfMembers: Scalars["Int"]["output"];
   posts: Array<Post>;
   updatedAt: Scalars["DateTime"]["output"];
 };
@@ -260,6 +261,7 @@ export type Query = {
   me?: Maybe<AuthenticatedUser>;
   meWithCommunities?: Maybe<User>;
   myCommunitiesPosts?: Maybe<PaginatedPosts>;
+  popularCommunities: Array<Community>;
   post: Post;
   postComments?: Maybe<Array<Comment>>;
   postWithIds: Array<Post>;
@@ -606,6 +608,18 @@ export type MyCommunitiesQuery = {
       name: string;
     }>;
   } | null;
+};
+
+export type PopularCommunitiesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PopularCommunitiesQuery = {
+  __typename?: "Query";
+  popularCommunities: Array<{
+    __typename?: "Community";
+    name: string;
+    id: number;
+    numberOfMembers: number;
+  }>;
 };
 
 export type PostQueryVariables = Exact<{
@@ -1923,6 +1937,39 @@ export const MyCommunitiesDocument = {
     },
   ],
 } as unknown as DocumentNode<MyCommunitiesQuery, MyCommunitiesQueryVariables>;
+export const PopularCommunitiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PopularCommunities" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "popularCommunities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "numberOfMembers" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PopularCommunitiesQuery,
+  PopularCommunitiesQueryVariables
+>;
 export const PostDocument = {
   kind: "Document",
   definitions: [
