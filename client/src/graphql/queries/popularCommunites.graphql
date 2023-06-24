@@ -1,0 +1,7 @@
+query PopularCommunities {
+  popularCommunities {
+    name
+    id
+    numberOfMembers
+  }
+}
