@@ -139,7 +139,7 @@ export class CommunityResolver {
   }
 
   @Authorized()
-  @Mutation(() => BooleanFieldResponse)
+  @Mutation(() => BooleanFieldResponse, { nullable: true })
   async joinCommunity(
     @Ctx() { res }: MyContext,
     @Arg("id", () => Int) id: number
