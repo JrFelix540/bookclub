@@ -552,6 +552,7 @@ export type CommunityPostsQuery = {
       title: string;
       content: string;
       points: number;
+      hasVoted?: number | null;
       creator: { __typename?: "User"; username: string };
     }> | null;
   } | null;
@@ -1733,6 +1734,10 @@ export const CommunityPostsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "points" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasVoted" },
                       },
                     ],
                   },

@@ -18,8 +18,8 @@ export const EmptyPosts = () => {
   );
 };
 
-const Container = styled("div")({
-  backgroundColor: "#fff",
+const Container = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.secondary,
   padding: "20px",
   borderRadius: "15px",
   display: "flex",
@@ -27,7 +27,7 @@ const Container = styled("div")({
   gap: "15px",
   justifyContent: "center",
   alignItems: "center",
-});
+}));
 
 const Content = styled("div")({
   display: "flex",

@@ -3,6 +3,7 @@ import { CommunityPostsDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { EmptyPosts } from "./empty-posts";
+import { PostsLoading } from "@/components/posts-loading/posts-loading";
 interface ClubPostsProps {
   club: {
     id: number;
@@ -16,6 +17,10 @@ export const ClubPosts: React.FC<ClubPostsProps> = ({ club }) => {
       communityId: club.id,
     },
   });
+
+  if (loading) {
+    return <PostsLoading />;
+  }
   return (
     <Container>
       {data?.communityPosts?.posts?.length === 0 && <EmptyPosts />}
@@ -28,6 +33,7 @@ export const ClubPosts: React.FC<ClubPostsProps> = ({ club }) => {
           creator={post.creator.username}
           points={post.points}
           title={post.title}
+          hasVoted={post.hasVoted}
         />
       ))}
     </Container>
