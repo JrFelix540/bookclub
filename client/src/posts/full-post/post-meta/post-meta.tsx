@@ -25,14 +25,14 @@ export const PostMeta: React.FC<PostMetaProps> = ({
         <ContentContainer>
           <ContentBody>
             <Text fontSize="2xl">{title}</Text>
+            <Text>{content}</Text>
             <UserProfile>
-              <Avatar size="sm" value={creator.username} />
-              <Text size="xs">
+              <Avatar size="xs" value={creator.username} />
+              <Text fontSize="xs">
                 Posted by {creator.username} in{" "}
                 <Link href={`/clubs/${id}`}>{community.name}</Link>
               </Text>
             </UserProfile>
-            <Text>{content}</Text>
           </ContentBody>
         </ContentContainer>
       </DetailsContainer>

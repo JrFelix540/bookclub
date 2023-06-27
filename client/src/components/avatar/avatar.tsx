@@ -2,7 +2,7 @@ import { Avatar as ChakraAvatar } from "@chakra-ui/react";
 import { Jdenticon } from "../jdenticon/jdenticon";
 
 interface AvatarProps {
-  size?: "sm" | "md" | "lg";
+  size?: "xs" | "sm" | "md" | "lg";
   square?: boolean;
   value: string;
 }

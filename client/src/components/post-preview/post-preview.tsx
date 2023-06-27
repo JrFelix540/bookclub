@@ -29,17 +29,15 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
       <ContentSection>
         <Link href={`/posts/${id}`}>
           <Text fontSize={"2xl"}>{title}</Text>
+          <TextContent>{content}</TextContent>
         </Link>
         <UserProfile>
-          <Avatar size="sm" value={creator} />
-          <Text size="xs">
+          <Avatar size="xs" value={creator} />
+          <Text fontSize="xs">
             Posted by {creator} in{" "}
             <Link href={`/clubs/${id}`}>{club.name}</Link>
           </Text>
         </UserProfile>
-        <Link href={`/posts/${id}`}>
-          <TextContent>{content}</TextContent>
-        </Link>
       </ContentSection>
     </Container>
   );
@@ -56,7 +54,7 @@ const Container = styled("div")(({ theme }) => ({
 const ContentSection = styled("div")({
   display: "flex",
   flexDirection: "column",
-  gap: "10px",
+  gap: "15px",
 });
 
 const TextContent = styled(Text)({
