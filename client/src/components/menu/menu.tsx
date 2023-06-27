@@ -65,7 +65,7 @@ const StyledMenuList = styled(MenuList)(({ theme }) => ({
   border: "none",
 }));
 
-const StyledMenuItem = styled(MenuList)(({ theme }) => ({
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   background: theme.palette.background.secondary,
   border: "none",
   paddingLeft: "10px",
