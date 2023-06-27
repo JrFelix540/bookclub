@@ -1,10 +1,10 @@
-import { MeDocument, VoteDocument, VoteMutation } from "@/generated/graphql";
-import { ApolloCache, gql, useMutation, useQuery } from "@apollo/client";
+import { MeDocument, VoteDocument } from "@/generated/graphql";
+import { useMutation, useQuery } from "@apollo/client";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { IconButton } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { updateAfterVote } from "./upvote.utils";
 import { useRouter } from "next/router";
+import { updateAfterVote } from "./upvote.utils";
 
 interface UpvoteProps {
   hasVoted: number | null | undefined;
@@ -45,17 +45,15 @@ export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
     <Container>
       <IconButton
         aria-label="upvote"
-        icon={
-          <TriangleUpIcon color={hasVoted === 1 ? "blue.900" : "gray.300"} />
-        }
+        icon={<TriangleUpIcon color={hasVoted === 1 ? "#FF4401" : "#C5D0E6"} />}
         onClick={handleUpvote}
         variant="ghost"
-      />
+      ></IconButton>
       {points}
       <IconButton
         aria-label="downvote"
         icon={
-          <TriangleDownIcon color={hasVoted === -1 ? "red.500" : "gray.300"} />
+          <TriangleDownIcon color={hasVoted === -1 ? "blue.900" : "#C5D0E6"} />
         }
         variant="ghost"
         onClick={handleDownVote}

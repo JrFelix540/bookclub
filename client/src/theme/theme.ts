@@ -25,6 +25,7 @@ const theme: CustomTheme = {
     gray: {
       light: "#EDF2F7",
       dark: "#1A202C",
+      main: "#C5D0E6",
     },
   },
   styles: {

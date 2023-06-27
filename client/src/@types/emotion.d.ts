@@ -18,6 +18,7 @@ declare module "@emotion/react" {
       gray: {
         light: string;
         dark: string;
+        main: string;
       };
     };
   }
