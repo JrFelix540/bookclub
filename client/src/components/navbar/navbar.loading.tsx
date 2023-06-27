@@ -20,7 +20,6 @@ export const NavbarLoading = () => {
 };
 
 const Header = styled("header")(({ theme }) => ({
-  position: "absolute",
   width: "100%",
   background: theme.palette.background.secondary,
   padding: "20px 0",

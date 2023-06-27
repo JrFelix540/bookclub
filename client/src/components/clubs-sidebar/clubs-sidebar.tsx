@@ -1,15 +1,15 @@
-import { ClubsDocument, PopularCommunitiesDocument } from "@/generated/graphql";
+import { PopularCommunitiesDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { List, ListItem, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
-import { LoadingClubSidebar } from "../club-sidebar/club-sidebar.loading";
 import { Avatar } from "../avatar/avatar";
+import { ClubsSidebarLoading } from "./clubs-sidebar.loading";
 
 export const ClubsSidebar = () => {
   const { data, loading } = useQuery(PopularCommunitiesDocument);
   if (!data) {
-    return loading ? <LoadingClubSidebar /> : <p>Something has occurred.</p>;
+    return loading ? <ClubsSidebarLoading /> : <p>Something has occurred.</p>;
   }
 
   return (

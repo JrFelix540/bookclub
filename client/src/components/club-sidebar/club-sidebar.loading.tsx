@@ -1,7 +1,7 @@
 import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
-export const LoadingClubSidebar = () => {
+export const ClubSidebarLoading = () => {
   return (
     <Container>
       <TitleContainer>
@@ -15,14 +15,14 @@ export const LoadingClubSidebar = () => {
   );
 };
 
-const Container = styled("div")({
-  backgroundColor: "#fff",
+const Container = styled("div")(({ theme }) => ({
+  backgroundColor: theme.palette.background.secondary,
   padding: "20px 10px",
   borderRadius: "15px",
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-});
+}));
 
 const TitleContainer = styled("div")({
   display: "flex",

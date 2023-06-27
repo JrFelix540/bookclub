@@ -37,6 +37,9 @@ const theme: CustomTheme = {
       },
     }),
   },
+  config: {
+    initialColorMode: "dark",
+  },
 };
 
 export default extendTheme(theme);

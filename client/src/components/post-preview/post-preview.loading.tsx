@@ -1,14 +1,14 @@
-import { Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
-export const LoadingPostPreview = () => {
+export const PostPreviewLoading = () => {
   return (
     <Container>
-      <PostMeta>
-        <Skeleton height="10px" width="550px" />
+      <SkeletonContainer>
         <Skeleton height="15px" width="550px" />
-        <SkeletonText noOfLines={3} width="650px" />
-      </PostMeta>
+        <Skeleton height="250px" width="100%" />
+        <SkeletonCircle />
+      </SkeletonContainer>
     </Container>
   );
 };
@@ -21,8 +21,9 @@ const Container = styled("div")(({ theme }) => ({
   borderRadius: "15px",
 }));
 
-const PostMeta = styled("div")({
+const SkeletonContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+  width: "100%",
 });
