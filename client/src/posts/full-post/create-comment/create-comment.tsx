@@ -1,7 +1,12 @@
 import { Textarea } from "@/components/Input/Input";
 import { PrimaryButton } from "@/components/primary-button/primary-button";
-import { MeDocument } from "@/generated/graphql";
-import { useQuery } from "@apollo/client";
+import {
+  CreateCommentDocument,
+  MeDocument,
+  PostCommentsDocument,
+  PostDocument,
+} from "@/generated/graphql";
+import { useMutation, useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 
@@ -10,16 +15,22 @@ interface CreateCommentProps {
 }
 
 export const CreateComment: React.FC<CreateCommentProps> = ({ postId }) => {
-  const { data, loading } = useQuery(MeDocument);
+  const [createComment, { loading }] = useMutation(CreateCommentDocument);
   const formik = useFormik({
     initialValues: {
       postId,
       content: "",
     },
-    onSubmit: (values) => {},
+    onSubmit: async (values, { resetForm }) => {
+      await createComment({
+        variables: values,
+        refetchQueries: [PostCommentsDocument],
+      });
+      resetForm();
+    },
   });
   return (
-    <StyledForm>
+    <StyledForm onSubmit={formik.handleSubmit}>
       <Textarea
         id="content"
         name="content"

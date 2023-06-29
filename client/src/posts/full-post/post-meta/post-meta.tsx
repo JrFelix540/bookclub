@@ -1,10 +1,13 @@
 import { Upvote } from "@/components/upvote/upvote";
-import { PostQuery } from "@/generated/graphql";
+import { MeDocument, PostQuery } from "@/generated/graphql";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
 import { Avatar } from "@/components/avatar/avatar";
+import { CreateComment } from "../create-comment/create-comment";
+import { useQuery } from "@apollo/client";
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -16,8 +19,9 @@ export const PostMeta: React.FC<PostMetaProps> = ({
   creator,
   title,
   content,
-  comments,
 }) => {
+  const { data } = useQuery(MeDocument);
+
   return (
     <Container>
       <DetailsContainer>
@@ -34,9 +38,11 @@ export const PostMeta: React.FC<PostMetaProps> = ({
               </Text>
             </UserProfile>
           </ContentBody>
+
+          {/* <PostComments postId={id} /> */}
         </ContentContainer>
       </DetailsContainer>
-      <PostComments postId={id} comments={comments} />
+      <PostComments postId={id} />
     </Container>
   );
 };
@@ -72,4 +78,9 @@ const UserProfile = styled("div")({
   display: "flex",
   gap: "5px",
   alignItems: "center",
+});
+
+const AddCommentContainer = styled("div")({
+  display: "flex",
+  justifyContent: "flex-end",
 });

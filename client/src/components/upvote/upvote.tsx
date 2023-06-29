@@ -10,9 +10,15 @@ interface UpvoteProps {
   hasVoted: number | null | undefined;
   points: number;
   postId: number;
+  align?: "horizontal" | "vertical";
 }
 
-export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
+export const Upvote: React.FC<UpvoteProps> = ({
+  hasVoted,
+  points,
+  postId,
+  align,
+}) => {
   const router = useRouter();
   const { data } = useQuery(MeDocument);
 
@@ -42,7 +48,7 @@ export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
   };
 
   return (
-    <Container>
+    <Container align={align}>
       <IconButton
         aria-label="upvote"
         icon={<TriangleUpIcon color={hasVoted === 1 ? "#FF4401" : "#C5D0E6"} />}
@@ -62,9 +68,11 @@ export const Upvote: React.FC<UpvoteProps> = ({ hasVoted, points, postId }) => {
   );
 };
 
-const Container = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  gap: "5px",
-});
+const Container = styled("div")<{ align: UpvoteProps["align"] }>(
+  ({ align }) => ({
+    display: "flex",
+    flexDirection: align === "horizontal" ? "row" : "column",
+    alignItems: "center",
+    gap: "5px",
+  })
+);

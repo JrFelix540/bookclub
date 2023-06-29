@@ -17,10 +17,14 @@ const documents = {
     types.RegularPostFragmentDoc,
   "fragment RegularUser on User {\n  id\n  username\n  email\n  createdAt\n  updatedAt\n}":
     types.RegularUserFragmentDoc,
+  "mutation CreateComment($postId: Float!, $content: String!) {\n  createComment(postId: $postId, content: $content) {\n    comment {\n      id\n      points\n      content\n      createdAt\n    }\n  }\n}":
+    types.CreateCommentDocument,
   "mutation CreateCommunity($description: String!, $name: String!) {\n  createCommunity(description: $description, name: $name) {\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}":
     types.CreateCommunityDocument,
   "mutation CreatePost($communityId: Int!, $content: String!, $title: String!) {\n  createPost(communityId: $communityId, content: $content, title: $title) {\n    errors {\n      field\n      message\n    }\n    post {\n      id\n    }\n  }\n}":
     types.CreatePostDocument,
+  "mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}":
+    types.DeleteCommentDocument,
   "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}":
     types.ForgetPasswordDocument,
   "mutation JoinCommunity($communityId: Int!) {\n  joinCommunity(id: $communityId) {\n    ok\n    errors {\n      field\n      message\n    }\n  }\n}":
@@ -51,8 +55,10 @@ const documents = {
     types.PopularCommunitiesDocument,
   "query PopularPosts($limit: Int!, $cursor: Int) {\n  popularPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      community {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}":
     types.PopularPostsDocument,
-  "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    comments {\n      id\n      creator {\n        username\n      }\n      content\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
+  "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
     types.PostDocument,
+  "query PostComments($postId: Float!) {\n  postComments(postId: $postId) {\n    id\n    content\n    isOwner\n    creator {\n      id\n      username\n    }\n  }\n}":
+    types.PostCommentsDocument,
 };
 
 /**
@@ -85,6 +91,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "mutation CreateComment($postId: Float!, $content: String!) {\n  createComment(postId: $postId, content: $content) {\n    comment {\n      id\n      points\n      content\n      createdAt\n    }\n  }\n}"
+): (typeof documents)["mutation CreateComment($postId: Float!, $content: String!) {\n  createComment(postId: $postId, content: $content) {\n    comment {\n      id\n      points\n      content\n      createdAt\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "mutation CreateCommunity($description: String!, $name: String!) {\n  createCommunity(description: $description, name: $name) {\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"
 ): (typeof documents)["mutation CreateCommunity($description: String!, $name: String!) {\n  createCommunity(description: $description, name: $name) {\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
 /**
@@ -93,6 +105,12 @@ export function graphql(
 export function graphql(
   source: "mutation CreatePost($communityId: Int!, $content: String!, $title: String!) {\n  createPost(communityId: $communityId, content: $content, title: $title) {\n    errors {\n      field\n      message\n    }\n    post {\n      id\n    }\n  }\n}"
 ): (typeof documents)["mutation CreatePost($communityId: Int!, $content: String!, $title: String!) {\n  createPost(communityId: $communityId, content: $content, title: $title) {\n    errors {\n      field\n      message\n    }\n    post {\n      id\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}"
+): (typeof documents)["mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -193,8 +211,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    comments {\n      id\n      creator {\n        username\n      }\n      content\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"
-): (typeof documents)["query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    comments {\n      id\n      creator {\n        username\n      }\n      content\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"];
+  source: "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"
+): (typeof documents)["query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    community {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "query PostComments($postId: Float!) {\n  postComments(postId: $postId) {\n    id\n    content\n    isOwner\n    creator {\n      id\n      username\n    }\n  }\n}"
+): (typeof documents)["query PostComments($postId: Float!) {\n  postComments(postId: $postId) {\n    id\n    content\n    isOwner\n    creator {\n      id\n      username\n    }\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

@@ -30,7 +30,6 @@ export const FullPost: NextPage<{ id: number }> = ({ id }) => {
           title={postData.post.title}
           content={postData.post.content}
           community={postData.post.community}
-          comments={postData.post.comments}
           creator={postData.post.creator}
           isOwner={postData.post.isOwner}
           joinStatus={postData.post.joinStatus}

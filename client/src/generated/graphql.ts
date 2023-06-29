@@ -131,14 +131,14 @@ export type Mutation = {
   deleteComment: Scalars["Boolean"]["output"];
   deletePost: Scalars["Boolean"]["output"];
   forgetPassword: BooleanResponse;
-  joinCommunity: BooleanFieldResponse;
+  joinCommunity?: Maybe<BooleanFieldResponse>;
   leaveCommunity: BooleanFieldResponse;
   resetPassword: BooleanResponse;
   signOut: Scalars["Boolean"]["output"];
   signin: AuthResponse;
   signup: AuthResponse;
   updatePost: PostResponse;
-  vote: UpvoteResponse;
+  vote?: Maybe<UpvoteResponse>;
   voteComment: CommentUpvoteResponse;
 };
 
@@ -350,6 +350,25 @@ export type RegularUserFragment = {
   updatedAt: string;
 } & { " $fragmentName"?: "RegularUserFragment" };
 
+export type CreateCommentMutationVariables = Exact<{
+  postId: Scalars["Float"]["input"];
+  content: Scalars["String"]["input"];
+}>;
+
+export type CreateCommentMutation = {
+  __typename?: "Mutation";
+  createComment: {
+    __typename?: "UserCommentResponse";
+    comment?: {
+      __typename?: "Comment";
+      id: number;
+      points: number;
+      content: string;
+      createdAt: string;
+    } | null;
+  };
+};
+
 export type CreateCommunityMutationVariables = Exact<{
   description: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
@@ -393,6 +412,15 @@ export type CreatePostMutation = {
   };
 };
 
+export type DeleteCommentMutationVariables = Exact<{
+  commentId: Scalars["Float"]["input"];
+}>;
+
+export type DeleteCommentMutation = {
+  __typename?: "Mutation";
+  deleteComment: boolean;
+};
+
 export type ForgetPasswordMutationVariables = Exact<{
   email: Scalars["String"]["input"];
 }>;
@@ -408,7 +436,7 @@ export type JoinCommunityMutationVariables = Exact<{
 
 export type JoinCommunityMutation = {
   __typename?: "Mutation";
-  joinCommunity: {
+  joinCommunity?: {
     __typename?: "BooleanFieldResponse";
     ok?: boolean | null;
     errors?: Array<{
@@ -416,7 +444,7 @@ export type JoinCommunityMutation = {
       field: string;
       message: string;
     }> | null;
-  };
+  } | null;
 };
 
 export type ResetPasswordMutationVariables = Exact<{
@@ -495,7 +523,7 @@ export type VoteMutationVariables = Exact<{
 
 export type VoteMutation = {
   __typename?: "Mutation";
-  vote: {
+  vote?: {
     __typename?: "UpvoteResponse";
     errors?: Array<{
       __typename?: "FieldError";
@@ -508,7 +536,7 @@ export type VoteMutation = {
       postId: number;
       value: number;
     } | null;
-  };
+  } | null;
 };
 
 export type ClubsQueryVariables = Exact<{ [key: string]: never }>;
@@ -701,12 +729,6 @@ export type PostQuery = {
     points: number;
     joinStatus?: boolean | null;
     creator: { __typename?: "User"; username: string };
-    comments: Array<{
-      __typename?: "Comment";
-      id: number;
-      content: string;
-      creator: { __typename?: "User"; username: string };
-    }>;
     community: {
       __typename?: "Community";
       id: number;
@@ -715,6 +737,21 @@ export type PostQuery = {
       dateCreated: string;
     };
   };
+};
+
+export type PostCommentsQueryVariables = Exact<{
+  postId: Scalars["Float"]["input"];
+}>;
+
+export type PostCommentsQuery = {
+  __typename?: "Query";
+  postComments?: Array<{
+    __typename?: "Comment";
+    id: number;
+    content: string;
+    isOwner: boolean;
+    creator: { __typename?: "User"; id: number; username: string };
+  }> | null;
 };
 
 export const RegularPostFragmentDoc = {
@@ -785,6 +822,100 @@ export const RegularUserFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<RegularUserFragment, unknown>;
+export const CreateCommentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateComment" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "postId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "content" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createComment" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "postId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "postId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "content" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "content" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "comment" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "points" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "content" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateCommentMutation,
+  CreateCommentMutationVariables
+>;
 export const CreateCommunityDocument = {
   kind: "Document",
   definitions: [
@@ -1005,6 +1136,51 @@ export const CreatePostDocument = {
     },
   ],
 } as unknown as DocumentNode<CreatePostMutation, CreatePostMutationVariables>;
+export const DeleteCommentDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteComment" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "commentId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteComment" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "commentId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "commentId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteCommentMutation,
+  DeleteCommentMutationVariables
+>;
 export const ForgetPasswordDocument = {
   kind: "Document",
   definitions: [
@@ -2340,33 +2516,6 @@ export const PostDocument = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "comments" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "creator" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "username" },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "content" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
                   name: { kind: "Name", value: "community" },
                   selectionSet: {
                     kind: "SelectionSet",
@@ -2392,3 +2541,67 @@ export const PostDocument = {
     },
   ],
 } as unknown as DocumentNode<PostQuery, PostQueryVariables>;
+export const PostCommentsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PostComments" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "postId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "postComments" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "postId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "postId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "content" } },
+                { kind: "Field", name: { kind: "Name", value: "isOwner" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "creator" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PostCommentsQuery, PostCommentsQueryVariables>;

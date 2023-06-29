@@ -1,0 +1,11 @@
+query PostComments($postId: Float!) {
+  postComments(postId: $postId) {
+    id
+    content
+    isOwner
+    creator {
+      id
+      username
+    }
+  }
+}

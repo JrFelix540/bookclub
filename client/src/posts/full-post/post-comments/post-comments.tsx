@@ -1,39 +1,56 @@
-import { MeDocument, PostQuery } from "@/generated/graphql";
+import {
+  MeDocument,
+  PostCommentsDocument,
+  PostQuery,
+} from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { CreateComment } from "../create-comment/create-comment";
 import { SecondaryButton } from "@/components/secondary-button/secondary-button";
+import { Comment } from "@/components/comment/comment";
 
 type PostCommentsProps = {
   postId: number;
-  comments: PostQuery["post"]["comments"];
 };
 
-export const PostComments: React.FC<PostCommentsProps> = ({
-  postId,
-  comments,
-}) => {
+export const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
   const { data, loading } = useQuery(MeDocument);
+  const { data: commentsData, loading: commentsLoading } = useQuery(
+    PostCommentsDocument,
+    { variables: { postId } }
+  );
+
+  if (!commentsData) {
+    commentsLoading ? <p>Comments Loading</p> : <p>Could not fetch comments</p>;
+  }
 
   return (
     <Container>
-      {data?.me?.id ? (
-        <CreateComment postId={postId} />
-      ) : (
-        <AddCommentContainer>
-          <Link href="/auth/sign-up">
-            <SecondaryButton variant="outline">Add a Comment</SecondaryButton>
-          </Link>
-        </AddCommentContainer>
-      )}
       <CommentsContainer>
-        {comments.map((comment) => (
-          <CommentContainer key={comment.id}>
-            <Text fontSize={"xs"}>Posted by u/{comment.creator.username}</Text>
-            <Text>{comment.content}</Text>
-          </CommentContainer>
+        {data?.me?.id ? (
+          <CreateComment postId={postId} />
+        ) : (
+          <AddCommentContainer>
+            <Link href="/auth/sign-up">
+              <SecondaryButton variant="outline">Add a Comment</SecondaryButton>
+            </Link>
+          </AddCommentContainer>
+        )}
+        {commentsData?.postComments?.length === 0 && (
+          <NoCommentsContainer>
+            <Text>No comments yet.</Text>
+          </NoCommentsContainer>
+        )}
+        {commentsData?.postComments?.map((comment) => (
+          <Comment
+            key={comment.id}
+            id={comment.id}
+            content={comment.content}
+            creator={comment.creator}
+            isOwner={comment.isOwner}
+          />
         ))}
       </CommentsContainer>
     </Container>
@@ -44,6 +61,7 @@ const Container = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
+  paddingLeft: "40px",
 });
 
 const AddCommentContainer = styled("div")({
@@ -57,8 +75,10 @@ const CommentsContainer = styled("div")({
   gap: "15px",
 });
 
-const CommentContainer = styled("div")({
+const NoCommentsContainer = styled("div")({
   display: "flex",
-  flexDirection: "column",
-  borderBottom: "1px solid #eaeaea",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "150px",
+  width: "100%",
 });

@@ -10,13 +10,6 @@ query Post($postId: Float!) {
     creator {
       username
     }
-    comments {
-      id
-      creator {
-        username
-      }
-      content
-    }
     community {
       id
       name
