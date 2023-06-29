@@ -1,4 +1,4 @@
-import { PopularCommunitiesDocument } from "@/generated/graphql";
+import { PopularClubsDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { List, ListItem, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
@@ -7,7 +7,7 @@ import { Avatar } from "../avatar/avatar";
 import { ClubsSidebarLoading } from "./clubs-sidebar.loading";
 
 export const ClubsSidebar = () => {
-  const { data, loading } = useQuery(PopularCommunitiesDocument);
+  const { data, loading } = useQuery(PopularClubsDocument);
   if (!data) {
     return loading ? <ClubsSidebarLoading /> : <p>Something has occurred.</p>;
   }
@@ -18,13 +18,13 @@ export const ClubsSidebar = () => {
         Trending Bookclubs
       </Text>
       <List>
-        {data.popularCommunities.map((comm) => (
-          <StyledItem key={comm.id}>
-            <StyledLink href={`/clubs/${comm.id}`}>
-              <Avatar value={comm.name} size="md" square={true} />
+        {data.popularClubs.map((club) => (
+          <StyledItem key={club.id}>
+            <StyledLink href={`/clubs/${club.id}`}>
+              <Avatar value={club.name} size="md" square={true} />
               <TextContainer>
-                <Name>{comm.name}</Name>
-                <Description>{comm.numberOfMembers} members</Description>
+                <Name>{club.name}</Name>
+                <Description>{club.numberOfMembers} members</Description>
               </TextContainer>
             </StyledLink>
           </StyledItem>

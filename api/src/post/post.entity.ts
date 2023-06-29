@@ -2,7 +2,7 @@ import { Field, Int, ObjectType } from "type-graphql";
 import { User } from "../user/user.entity";
 import { PostUpvote } from "../post-upvote/post-upvote.entity";
 import { Comment } from "../comment/comment.entity";
-import { Community } from "../community/community.entity";
+import { Club } from "../club/club.entity";
 
 import {
   BaseEntity,
@@ -38,15 +38,15 @@ export class Post extends BaseEntity {
   @Column()
   creatorId!: number;
 
-  @Field(() => Community)
-  @ManyToOne(() => Community, (community) => community.posts, {
+  @Field(() => Club)
+  @ManyToOne(() => Club, (club) => club.posts, {
     onDelete: "SET NULL",
   })
-  community!: Community;
+  club!: Club;
 
   @Field(() => Int)
   @Column({ nullable: true })
-  communityId: number;
+  clubId: number;
 
   @Field(() => [Comment])
   @OneToMany(() => Comment, (comment) => comment.post, {

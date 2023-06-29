@@ -1,0 +1,14 @@
+mutation createClub($description: String!, $name: String!) {
+  createClub(description: $description, name: $name) {
+    club {
+      id
+      name
+      description
+      dateCreated
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

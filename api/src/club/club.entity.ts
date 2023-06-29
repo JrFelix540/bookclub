@@ -16,7 +16,7 @@ import {
 
 @ObjectType()
 @Entity()
-export class Community extends BaseEntity {
+export class Club extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
@@ -30,7 +30,7 @@ export class Community extends BaseEntity {
   description!: string;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.createdCommunities, {
+  @ManyToOne(() => User, (user) => user.createdClubs, {
     onDelete: "SET NULL",
   })
   creator: User;
@@ -40,13 +40,13 @@ export class Community extends BaseEntity {
   creatorId: number;
 
   @Field(() => [Post])
-  @OneToMany(() => Post, (post) => post.community, {
+  @OneToMany(() => Post, (post) => post.club, {
     onDelete: "CASCADE",
   })
   posts: Post[];
 
   @Field(() => [User])
-  @ManyToMany(() => User, (user) => user.memberCommunities, {
+  @ManyToMany(() => User, (user) => user.memberClubs, {
     onDelete: "CASCADE",
   })
   @JoinTable()

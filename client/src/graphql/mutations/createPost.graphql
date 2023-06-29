@@ -1,5 +1,5 @@
-mutation CreatePost($communityId: Int!, $content: String!, $title: String!) {
-  createPost(communityId: $communityId, content: $content, title: $title) {
+mutation CreatePost($clubId: Int!, $content: String!, $title: String!) {
+  createPost(clubId: $clubId, content: $content, title: $title) {
     errors {
       field
       message

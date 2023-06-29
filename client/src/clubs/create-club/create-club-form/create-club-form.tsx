@@ -4,13 +4,13 @@ import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { createClubSchema } from "./create-club-util";
 import { useMutation } from "@apollo/client";
-import { CreateCommunityDocument } from "@/generated/graphql";
+import { CreateClubDocument } from "@/generated/graphql";
 import { formatErrorMessage } from "@/auth/utils/formatErrors";
 import { useRouter } from "next/router";
 
 export const CreateClubForm = () => {
   const router = useRouter();
-  const [createClub, { loading }] = useMutation(CreateCommunityDocument);
+  const [createClub, { loading }] = useMutation(CreateClubDocument);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -18,10 +18,10 @@ export const CreateClubForm = () => {
     },
     onSubmit: async (values, { setErrors }) => {
       const { data } = await createClub({ variables: values });
-      if (data?.createCommunity.errors) {
-        setErrors(formatErrorMessage(data?.createCommunity.errors));
+      if (data?.createClub.errors) {
+        setErrors(formatErrorMessage(data?.createClub.errors));
       }
-      router.push(`/clubs/${data?.createCommunity.community?.id}`);
+      router.push(`/clubs/${data?.createClub.club?.id}`);
     },
     validationSchema: createClubSchema,
   });

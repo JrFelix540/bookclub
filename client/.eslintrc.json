@@ -1,6 +1,7 @@
 {
   "extends": "next",
   "rules": {
-    "react/react-in-jsx": "off"
+    "react/react-in-jsx": "off",
+    "no-unused-vars": 1
   }
 }

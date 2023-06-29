@@ -1,5 +1,5 @@
 import DataLoader from "dataloader";
-import { Community } from "../community/community.entity";
+import { Community } from "../club/club.entity";
 
 export const createCommunityLoader = () =>
   new DataLoader<number, Community>(async (communityIds) => {

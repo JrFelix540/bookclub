@@ -1,0 +1,9 @@
+mutation JoinClub($clubId: Int!) {
+  joinClub(id: $clubId) {
+    ok
+    errors {
+      field
+      message
+    }
+  }
+}

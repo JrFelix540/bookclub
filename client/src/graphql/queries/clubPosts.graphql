@@ -1,5 +1,5 @@
-query CommunityPosts($limit: Int!, $communityId: Float!, $cursor: String) {
-  communityPosts(limit: $limit, communityId: $communityId, cursor: $cursor) {
+query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {
+  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {
     errors {
       field
       message

@@ -12,7 +12,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Community } from "../community/community.entity";
+import { Club } from "../club/club.entity";
 
 @ObjectType()
 @Entity()
@@ -33,17 +33,17 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Field(() => [Community])
-  @OneToMany(() => Community, (community) => community.creator, {
+  @Field(() => [Club])
+  @OneToMany(() => Club, (club) => club.creator, {
     onDelete: "SET NULL",
   })
-  createdCommunities: Community[];
+  createdClubs: Club[];
 
-  @Field(() => [Community])
-  @ManyToMany(() => Community, (community) => community.members, {
+  @Field(() => [Club])
+  @ManyToMany(() => Club, (club) => club.members, {
     onDelete: "SET NULL",
   })
-  memberCommunities: Community[];
+  memberClubs: Club[];
 
   @Field(() => [PostUpvote])
   @OneToMany(() => PostUpvote, (postUpvote) => postUpvote.creator, {

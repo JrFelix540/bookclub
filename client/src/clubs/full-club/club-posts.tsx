@@ -1,5 +1,5 @@
 import { PostPreview } from "@/components/post-preview/post-preview";
-import { CommunityPostsDocument } from "@/generated/graphql";
+import { ClubPostsDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { EmptyPosts } from "./empty-posts";
@@ -11,10 +11,10 @@ interface ClubPostsProps {
   };
 }
 export const ClubPosts: React.FC<ClubPostsProps> = ({ club }) => {
-  const { data, loading } = useQuery(CommunityPostsDocument, {
+  const { data, loading } = useQuery(ClubPostsDocument, {
     variables: {
       limit: 10,
-      communityId: club.id,
+      clubId: club.id,
     },
   });
 
@@ -23,8 +23,8 @@ export const ClubPosts: React.FC<ClubPostsProps> = ({ club }) => {
   }
   return (
     <Container>
-      {data?.communityPosts?.posts?.length === 0 && <EmptyPosts />}
-      {data?.communityPosts?.posts?.map((post) => (
+      {data?.clubPosts?.posts?.length === 0 && <EmptyPosts />}
+      {data?.clubPosts?.posts?.map((post) => (
         <PostPreview
           key={post.id}
           id={post.id}

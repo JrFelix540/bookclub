@@ -20,7 +20,7 @@ export const LatestPosts = () => {
       {data.latestPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
-          club={post.community}
+          club={post.club}
           content={post.content}
           creator={post.creator.username}
           points={post.points}

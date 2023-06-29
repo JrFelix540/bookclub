@@ -1,5 +1,5 @@
 query FeedPosts($limit: Int!, $cursor: String) {
-  myCommunitiesPosts(limit: $limit, cursor: $cursor) {
+  myClubsPosts(limit: $limit, cursor: $cursor) {
     errors {
       field
       message
@@ -11,7 +11,7 @@ query FeedPosts($limit: Int!, $cursor: String) {
       content
       points
       hasVoted
-      community {
+      club {
         id
         name
       }

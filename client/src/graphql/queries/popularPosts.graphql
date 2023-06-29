@@ -8,7 +8,7 @@ query PopularPosts($limit: Int!, $cursor: Int) {
     posts {
       id
       content
-      community {
+      club {
         id
         name
       }

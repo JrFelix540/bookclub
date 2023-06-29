@@ -10,32 +10,30 @@ import {
   Root,
 } from "type-graphql";
 import { In } from "typeorm";
-import { communityRepository, userRepository } from "../database/database";
+import { clubRepository, userRepository } from "../database/database";
 import { User } from "../user/user.entity";
 import { MyContext } from "../types";
-import { Community } from "./community.entity";
-import { BooleanFieldResponse, CommunityResponse } from "./community.types";
+import { Club } from "./club.entity";
+import { BooleanFieldResponse, ClubResponse } from "./club.types";
 
 const allRelations: string[] = ["posts"];
 
-@Resolver(Community)
-export class CommunityResolver {
+@Resolver(Club)
+export class ClubResolver {
   @FieldResolver(() => User)
-  creator(@Root() community: Community) {
-    return userRepository.findBy({ id: community.creatorId });
+  creator(@Root() club: Club) {
+    return userRepository.findBy({ id: club.creatorId });
   }
 
   @FieldResolver(() => [User])
-  members(@Root() community: Community) {
-    return userRepository.findBy({ id: In(community.memberIds) });
+  members(@Root() club: Club) {
+    return userRepository.findBy({ id: In(club.memberIds) });
   }
 
   @Authorized()
   @FieldResolver(() => Boolean, { nullable: true })
-  hasJoined(@Root() community: Community, @Ctx() { res }: MyContext) {
-    const found = community.memberIds.find(
-      (commId) => commId === res.locals.userId
-    );
+  hasJoined(@Root() club: Club, @Ctx() { res }: MyContext) {
+    const found = club.memberIds.find((id) => id === res.locals.userId);
 
     if (found) {
       return true;
@@ -45,8 +43,8 @@ export class CommunityResolver {
   }
 
   @FieldResolver(() => String)
-  dateCreated(@Root() community: Community) {
-    const dateString = String(community.createdAt);
+  dateCreated(@Root() club: Club) {
+    const dateString = String(club.createdAt);
     const date = new Date(dateString);
     const month = date.toLocaleString(`default`, { month: "long" });
     const day = date.getDate();
@@ -56,43 +54,43 @@ export class CommunityResolver {
   }
 
   @FieldResolver(() => Int)
-  numberOfMembers(@Root() community: Community) {
-    return community.memberIds.length;
+  numberOfMembers(@Root() club: Club) {
+    return club.memberIds.length;
   }
 
-  @Query(() => [Community])
-  async popularCommunities() {
-    const communities = await communityRepository.find({
+  @Query(() => [Club])
+  async popularClubs() {
+    const clubs = await clubRepository.find({
       take: 5,
     });
 
-    return communities;
+    return clubs;
   }
 
-  @Query(() => [Community])
-  async allCommunities() {
-    const communities = await communityRepository.find({
+  @Query(() => [Club])
+  async allClubs() {
+    const clubs = await clubRepository.find({
       relations: allRelations,
     });
-    return communities;
+    return clubs;
   }
 
-  @Query(() => Community)
-  async community(@Arg("id") id: number) {
-    const community = await communityRepository.findOne({
+  @Query(() => Club)
+  async club(@Arg("id") id: number) {
+    const club = await clubRepository.findOne({
       where: { id },
       relations: ["creator"],
     });
-    return community;
+    return club;
   }
 
   @Authorized()
-  @Mutation(() => CommunityResponse)
-  async createCommunity(
+  @Mutation(() => ClubResponse)
+  async createClub(
     @Ctx() { res }: MyContext,
     @Arg("name") name: string,
     @Arg("description") description: string
-  ): Promise<CommunityResponse> {
+  ): Promise<ClubResponse> {
     const user = await User.findOne({
       where: { id: res.locals.userId },
     });
@@ -108,16 +106,16 @@ export class CommunityResolver {
       };
     }
 
-    const community = new Community();
-    community.name = name.toLowerCase();
-    community.creator = user;
-    community.members = [user];
-    community.description = description;
-    community.creatorId = user.id;
-    community.memberIds = [user.id];
+    const club = new Club();
+    club.name = name.toLowerCase();
+    club.creator = user;
+    club.members = [user];
+    club.description = description;
+    club.creatorId = user.id;
+    club.memberIds = [user.id];
 
     try {
-      await communityRepository.save(community);
+      await clubRepository.save(club);
     } catch (err) {
       if (err.detail.includes("already exists")) {
         return {
@@ -134,13 +132,13 @@ export class CommunityResolver {
     }
 
     return {
-      community,
+      club,
     };
   }
 
   @Authorized()
   @Mutation(() => BooleanFieldResponse, { nullable: true })
-  async joinCommunity(
+  async joinClub(
     @Ctx() { res }: MyContext,
     @Arg("id", () => Int) id: number
   ): Promise<BooleanFieldResponse> {
@@ -155,23 +153,23 @@ export class CommunityResolver {
         ],
       };
     }
-    const community = await communityRepository.findOne({
+    const club = await clubRepository.findOne({
       where: { id },
       relations: ["members"],
     });
 
-    if (!community) {
+    if (!club) {
       return {
         errors: [
           {
-            field: "community",
-            message: "error in fetching community",
+            field: "club",
+            message: "error in fetching club",
           },
         ],
       };
     }
 
-    const exists = community.memberIds.find((id) => id === user.id);
+    const exists = club.memberIds.find((id) => id === user.id);
 
     if (exists) {
       return {
@@ -184,11 +182,11 @@ export class CommunityResolver {
       };
     }
 
-    community.members = [...community.members, user];
-    community.memberIds = [...community.memberIds, user.id];
+    club.members = [...club.members, user];
+    club.memberIds = [...club.memberIds, user.id];
 
     try {
-      await community.save();
+      await club.save();
     } catch (err) {
       console.log(err);
 
@@ -196,8 +194,8 @@ export class CommunityResolver {
         return {
           errors: [
             {
-              field: "community",
-              message: `You've already joined this community`,
+              field: "club",
+              message: `You've already joined this club`,
             },
           ],
         };
@@ -210,9 +208,9 @@ export class CommunityResolver {
   }
 
   @Mutation(() => BooleanFieldResponse)
-  async leaveCommunity(
+  async leaveClub(
     @Ctx() { res }: MyContext,
-    @Arg("communityId") communityId: number
+    @Arg("clubId") clubId: number
   ): Promise<BooleanFieldResponse> {
     const user = await User.findOneBy({ id: res.locals.userId });
     if (!user) {
@@ -226,30 +224,28 @@ export class CommunityResolver {
       };
     }
 
-    const community = await communityRepository.findOne({
-      where: { id: communityId },
+    const club = await clubRepository.findOne({
+      where: { id: clubId },
       relations: ["members"],
     });
-    if (!community) {
+    if (!club) {
       return {
         errors: [
           {
-            field: "communityId",
-            message: "community id error",
+            field: "clubId",
+            message: "club id error",
           },
         ],
       };
     }
 
-    const newMembers = community.members.filter(
-      (member) => member.id !== user.id
-    );
-    const newMemberIds = community.memberIds.filter((id) => id !== user.id);
-    community.members = newMembers;
-    community.memberIds = newMemberIds;
+    const newMembers = club.members.filter((member) => member.id !== user.id);
+    const newMemberIds = club.memberIds.filter((id) => id !== user.id);
+    club.members = newMembers;
+    club.memberIds = newMemberIds;
 
     try {
-      await community.save();
+      await club.save();
     } catch (err) {
       console.log(err);
     }
@@ -258,8 +254,8 @@ export class CommunityResolver {
       ok: true,
     };
   }
-  @Query(() => [Community])
-  async communitiesWithIds(): Promise<Community[]> {
-    return Community.find({});
+  @Query(() => [Club])
+  async clubsWithIds(): Promise<Club[]> {
+    return clubRepository.find({});
   }
 }

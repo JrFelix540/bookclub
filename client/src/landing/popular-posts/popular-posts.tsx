@@ -21,7 +21,7 @@ export const PopularPosts = () => {
       {data.popularPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
-          club={post.community}
+          club={post.club}
           content={post.content}
           creator={post.creator.username}
           points={post.points}

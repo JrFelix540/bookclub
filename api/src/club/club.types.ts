@@ -1,13 +1,13 @@
 import { Field, ObjectType } from "type-graphql";
 import { FieldError } from "../auth/auth.types";
-import { Community } from "./community.entity";
+import { Club } from "./club.entity";
 
 @ObjectType()
-export class CommunityResponse {
+export class ClubResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
-  @Field(() => Community, { nullable: true })
-  community?: Community;
+  @Field(() => Club, { nullable: true })
+  club?: Club;
 }
 
 @ObjectType()

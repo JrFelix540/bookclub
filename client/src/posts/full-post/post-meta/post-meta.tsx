@@ -1,13 +1,11 @@
+import { Avatar } from "@/components/avatar/avatar";
 import { Upvote } from "@/components/upvote/upvote";
 import { MeDocument, PostQuery } from "@/generated/graphql";
+import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
-import { Avatar } from "@/components/avatar/avatar";
-import { CreateComment } from "../create-comment/create-comment";
-import { useQuery } from "@apollo/client";
-import { SecondaryButton } from "@/components/secondary-button/secondary-button";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -15,7 +13,7 @@ export const PostMeta: React.FC<PostMetaProps> = ({
   id,
   points,
   hasVoted,
-  community,
+  club,
   creator,
   title,
   content,
@@ -34,12 +32,10 @@ export const PostMeta: React.FC<PostMetaProps> = ({
               <Avatar size="xs" value={creator.username} />
               <Text fontSize="xs">
                 Posted by {creator.username} in{" "}
-                <Link href={`/clubs/${id}`}>{community.name}</Link>
+                <Link href={`/clubs/${id}`}>{club.name}</Link>
               </Text>
             </UserProfile>
           </ContentBody>
-
-          {/* <PostComments postId={id} /> */}
         </ContentContainer>
       </DetailsContainer>
       <PostComments postId={id} />
@@ -78,9 +74,4 @@ const UserProfile = styled("div")({
   display: "flex",
   gap: "5px",
   alignItems: "center",
-});
-
-const AddCommentContainer = styled("div")({
-  display: "flex",
-  justifyContent: "flex-end",
 });

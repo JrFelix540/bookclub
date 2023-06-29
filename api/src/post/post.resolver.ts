@@ -9,10 +9,10 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { Community } from "../community/community.entity";
+import { Club } from "../club/club.entity";
 import {
   AppDataSource,
-  communityRepository,
+  clubRepository,
   postRepository,
   postUpvoteRepository,
 } from "../database/database";
@@ -23,7 +23,7 @@ import { PaginatedPosts, PostResponse, UpvoteResponse } from "./post.types";
 import { PostUpvote } from "../post-upvote/post-upvote.entity";
 import { userRepository } from "../database/database";
 
-const allRelations = ["community", "comments", "postUpvotes"];
+const allRelations = ["club", "comments", "postUpvotes"];
 
 @Resolver(Post)
 export class PostResolver {
@@ -42,23 +42,23 @@ export class PostResolver {
     return userRepository.findOneBy({ id: post.creatorId });
   }
 
-  @FieldResolver(() => Community)
-  community(@Root() post: Post) {
-    return communityRepository.findOneBy({ id: post.communityId });
+  @FieldResolver(() => Club)
+  club(@Root() post: Post) {
+    return clubRepository.findOneBy({ id: post.clubId });
   }
 
   @Authorized()
   @FieldResolver(() => Boolean, { nullable: true })
   async joinStatus(@Root() post: Post, @Ctx() { res }: MyContext) {
-    const community = await communityRepository.findOneBy({
-      id: post.communityId,
+    const club = await clubRepository.findOneBy({
+      id: post.clubId,
     });
 
-    if (!community) {
+    if (!club) {
       return false;
     }
 
-    const found = community.memberIds.find(
+    const found = club.memberIds.find(
       (commId: number) => commId === res.locals.userId
     );
 
@@ -224,7 +224,7 @@ export class PostResolver {
 
   @Authorized()
   @Query(() => PaginatedPosts, { nullable: true })
-  async myCommunitiesPosts(
+  async myClubsPosts(
     @Ctx() { res }: MyContext,
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true })
@@ -238,7 +238,7 @@ export class PostResolver {
     }
     const user = await userRepository.findOne({
       where: { id: res.locals.userId },
-      relations: ["memberCommunities"],
+      relations: ["memberClubs"],
     });
     if (!user) {
       return {
@@ -252,9 +252,9 @@ export class PostResolver {
         ],
       };
     }
-    const communityIds = user.memberCommunities.map((comm) => comm.id);
+    const clubIds = user.memberClubs.map((comm) => comm.id);
 
-    if (communityIds.length === 0) {
+    if (clubIds.length === 0) {
       return {
         posts: [],
         hasMore: false,
@@ -264,7 +264,7 @@ export class PostResolver {
       `
     select p.*
     from post p
-    where (p."communityId" in (${communityIds}))
+    where (p."clubId" in (${clubIds}))
     ${cursor ? `and p."updatedAt" < $2` : ``}
     order by p."updatedAt" DESC
     limit $1
@@ -279,8 +279,8 @@ export class PostResolver {
   }
 
   @Query(() => PaginatedPosts, { nullable: true })
-  async communityPosts(
-    @Arg("communityId") communityId: number,
+  async clubPosts(
+    @Arg("clubId") clubId: number,
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true })
     cursor: string | null
@@ -297,7 +297,7 @@ export class PostResolver {
       `
       select p.* 
       from post p
-      where (p."communityId" = ${communityId})
+      where (p."clubId" = ${clubId})
       ${cursor ? `and p."createdAt" < $2` : ``}
       order by p.points DESC
       limit $1
@@ -325,29 +325,29 @@ export class PostResolver {
   async createPost(
     @Arg("title") title: string,
     @Arg("content") content: string,
-    @Arg("communityId", () => Int) communityId: number,
+    @Arg("clubId", () => Int) clubId: number,
     @Ctx() { res }: MyContext
   ): Promise<PostResponse> {
-    if (communityId === undefined) {
+    if (clubId === undefined) {
       return {
         errors: [
           {
-            field: "communityId",
-            message: "Please select a community",
+            field: "clubId",
+            message: "Please select a bookclub",
           },
         ],
       };
     }
 
-    const community = await Community.findOne({
-      where: { id: communityId },
+    const club = await clubRepository.findOne({
+      where: { id: clubId },
     });
-    if (!community) {
+    if (!club) {
       return {
         errors: [
           {
-            field: "community",
-            message: "Community does not exist",
+            field: "club",
+            message: "Club does not exist",
           },
         ],
       };
@@ -355,7 +355,7 @@ export class PostResolver {
 
     const user = await userRepository.findOne({
       where: { id: res.locals.userId },
-      relations: ["memberCommunities"],
+      relations: ["memberClubs"],
     });
 
     if (!user) {
@@ -369,9 +369,7 @@ export class PostResolver {
       };
     }
 
-    const found = user.memberCommunities.find(
-      (comm) => comm.id === communityId
-    );
+    const found = user.memberClubs.find((comm) => comm.id === clubId);
 
     if (!found) {
       return {
@@ -386,11 +384,11 @@ export class PostResolver {
 
     const post = new Post();
     post.creator = user;
-    post.community = community;
+    post.club = club;
     post.title = title;
     post.content = content;
     post.creatorId = user.id;
-    post.communityId = community.id;
+    post.clubId = club.id;
 
     try {
       await post.save();

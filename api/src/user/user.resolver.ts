@@ -24,10 +24,10 @@ export class UserResolver {
 
   @Authorized()
   @Query(() => User, { nullable: true })
-  async meWithCommunities(@Ctx() { res }: MyContext) {
+  async meWithClubs(@Ctx() { res }: MyContext) {
     const user = await userRepository.findOne({
       where: { id: res.locals.userId },
-      relations: ["memberCommunities"],
+      relations: ["memberClubs"],
     });
 
     return user;

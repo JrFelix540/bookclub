@@ -7,7 +7,7 @@ import express from "express";
 import http from "http";
 import { buildSchema } from "type-graphql";
 import { AuthResolver } from "./auth/auth.resolver";
-import { CommunityResolver } from "./community/community.resolver";
+import { ClubResolver } from "./club/club.resolver";
 import { PostResolver } from "./post/post.resolver";
 import { CommentResolver } from "./comment/comment.resolver";
 import { getEnvironmentVariables } from "./config/env";
@@ -27,7 +27,7 @@ const main = async () => {
     schema: await buildSchema({
       resolvers: [
         UserResolver,
-        CommunityResolver,
+        ClubResolver,
         PostResolver,
         CommentResolver,
         AuthResolver,

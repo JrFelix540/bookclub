@@ -1,0 +1,9 @@
+query Club($clubId: Float!) {
+  club(id: $clubId) {
+    id
+    name
+    description
+    dateCreated
+    hasJoined
+  }
+}

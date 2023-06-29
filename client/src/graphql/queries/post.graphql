@@ -10,7 +10,7 @@ query Post($postId: Float!) {
     creator {
       username
     }
-    community {
+    club {
       id
       name
       description

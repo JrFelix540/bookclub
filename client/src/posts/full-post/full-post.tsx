@@ -29,7 +29,7 @@ export const FullPost: NextPage<{ id: number }> = ({ id }) => {
           id={postData.post.id}
           title={postData.post.title}
           content={postData.post.content}
-          community={postData.post.community}
+          club={postData.post.club}
           creator={postData.post.creator}
           isOwner={postData.post.isOwner}
           joinStatus={postData.post.joinStatus}
@@ -38,10 +38,10 @@ export const FullPost: NextPage<{ id: number }> = ({ id }) => {
         />
         <SidebarsContainer>
           <ClubSidebar
-            id={postData.post.community.id}
-            name={postData.post.community.name}
-            dateCreated={postData.post.community.dateCreated}
-            description={postData.post.community.description}
+            id={postData.post.club.id}
+            name={postData.post.club.name}
+            dateCreated={postData.post.club.dateCreated}
+            description={postData.post.club.description}
             hasJoined={postData.post.joinStatus}
           />
         </SidebarsContainer>

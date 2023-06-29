@@ -8,7 +8,7 @@ fragment RegularPost on Post {
     id
     username
   }
-  community {
+  club {
     id
     name
   }

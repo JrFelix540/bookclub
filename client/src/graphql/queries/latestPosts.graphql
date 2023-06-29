@@ -8,7 +8,7 @@ query LatestPosts($limit: Int!, $cursor: String) {
     posts {
       id
       content
-      community {
+      club {
         id
         name
       }

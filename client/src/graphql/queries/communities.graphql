@@ -1,6 +1,0 @@
-query Clubs {
-  allCommunities {
-    id
-    name
-  }
-}

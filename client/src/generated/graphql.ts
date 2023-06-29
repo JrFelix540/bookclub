@@ -55,6 +55,29 @@ export type BooleanResponse = {
   ok?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
+export type Club = {
+  __typename?: "Club";
+  createdAt: Scalars["DateTime"]["output"];
+  creator: User;
+  creatorId: Scalars["Int"]["output"];
+  dateCreated: Scalars["String"]["output"];
+  description: Scalars["String"]["output"];
+  hasJoined?: Maybe<Scalars["Boolean"]["output"]>;
+  id: Scalars["Float"]["output"];
+  memberIds: Array<Scalars["Float"]["output"]>;
+  members: Array<User>;
+  name: Scalars["String"]["output"];
+  numberOfMembers: Scalars["Int"]["output"];
+  posts: Array<Post>;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type ClubResponse = {
+  __typename?: "ClubResponse";
+  club?: Maybe<Club>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
 export type Comment = {
   __typename?: "Comment";
   commentIds: Array<Scalars["Int"]["output"]>;
@@ -87,29 +110,6 @@ export type CommentUpvoteResponse = {
   errors?: Maybe<Array<FieldError>>;
 };
 
-export type Community = {
-  __typename?: "Community";
-  createdAt: Scalars["DateTime"]["output"];
-  creator: User;
-  creatorId: Scalars["Int"]["output"];
-  dateCreated: Scalars["String"]["output"];
-  description: Scalars["String"]["output"];
-  hasJoined?: Maybe<Scalars["Boolean"]["output"]>;
-  id: Scalars["Float"]["output"];
-  memberIds: Array<Scalars["Float"]["output"]>;
-  members: Array<User>;
-  name: Scalars["String"]["output"];
-  numberOfMembers: Scalars["Int"]["output"];
-  posts: Array<Post>;
-  updatedAt: Scalars["DateTime"]["output"];
-};
-
-export type CommunityResponse = {
-  __typename?: "CommunityResponse";
-  community?: Maybe<Community>;
-  errors?: Maybe<Array<FieldError>>;
-};
-
 export type FieldError = {
   __typename?: "FieldError";
   field: Scalars["String"]["output"];
@@ -125,14 +125,14 @@ export type LoggedInUser = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createClub: ClubResponse;
   createComment: UserCommentResponse;
-  createCommunity: CommunityResponse;
   createPost: PostResponse;
   deleteComment: Scalars["Boolean"]["output"];
   deletePost: Scalars["Boolean"]["output"];
   forgetPassword: BooleanResponse;
-  joinCommunity?: Maybe<BooleanFieldResponse>;
-  leaveCommunity: BooleanFieldResponse;
+  joinClub?: Maybe<BooleanFieldResponse>;
+  leaveClub: BooleanFieldResponse;
   resetPassword: BooleanResponse;
   signOut: Scalars["Boolean"]["output"];
   signin: AuthResponse;
@@ -142,18 +142,18 @@ export type Mutation = {
   voteComment: CommentUpvoteResponse;
 };
 
+export type MutationCreateClubArgs = {
+  description: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+};
+
 export type MutationCreateCommentArgs = {
   content: Scalars["String"]["input"];
   postId: Scalars["Float"]["input"];
 };
 
-export type MutationCreateCommunityArgs = {
-  description: Scalars["String"]["input"];
-  name: Scalars["String"]["input"];
-};
-
 export type MutationCreatePostArgs = {
-  communityId: Scalars["Int"]["input"];
+  clubId: Scalars["Int"]["input"];
   content: Scalars["String"]["input"];
   title: Scalars["String"]["input"];
 };
@@ -170,12 +170,12 @@ export type MutationForgetPasswordArgs = {
   email: Scalars["String"]["input"];
 };
 
-export type MutationJoinCommunityArgs = {
+export type MutationJoinClubArgs = {
   id: Scalars["Int"]["input"];
 };
 
-export type MutationLeaveCommunityArgs = {
-  communityId: Scalars["Float"]["input"];
+export type MutationLeaveClubArgs = {
+  clubId: Scalars["Float"]["input"];
 };
 
 export type MutationResetPasswordArgs = {
@@ -219,9 +219,9 @@ export type PaginatedPosts = {
 
 export type Post = {
   __typename?: "Post";
+  club: Club;
+  clubId: Scalars["Int"]["output"];
   comments: Array<Comment>;
-  community: Community;
-  communityId: Scalars["Int"]["output"];
   content: Scalars["String"]["output"];
   createdAt: Scalars["String"]["output"];
   creator: User;
@@ -254,15 +254,15 @@ export type PostUpvote = {
 
 export type Query = {
   __typename?: "Query";
-  allCommunities: Array<Community>;
-  communitiesWithIds: Array<Community>;
-  community: Community;
-  communityPosts?: Maybe<PaginatedPosts>;
+  allClubs: Array<Club>;
+  club: Club;
+  clubPosts?: Maybe<PaginatedPosts>;
+  clubsWithIds: Array<Club>;
   latestPosts: PaginatedPosts;
   me?: Maybe<AuthenticatedUser>;
-  meWithCommunities?: Maybe<User>;
-  myCommunitiesPosts?: Maybe<PaginatedPosts>;
-  popularCommunities: Array<Community>;
+  meWithClubs?: Maybe<User>;
+  myClubsPosts?: Maybe<PaginatedPosts>;
+  popularClubs: Array<Club>;
   popularPosts?: Maybe<PaginatedPosts>;
   post: Post;
   postComments?: Maybe<Array<Comment>>;
@@ -270,12 +270,12 @@ export type Query = {
   users: Array<User>;
 };
 
-export type QueryCommunityArgs = {
+export type QueryClubArgs = {
   id: Scalars["Float"]["input"];
 };
 
-export type QueryCommunityPostsArgs = {
-  communityId: Scalars["Float"]["input"];
+export type QueryClubPostsArgs = {
+  clubId: Scalars["Float"]["input"];
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   limit: Scalars["Int"]["input"];
 };
@@ -285,7 +285,7 @@ export type QueryLatestPostsArgs = {
   limit: Scalars["Int"]["input"];
 };
 
-export type QueryMyCommunitiesPostsArgs = {
+export type QueryMyClubsPostsArgs = {
   cursor?: InputMaybe<Scalars["String"]["input"]>;
   limit: Scalars["Int"]["input"];
 };
@@ -313,10 +313,10 @@ export type User = {
   __typename?: "User";
   comments: Array<Comment>;
   createdAt: Scalars["String"]["output"];
-  createdCommunities: Array<Community>;
+  createdClubs: Array<Club>;
   email: Scalars["String"]["output"];
   id: Scalars["Float"]["output"];
-  memberCommunities: Array<Community>;
+  memberClubs: Array<Club>;
   password: Scalars["String"]["output"];
   posts: Array<Post>;
   updatedAt: Scalars["String"]["output"];
@@ -338,7 +338,7 @@ export type RegularPostFragment = {
   points: number;
   hasVoted?: number | null;
   creator: { __typename?: "User"; id: number; username: string };
-  community: { __typename?: "Community"; id: number; name: string };
+  club: { __typename?: "Club"; id: number; name: string };
 } & { " $fragmentName"?: "RegularPostFragment" };
 
 export type RegularUserFragment = {
@@ -349,6 +349,30 @@ export type RegularUserFragment = {
   createdAt: string;
   updatedAt: string;
 } & { " $fragmentName"?: "RegularUserFragment" };
+
+export type CreateClubMutationVariables = Exact<{
+  description: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+}>;
+
+export type CreateClubMutation = {
+  __typename?: "Mutation";
+  createClub: {
+    __typename?: "ClubResponse";
+    club?: {
+      __typename?: "Club";
+      id: number;
+      name: string;
+      description: string;
+      dateCreated: string;
+    } | null;
+    errors?: Array<{
+      __typename?: "FieldError";
+      field: string;
+      message: string;
+    }> | null;
+  };
+};
 
 export type CreateCommentMutationVariables = Exact<{
   postId: Scalars["Float"]["input"];
@@ -369,32 +393,8 @@ export type CreateCommentMutation = {
   };
 };
 
-export type CreateCommunityMutationVariables = Exact<{
-  description: Scalars["String"]["input"];
-  name: Scalars["String"]["input"];
-}>;
-
-export type CreateCommunityMutation = {
-  __typename?: "Mutation";
-  createCommunity: {
-    __typename?: "CommunityResponse";
-    community?: {
-      __typename?: "Community";
-      id: number;
-      name: string;
-      description: string;
-      dateCreated: string;
-    } | null;
-    errors?: Array<{
-      __typename?: "FieldError";
-      field: string;
-      message: string;
-    }> | null;
-  };
-};
-
 export type CreatePostMutationVariables = Exact<{
-  communityId: Scalars["Int"]["input"];
+  clubId: Scalars["Int"]["input"];
   content: Scalars["String"]["input"];
   title: Scalars["String"]["input"];
 }>;
@@ -430,13 +430,13 @@ export type ForgetPasswordMutation = {
   forgetPassword: { __typename?: "BooleanResponse"; ok?: boolean | null };
 };
 
-export type JoinCommunityMutationVariables = Exact<{
-  communityId: Scalars["Int"]["input"];
+export type JoinClubMutationVariables = Exact<{
+  clubId: Scalars["Int"]["input"];
 }>;
 
-export type JoinCommunityMutation = {
+export type JoinClubMutation = {
   __typename?: "Mutation";
-  joinCommunity?: {
+  joinClub?: {
     __typename?: "BooleanFieldResponse";
     ok?: boolean | null;
     errors?: Array<{
@@ -539,40 +539,31 @@ export type VoteMutation = {
   } | null;
 };
 
-export type ClubsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type ClubsQuery = {
-  __typename?: "Query";
-  allCommunities: Array<{ __typename?: "Community"; id: number; name: string }>;
-};
-
-export type CommunityQueryVariables = Exact<{
-  communityId: Scalars["Float"]["input"];
+export type ClubQueryVariables = Exact<{
+  clubId: Scalars["Float"]["input"];
 }>;
 
-export type CommunityQuery = {
+export type ClubQuery = {
   __typename?: "Query";
-  community: {
-    __typename?: "Community";
+  club: {
+    __typename?: "Club";
     id: number;
     name: string;
     description: string;
     dateCreated: string;
-    memberIds: Array<number>;
     hasJoined?: boolean | null;
-    members: Array<{ __typename?: "User"; id: number; username: string }>;
   };
 };
 
-export type CommunityPostsQueryVariables = Exact<{
+export type ClubPostsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
-  communityId: Scalars["Float"]["input"];
+  clubId: Scalars["Float"]["input"];
   cursor?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
-export type CommunityPostsQuery = {
+export type ClubPostsQuery = {
   __typename?: "Query";
-  communityPosts?: {
+  clubPosts?: {
     __typename?: "PaginatedPosts";
     hasMore: boolean;
     errors?: Array<{
@@ -599,7 +590,7 @@ export type FeedPostsQueryVariables = Exact<{
 
 export type FeedPostsQuery = {
   __typename?: "Query";
-  myCommunitiesPosts?: {
+  myClubsPosts?: {
     __typename?: "PaginatedPosts";
     hasMore: boolean;
     errors?: Array<{
@@ -614,7 +605,7 @@ export type FeedPostsQuery = {
       content: string;
       points: number;
       hasVoted?: number | null;
-      community: { __typename?: "Community"; id: number; name: string };
+      club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; username: string };
     }> | null;
   } | null;
@@ -642,7 +633,7 @@ export type LatestPostsQuery = {
       title: string;
       points: number;
       hasVoted?: number | null;
-      community: { __typename?: "Community"; id: number; name: string };
+      club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; id: number; username: string };
     }> | null;
   };
@@ -659,28 +650,24 @@ export type MeQuery = {
   } | null;
 };
 
-export type MyCommunitiesQueryVariables = Exact<{ [key: string]: never }>;
+export type MyClubsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type MyCommunitiesQuery = {
+export type MyClubsQuery = {
   __typename?: "Query";
-  meWithCommunities?: {
+  meWithClubs?: {
     __typename?: "User";
-    memberCommunities: Array<{
-      __typename?: "Community";
-      id: number;
-      name: string;
-    }>;
+    memberClubs: Array<{ __typename?: "Club"; id: number; name: string }>;
   } | null;
 };
 
-export type PopularCommunitiesQueryVariables = Exact<{ [key: string]: never }>;
+export type PopularClubsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type PopularCommunitiesQuery = {
+export type PopularClubsQuery = {
   __typename?: "Query";
-  popularCommunities: Array<{
-    __typename?: "Community";
-    name: string;
+  popularClubs: Array<{
+    __typename?: "Club";
     id: number;
+    name: string;
     numberOfMembers: number;
   }>;
 };
@@ -707,7 +694,7 @@ export type PopularPostsQuery = {
       title: string;
       points: number;
       hasVoted?: number | null;
-      community: { __typename?: "Community"; id: number; name: string };
+      club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; id: number; username: string };
     }> | null;
   } | null;
@@ -729,8 +716,8 @@ export type PostQuery = {
     points: number;
     joinStatus?: boolean | null;
     creator: { __typename?: "User"; username: string };
-    community: {
-      __typename?: "Community";
+    club: {
+      __typename?: "Club";
       id: number;
       name: string;
       description: string;
@@ -785,7 +772,7 @@ export const RegularPostFragmentDoc = {
           },
           {
             kind: "Field",
-            name: { kind: "Name", value: "community" },
+            name: { kind: "Name", value: "club" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
@@ -822,6 +809,108 @@ export const RegularUserFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<RegularUserFragment, unknown>;
+export const CreateClubDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "createClub" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createClub" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "name" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "name" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "club" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "dateCreated" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "errors" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "field" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreateClubMutation, CreateClubMutationVariables>;
 export const CreateCommentDocument = {
   kind: "Document",
   definitions: [
@@ -916,111 +1005,6 @@ export const CreateCommentDocument = {
   CreateCommentMutation,
   CreateCommentMutationVariables
 >;
-export const CreateCommunityDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "CreateCommunity" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "description" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "createCommunity" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "description" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "description" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "name" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "name" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "community" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "description" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "dateCreated" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "errors" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "field" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateCommunityMutation,
-  CreateCommunityMutationVariables
->;
 export const CreatePostDocument = {
   kind: "Document",
   definitions: [
@@ -1033,7 +1017,7 @@ export const CreatePostDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "communityId" },
+            name: { kind: "Name", value: "clubId" },
           },
           type: {
             kind: "NonNullType",
@@ -1078,10 +1062,10 @@ export const CreatePostDocument = {
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "communityId" },
+                name: { kind: "Name", value: "clubId" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "communityId" },
+                  name: { kind: "Name", value: "clubId" },
                 },
               },
               {
@@ -1235,19 +1219,19 @@ export const ForgetPasswordDocument = {
   ForgetPasswordMutation,
   ForgetPasswordMutationVariables
 >;
-export const JoinCommunityDocument = {
+export const JoinClubDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "JoinCommunity" },
+      name: { kind: "Name", value: "JoinClub" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "communityId" },
+            name: { kind: "Name", value: "clubId" },
           },
           type: {
             kind: "NonNullType",
@@ -1260,14 +1244,14 @@ export const JoinCommunityDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "joinCommunity" },
+            name: { kind: "Name", value: "joinClub" },
             arguments: [
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "id" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "communityId" },
+                  name: { kind: "Name", value: "clubId" },
                 },
               },
             ],
@@ -1296,10 +1280,7 @@ export const JoinCommunityDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  JoinCommunityMutation,
-  JoinCommunityMutationVariables
->;
+} as unknown as DocumentNode<JoinClubMutation, JoinClubMutationVariables>;
 export const ResetPasswordDocument = {
   kind: "Document",
   definitions: [
@@ -1734,45 +1715,19 @@ export const VoteDocument = {
     },
   ],
 } as unknown as DocumentNode<VoteMutation, VoteMutationVariables>;
-export const ClubsDocument = {
+export const ClubDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "Clubs" },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "allCommunities" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "name" } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ClubsQuery, ClubsQueryVariables>;
-export const CommunityDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "query",
-      name: { kind: "Name", value: "Community" },
+      name: { kind: "Name", value: "Club" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "communityId" },
+            name: { kind: "Name", value: "clubId" },
           },
           type: {
             kind: "NonNullType",
@@ -1785,14 +1740,14 @@ export const CommunityDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "community" },
+            name: { kind: "Name", value: "club" },
             arguments: [
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "id" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "communityId" },
+                  name: { kind: "Name", value: "clubId" },
                 },
               },
             ],
@@ -1802,22 +1757,7 @@ export const CommunityDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "members" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "username" },
-                      },
-                    ],
-                  },
-                },
                 { kind: "Field", name: { kind: "Name", value: "dateCreated" } },
-                { kind: "Field", name: { kind: "Name", value: "memberIds" } },
                 { kind: "Field", name: { kind: "Name", value: "hasJoined" } },
               ],
             },
@@ -1826,14 +1766,14 @@ export const CommunityDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<CommunityQuery, CommunityQueryVariables>;
-export const CommunityPostsDocument = {
+} as unknown as DocumentNode<ClubQuery, ClubQueryVariables>;
+export const ClubPostsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "CommunityPosts" },
+      name: { kind: "Name", value: "ClubPosts" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1850,7 +1790,7 @@ export const CommunityPostsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "communityId" },
+            name: { kind: "Name", value: "clubId" },
           },
           type: {
             kind: "NonNullType",
@@ -1871,7 +1811,7 @@ export const CommunityPostsDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "communityPosts" },
+            name: { kind: "Name", value: "clubPosts" },
             arguments: [
               {
                 kind: "Argument",
@@ -1883,10 +1823,10 @@ export const CommunityPostsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "communityId" },
+                name: { kind: "Name", value: "clubId" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "communityId" },
+                  name: { kind: "Name", value: "clubId" },
                 },
               },
               {
@@ -1959,7 +1899,7 @@ export const CommunityPostsDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<CommunityPostsQuery, CommunityPostsQueryVariables>;
+} as unknown as DocumentNode<ClubPostsQuery, ClubPostsQueryVariables>;
 export const FeedPostsDocument = {
   kind: "Document",
   definitions: [
@@ -1993,7 +1933,7 @@ export const FeedPostsDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "myCommunitiesPosts" },
+            name: { kind: "Name", value: "myClubsPosts" },
             arguments: [
               {
                 kind: "Argument",
@@ -2052,7 +1992,7 @@ export const FeedPostsDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "community" },
+                        name: { kind: "Name", value: "club" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
@@ -2174,7 +2114,7 @@ export const LatestPostsDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "community" },
+                        name: { kind: "Name", value: "club" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
@@ -2252,25 +2192,25 @@ export const MeDocument = {
     },
   ],
 } as unknown as DocumentNode<MeQuery, MeQueryVariables>;
-export const MyCommunitiesDocument = {
+export const MyClubsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "myCommunities" },
+      name: { kind: "Name", value: "myClubs" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "meWithCommunities" },
+            name: { kind: "Name", value: "meWithClubs" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "memberCommunities" },
+                  name: { kind: "Name", value: "memberClubs" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
@@ -2286,25 +2226,25 @@ export const MyCommunitiesDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<MyCommunitiesQuery, MyCommunitiesQueryVariables>;
-export const PopularCommunitiesDocument = {
+} as unknown as DocumentNode<MyClubsQuery, MyClubsQueryVariables>;
+export const PopularClubsDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "PopularCommunities" },
+      name: { kind: "Name", value: "PopularClubs" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "popularCommunities" },
+            name: { kind: "Name", value: "popularClubs" },
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "name" } },
                 { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "numberOfMembers" },
@@ -2316,10 +2256,7 @@ export const PopularCommunitiesDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<
-  PopularCommunitiesQuery,
-  PopularCommunitiesQueryVariables
->;
+} as unknown as DocumentNode<PopularClubsQuery, PopularClubsQueryVariables>;
 export const PopularPostsDocument = {
   kind: "Document",
   definitions: [
@@ -2403,7 +2340,7 @@ export const PopularPostsDocument = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "community" },
+                        name: { kind: "Name", value: "club" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
@@ -2516,7 +2453,7 @@ export const PostDocument = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "community" },
+                  name: { kind: "Name", value: "club" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [

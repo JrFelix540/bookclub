@@ -13,7 +13,7 @@ export const SubscribedPosts = () => {
     return <ErrorPage />;
   }
 
-  if (!data?.myCommunitiesPosts) {
+  if (!data?.myClubsPosts) {
     return loading ? (
       <PostsLoading />
     ) : (
@@ -25,10 +25,10 @@ export const SubscribedPosts = () => {
 
   return (
     <>
-      {data.myCommunitiesPosts.posts?.map((post) => (
+      {data.myClubsPosts.posts?.map((post) => (
         <PostPreview
           id={post.id}
-          club={post.community}
+          club={post.club}
           content={post.content}
           creator={post.creator.username}
           points={post.points}

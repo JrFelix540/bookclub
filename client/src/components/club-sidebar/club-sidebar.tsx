@@ -1,6 +1,6 @@
 import {
-  ClubsDocument,
-  JoinCommunityDocument,
+  ClubDocument,
+  JoinClubDocument,
   MeDocument,
   PostDocument,
 } from "@/generated/graphql";
@@ -29,9 +29,9 @@ export const ClubSidebar: React.FC<ClubSidebarProps> = ({
 }) => {
   const { data } = useQuery(MeDocument);
   const router = useRouter();
-  const [joinClub] = useMutation(JoinCommunityDocument, {
-    variables: { communityId: id },
-    refetchQueries: [PostDocument, ClubsDocument],
+  const [joinClub] = useMutation(JoinClubDocument, {
+    variables: { clubId: id },
+    refetchQueries: [PostDocument, ClubDocument],
   });
 
   const join = () => {
