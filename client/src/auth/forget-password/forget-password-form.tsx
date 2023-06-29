@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { Form } from "../components/form/form";
 import { Input } from "@/components/Input/Input";
-import { PrimaryButton } from "@/components/primary-button/PrimaryButton";
+import { PrimaryButton } from "@/components/primary-button/primary-button";
 import { useMutation } from "@apollo/client";
 import { ForgetPasswordDocument } from "@/generated/graphql";
 import { forgetPasswordSchema } from "./forget-password.utils";
