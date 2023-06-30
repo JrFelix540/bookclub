@@ -1,0 +1,21 @@
+query ClubEvent($clubEventId: Float!) {
+  clubEvent(id: $clubEventId) {
+    id
+    title
+    description
+    duration
+    creator {
+      id
+      username
+    }
+    club {
+      id
+      name
+      description
+      dateCreated
+      hasJoined
+    }
+    date
+    meetingLink
+  }
+}

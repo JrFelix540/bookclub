@@ -13,6 +13,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Club } from "../club/club.entity";
+import { ClubEvent } from "../club-event/club-events.entity";
 
 @ObjectType()
 @Entity()
@@ -70,4 +71,8 @@ export class User extends BaseEntity {
   @Field(() => String)
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @Field(() => [ClubEvent])
+  @OneToMany(() => ClubEvent, (event) => event.creator)
+  createdEvents: Event[];
 }

@@ -10,8 +10,9 @@ import { AuthResolver } from "./auth/auth.resolver";
 import { ClubResolver } from "./club/club.resolver";
 import { PostResolver } from "./post/post.resolver";
 import { CommentResolver } from "./comment/comment.resolver";
+import { ClubEventsResolver } from "./club-event/club-events.resolver";
 import { getEnvironmentVariables } from "./config/env";
-import { AppDataSource } from "./database/database";
+import { appDataSource } from "./database/database";
 import { UserResolver } from "./user/user.resolver";
 import { MyContext } from "./types";
 import { authChecker } from "./auth/auth.utils";
@@ -19,7 +20,7 @@ import { authChecker } from "./auth/auth.utils";
 const env = getEnvironmentVariables();
 
 const main = async () => {
-  await AppDataSource.initialize();
+  await appDataSource.initialize();
 
   const app = express();
   const httpServer = http.createServer(app);
@@ -31,6 +32,7 @@ const main = async () => {
         PostResolver,
         CommentResolver,
         AuthResolver,
+        ClubEventsResolver,
       ],
       authChecker: authChecker,
       authMode: "null",

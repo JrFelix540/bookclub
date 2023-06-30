@@ -19,6 +19,8 @@ const documents = {
     types.RegularUserFragmentDoc,
   "mutation createClub($description: String!, $name: String!) {\n  createClub(description: $description, name: $name) {\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}":
     types.CreateClubDocument,
+  "mutation CreateClubEvent($clubId: Float!, $duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!) {\n  createClubEvent(\n    clubId: $clubId\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n  ) {\n    id\n    title\n  }\n}":
+    types.CreateClubEventDocument,
   "mutation CreateComment($postId: Float!, $content: String!) {\n  createComment(postId: $postId, content: $content) {\n    comment {\n      id\n      points\n      content\n      createdAt\n    }\n  }\n}":
     types.CreateCommentDocument,
   "mutation CreatePost($clubId: Int!, $content: String!, $title: String!) {\n  createPost(clubId: $clubId, content: $content, title: $title) {\n    errors {\n      field\n      message\n    }\n    post {\n      id\n    }\n  }\n}":
@@ -42,6 +44,8 @@ const documents = {
     types.ClubDocument,
   "query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {\n  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      creator {\n        username\n      }\n      points\n      hasVoted\n    }\n  }\n}":
     types.ClubPostsDocument,
+  "query ClubEvent($clubEventId: Float!) {\n  clubEvent(id: $clubEventId) {\n    id\n    title\n    description\n    duration\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n      hasJoined\n    }\n    date\n    meetingLink\n  }\n}":
+    types.ClubEventDocument,
   "query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}":
     types.FeedPostsDocument,
   "query LatestPosts($limit: Int!, $cursor: String) {\n  latestPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}":
@@ -91,6 +95,12 @@ export function graphql(
 export function graphql(
   source: "mutation createClub($description: String!, $name: String!) {\n  createClub(description: $description, name: $name) {\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"
 ): (typeof documents)["mutation createClub($description: String!, $name: String!) {\n  createClub(description: $description, name: $name) {\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "mutation CreateClubEvent($clubId: Float!, $duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!) {\n  createClubEvent(\n    clubId: $clubId\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n  ) {\n    id\n    title\n  }\n}"
+): (typeof documents)["mutation CreateClubEvent($clubId: Float!, $duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!) {\n  createClubEvent(\n    clubId: $clubId\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n  ) {\n    id\n    title\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -163,6 +173,12 @@ export function graphql(
 export function graphql(
   source: "query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {\n  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      creator {\n        username\n      }\n      points\n      hasVoted\n    }\n  }\n}"
 ): (typeof documents)["query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {\n  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      creator {\n        username\n      }\n      points\n      hasVoted\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "query ClubEvent($clubEventId: Float!) {\n  clubEvent(id: $clubEventId) {\n    id\n    title\n    description\n    duration\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n      hasJoined\n    }\n    date\n    meetingLink\n  }\n}"
+): (typeof documents)["query ClubEvent($clubEventId: Float!) {\n  clubEvent(id: $clubEventId) {\n    id\n    title\n    description\n    duration\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n      hasJoined\n    }\n    date\n    meetingLink\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

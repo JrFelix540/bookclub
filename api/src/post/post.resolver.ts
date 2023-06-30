@@ -11,7 +11,7 @@ import {
 } from "type-graphql";
 import { Club } from "../club/club.entity";
 import {
-  AppDataSource,
+  appDataSource,
   clubRepository,
   postRepository,
   postUpvoteRepository,
@@ -184,7 +184,7 @@ export class PostResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
 
-    const posts = await AppDataSource.query(
+    const posts = await appDataSource.query(
       `
     select p.* 
     from post p
@@ -260,7 +260,7 @@ export class PostResolver {
         hasMore: false,
       };
     }
-    const posts = await AppDataSource.query(
+    const posts = await appDataSource.query(
       `
     select p.*
     from post p
@@ -293,7 +293,7 @@ export class PostResolver {
       replacements.push(new Date(parseInt(cursor)));
     }
 
-    const posts = await AppDataSource.query(
+    const posts = await appDataSource.query(
       `
       select p.* 
       from post p

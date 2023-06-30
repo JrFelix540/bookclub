@@ -62,6 +62,7 @@ export type Club = {
   creatorId: Scalars["Int"]["output"];
   dateCreated: Scalars["String"]["output"];
   description: Scalars["String"]["output"];
+  events: Array<ClubEvent>;
   hasJoined?: Maybe<Scalars["Boolean"]["output"]>;
   id: Scalars["Float"]["output"];
   memberIds: Array<Scalars["Float"]["output"]>;
@@ -69,6 +70,21 @@ export type Club = {
   name: Scalars["String"]["output"];
   numberOfMembers: Scalars["Int"]["output"];
   posts: Array<Post>;
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type ClubEvent = {
+  __typename?: "ClubEvent";
+  attendees: Array<User>;
+  club: Club;
+  createdAt: Scalars["DateTime"]["output"];
+  creator: User;
+  date: Scalars["DateTime"]["output"];
+  description: Scalars["String"]["output"];
+  duration: Scalars["String"]["output"];
+  id: Scalars["Float"]["output"];
+  meetingLink: Scalars["String"]["output"];
+  title: Scalars["String"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
 };
 
@@ -126,6 +142,7 @@ export type LoggedInUser = {
 export type Mutation = {
   __typename?: "Mutation";
   createClub: ClubResponse;
+  createClubEvent: ClubEvent;
   createComment: UserCommentResponse;
   createPost: PostResponse;
   deleteComment: Scalars["Boolean"]["output"];
@@ -137,6 +154,7 @@ export type Mutation = {
   signOut: Scalars["Boolean"]["output"];
   signin: AuthResponse;
   signup: AuthResponse;
+  updateClubEvent: ClubEvent;
   updatePost: PostResponse;
   vote?: Maybe<UpvoteResponse>;
   voteComment: CommentUpvoteResponse;
@@ -145,6 +163,15 @@ export type Mutation = {
 export type MutationCreateClubArgs = {
   description: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
+};
+
+export type MutationCreateClubEventArgs = {
+  clubId: Scalars["Float"]["input"];
+  date: Scalars["DateTime"]["input"];
+  description: Scalars["String"]["input"];
+  duration: Scalars["String"]["input"];
+  meetingLink: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
 };
 
 export type MutationCreateCommentArgs = {
@@ -192,6 +219,15 @@ export type MutationSignupArgs = {
   email: Scalars["String"]["input"];
   password: Scalars["String"]["input"];
   username: Scalars["String"]["input"];
+};
+
+export type MutationUpdateClubEventArgs = {
+  date: Scalars["DateTime"]["input"];
+  description: Scalars["String"]["input"];
+  duration: Scalars["String"]["input"];
+  id: Scalars["Float"]["input"];
+  meetingLink: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
 };
 
 export type MutationUpdatePostArgs = {
@@ -256,6 +292,7 @@ export type Query = {
   __typename?: "Query";
   allClubs: Array<Club>;
   club: Club;
+  clubEvent: ClubEvent;
   clubPosts?: Maybe<PaginatedPosts>;
   clubsWithIds: Array<Club>;
   latestPosts: PaginatedPosts;
@@ -263,6 +300,7 @@ export type Query = {
   meWithClubs?: Maybe<User>;
   myClubsPosts?: Maybe<PaginatedPosts>;
   popularClubs: Array<Club>;
+  popularEvents: Array<ClubEvent>;
   popularPosts?: Maybe<PaginatedPosts>;
   post: Post;
   postComments?: Maybe<Array<Comment>>;
@@ -271,6 +309,10 @@ export type Query = {
 };
 
 export type QueryClubArgs = {
+  id: Scalars["Float"]["input"];
+};
+
+export type QueryClubEventArgs = {
   id: Scalars["Float"]["input"];
 };
 
@@ -314,6 +356,7 @@ export type User = {
   comments: Array<Comment>;
   createdAt: Scalars["String"]["output"];
   createdClubs: Array<Club>;
+  createdEvents: Array<ClubEvent>;
   email: Scalars["String"]["output"];
   id: Scalars["Float"]["output"];
   memberClubs: Array<Club>;
@@ -372,6 +415,20 @@ export type CreateClubMutation = {
       message: string;
     }> | null;
   };
+};
+
+export type CreateClubEventMutationVariables = Exact<{
+  clubId: Scalars["Float"]["input"];
+  duration: Scalars["String"]["input"];
+  meetingLink: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
+  description: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
+}>;
+
+export type CreateClubEventMutation = {
+  __typename?: "Mutation";
+  createClubEvent: { __typename?: "ClubEvent"; id: number; title: string };
 };
 
 export type CreateCommentMutationVariables = Exact<{
@@ -581,6 +638,32 @@ export type ClubPostsQuery = {
       creator: { __typename?: "User"; username: string };
     }> | null;
   } | null;
+};
+
+export type ClubEventQueryVariables = Exact<{
+  clubEventId: Scalars["Float"]["input"];
+}>;
+
+export type ClubEventQuery = {
+  __typename?: "Query";
+  clubEvent: {
+    __typename?: "ClubEvent";
+    id: number;
+    title: string;
+    description: string;
+    duration: string;
+    date: any;
+    meetingLink: string;
+    creator: { __typename?: "User"; id: number; username: string };
+    club: {
+      __typename?: "Club";
+      id: number;
+      name: string;
+      description: string;
+      dateCreated: string;
+      hasJoined?: boolean | null;
+    };
+  };
 };
 
 export type FeedPostsQueryVariables = Exact<{
@@ -911,6 +994,165 @@ export const CreateClubDocument = {
     },
   ],
 } as unknown as DocumentNode<CreateClubMutation, CreateClubMutationVariables>;
+export const CreateClubEventDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CreateClubEvent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "clubId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "duration" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "meetingLink" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "date" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DateTime" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "title" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createClubEvent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "clubId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "clubId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "duration" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "duration" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "meetingLink" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "meetingLink" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "date" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "date" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "title" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "title" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateClubEventMutation,
+  CreateClubEventMutationVariables
+>;
 export const CreateCommentDocument = {
   kind: "Document",
   definitions: [
@@ -1900,6 +2142,96 @@ export const ClubPostsDocument = {
     },
   ],
 } as unknown as DocumentNode<ClubPostsQuery, ClubPostsQueryVariables>;
+export const ClubEventDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ClubEvent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "clubEventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clubEvent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "clubEventId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "duration" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "creator" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "club" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "description" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "dateCreated" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "hasJoined" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "date" } },
+                { kind: "Field", name: { kind: "Name", value: "meetingLink" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ClubEventQuery, ClubEventQueryVariables>;
 export const FeedPostsDocument = {
   kind: "Document",
   definitions: [

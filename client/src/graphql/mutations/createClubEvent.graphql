@@ -1,0 +1,20 @@
+mutation CreateClubEvent(
+  $clubId: Float!
+  $duration: String!
+  $meetingLink: String!
+  $date: DateTime!
+  $description: String!
+  $title: String!
+) {
+  createClubEvent(
+    clubId: $clubId
+    duration: $duration
+    meetingLink: $meetingLink
+    date: $date
+    description: $description
+    title: $title
+  ) {
+    id
+    title
+  }
+}

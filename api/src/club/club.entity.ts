@@ -13,6 +13,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ClubEvent } from "../club-event/club-events.entity";
 
 @ObjectType()
 @Entity()
@@ -55,6 +56,10 @@ export class Club extends BaseEntity {
   @Field(() => [Float])
   @Column("int", { array: true, nullable: true })
   memberIds: number[];
+
+  @Field(() => [ClubEvent])
+  @OneToMany(() => ClubEvent, (event) => event.club)
+  events: Array<ClubEvent>;
 
   @Field()
   @CreateDateColumn()

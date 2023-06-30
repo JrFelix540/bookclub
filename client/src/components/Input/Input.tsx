@@ -11,6 +11,7 @@ export interface InputProps {
   label?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
+  touched?: boolean;
   id: string;
   name: string;
   type: string;
@@ -25,11 +26,12 @@ export const Input: React.FC<InputProps> = ({
   value,
   label,
   error,
+  touched,
   onChange,
   onBlur,
 }) => {
   return (
-    <FormControl isInvalid={!!error}>
+    <FormControl isInvalid={!!error && touched}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <ChakraInput
         id={id}
@@ -38,8 +40,9 @@ export const Input: React.FC<InputProps> = ({
         name={name}
         onChange={onChange}
         onBlur={onBlur}
+        variant="filled"
       />
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && touched && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
@@ -54,11 +57,12 @@ export const Textarea: React.FC<TextareaProps> = ({
   value,
   label,
   error,
+  touched,
   onChange,
   onBlur,
 }) => {
   return (
-    <FormControl isInvalid={!!error}>
+    <FormControl isInvalid={!!error && touched}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       <ChakraTextarea
         id={id}
@@ -66,8 +70,9 @@ export const Textarea: React.FC<TextareaProps> = ({
         name={name}
         onChange={onChange}
         onBlur={onBlur}
+        variant="filled"
       />
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {touched && error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
