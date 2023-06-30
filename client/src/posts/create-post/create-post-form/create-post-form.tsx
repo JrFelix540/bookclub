@@ -19,7 +19,7 @@ export const CreatePostForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      communityId: defaultClubId || "",
+      clubId: defaultClubId || "",
       title: "",
       content: "",
     },
@@ -27,7 +27,7 @@ export const CreatePostForm = () => {
       const { data: postData } = await createPost({
         variables: {
           ...values,
-          clubId: parseInt(values.communityId),
+          clubId: parseInt(values.clubId),
         },
         refetchQueries: [],
       });
@@ -43,9 +43,11 @@ export const CreatePostForm = () => {
   return (
     <Form onSubmit={formik.handleSubmit}>
       <SelectInput
-        id="communityId"
-        name="communityId"
-        value={formik.values.communityId}
+        id="clubId"
+        name="clubId"
+        placeholder="Select bookclub"
+        touched={formik.touched.clubId}
+        value={formik.values.clubId}
         onBlur={formik.handleBlur}
         onChange={formik.handleChange}
       >
