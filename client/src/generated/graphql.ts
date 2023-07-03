@@ -663,6 +663,7 @@ export type ClubEventQuery = {
       dateCreated: string;
       hasJoined?: boolean | null;
     };
+    attendees: Array<{ __typename?: "User"; id: number; username: string }>;
   };
 };
 
@@ -2218,6 +2219,20 @@ export const ClubEventDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "hasJoined" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "attendees" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "username" },
                       },
                     ],
                   },

@@ -15,6 +15,10 @@ query ClubEvent($clubEventId: Float!) {
       dateCreated
       hasJoined
     }
+    attendees {
+      id
+      username
+    }
     date
     meetingLink
   }

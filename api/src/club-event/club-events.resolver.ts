@@ -22,7 +22,7 @@ export class ClubEventsResolver {
     try {
       const club = await clubEventRepository.findOne({
         where: { id },
-        relations: { creator: true, club: true },
+        relations: { creator: true, club: true, attendees: true },
       });
       if (!club) {
         throw new GraphQLError("not found");
