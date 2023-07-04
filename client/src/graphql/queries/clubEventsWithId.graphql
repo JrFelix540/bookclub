@@ -1,0 +1,9 @@
+query ClubEventsWithId($limit: Int!, $clubId: Float!) {
+  clubEventsWithId(limit: $limit, clubId: $clubId) {
+    id
+    title
+    description
+    duration
+    date
+  }
+}

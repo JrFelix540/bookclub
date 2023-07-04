@@ -1,4 +1,12 @@
-import { Query, Resolver, Arg, Authorized, Mutation, Ctx } from "type-graphql";
+import {
+  Query,
+  Resolver,
+  Arg,
+  Authorized,
+  Mutation,
+  Ctx,
+  Int,
+} from "type-graphql";
 import { ClubEvent } from "./club-events.entity";
 import {
   appDataSource,
@@ -33,6 +41,28 @@ export class ClubEventsResolver {
     } catch (e) {
       console.log(e);
       throw new GraphQLError("An error occurred while fetching club event");
+    }
+  }
+
+  @Query(() => [ClubEvent])
+  async clubEventsWithId(
+    @Arg("clubId") id: number,
+    @Arg("limit") limit: number
+  ): Promise<Array<ClubEvent>> {
+    try {
+      const clubEvents = await clubEventRepository.find({
+        relations: { club: true },
+        where: {
+          club: {
+            id,
+          },
+        },
+        take: limit,
+      });
+      return clubEvents;
+    } catch (e) {
+      console.log(e);
+      throw new Error("Could not fetch club events");
     }
   }
 

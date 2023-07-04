@@ -46,6 +46,8 @@ const documents = {
     types.VoteDocument,
   "query Club($clubId: Float!) {\n  club(id: $clubId) {\n    id\n    name\n    description\n    dateCreated\n    hasJoined\n  }\n}":
     types.ClubDocument,
+  "query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}":
+    types.ClubEventsWithIdDocument,
   "query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {\n  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      creator {\n        username\n      }\n      points\n      hasVoted\n    }\n  }\n}":
     types.ClubPostsDocument,
   "query ClubEvent($clubEventId: Float!) {\n  clubEvent(id: $clubEventId) {\n    id\n    title\n    description\n    duration\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n      hasJoined\n    }\n    attendees {\n      id\n      username\n    }\n    date\n    meetingLink\n  }\n}":
@@ -185,6 +187,12 @@ export function graphql(
 export function graphql(
   source: "query Club($clubId: Float!) {\n  club(id: $clubId) {\n    id\n    name\n    description\n    dateCreated\n    hasJoined\n  }\n}"
 ): (typeof documents)["query Club($clubId: Float!) {\n  club(id: $clubId) {\n    id\n    name\n    description\n    dateCreated\n    hasJoined\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"
+): (typeof documents)["query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

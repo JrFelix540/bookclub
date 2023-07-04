@@ -1,8 +1,7 @@
-import { FullClub } from "@/clubs/full-club/full-club";
+import { ClubOverview } from "@/clubs/club-overview/club-overview";
 import { GetServerSideProps } from "next";
 
-export default FullClub;
-
+export default ClubOverview;
 export const getServerSideProps: GetServerSideProps<{ id: number }> = async ({
   params,
 }) => {

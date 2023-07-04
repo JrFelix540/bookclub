@@ -303,6 +303,7 @@ export type Query = {
   allClubs: Array<Club>;
   club: Club;
   clubEvent: ClubEvent;
+  clubEventsWithId: Array<ClubEvent>;
   clubPosts?: Maybe<PaginatedPosts>;
   clubsWithIds: Array<Club>;
   latestPosts: PaginatedPosts;
@@ -324,6 +325,12 @@ export type QueryClubArgs = {
 
 export type QueryClubEventArgs = {
   id: Scalars["Float"]["input"];
+};
+
+export type QueryClubEventsWithIdArgs = {
+  clubId: Scalars["Float"]["input"];
+  cursor?: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
 };
 
 export type QueryClubPostsArgs = {
@@ -650,6 +657,23 @@ export type ClubQuery = {
     dateCreated: string;
     hasJoined?: boolean | null;
   };
+};
+
+export type ClubEventsWithIdQueryVariables = Exact<{
+  limit: Scalars["Int"]["input"];
+  clubId: Scalars["Float"]["input"];
+}>;
+
+export type ClubEventsWithIdQuery = {
+  __typename?: "Query";
+  clubEventsWithId: Array<{
+    __typename?: "ClubEvent";
+    id: number;
+    title: string;
+    description: string;
+    duration: string;
+    date: any;
+  }>;
 };
 
 export type ClubPostsQueryVariables = Exact<{
@@ -2265,6 +2289,80 @@ export const ClubDocument = {
     },
   ],
 } as unknown as DocumentNode<ClubQuery, ClubQueryVariables>;
+export const ClubEventsWithIdDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "ClubEventsWithId" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "limit" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "clubId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "clubEventsWithId" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "limit" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "limit" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "clubId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "clubId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "date" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  ClubEventsWithIdQuery,
+  ClubEventsWithIdQueryVariables
+>;
 export const ClubPostsDocument = {
   kind: "Document",
   definitions: [
