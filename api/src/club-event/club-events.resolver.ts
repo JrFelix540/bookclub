@@ -13,7 +13,9 @@ import { MyContext } from "../types";
 export class ClubEventsResolver {
   @Query(() => [ClubEvent])
   async popularEvents(): Promise<Array<ClubEvent>> {
-    const events = await clubEventRepository.find();
+    const events = await clubEventRepository.find({
+      relations: { club: true },
+    });
     return events;
   }
 

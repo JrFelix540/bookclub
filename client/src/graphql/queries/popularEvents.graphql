@@ -1,0 +1,12 @@
+query PopularEvents {
+  popularEvents {
+    id
+    title
+    duration
+    date
+    club {
+      id
+      name
+    }
+  }
+}

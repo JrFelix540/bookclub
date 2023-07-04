@@ -14,7 +14,7 @@ export const ClubsSidebar = () => {
 
   return (
     <Container>
-      <Text align="left" fontSize="xl" fontWeight="bold">
+      <Text align="left" fontSize="xl" fontWeight="extrabold">
         Trending Bookclubs
       </Text>
       <List>

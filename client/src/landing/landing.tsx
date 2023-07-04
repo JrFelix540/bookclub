@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { PostsSection } from "./posts-section/posts-section";
 import { SideBar } from "./sidebar/sidebar";
+import { EventsSidebar } from "@/components/events-sidebar/events-sidebar";
 
 export const Landing: React.FC = () => {
   const { data, loading } = useQuery(MeDocument);
@@ -20,6 +21,7 @@ export const Landing: React.FC = () => {
           <SidebarsContainer>
             {data?.me && <SideBar />}
             <ClubsSidebar />
+            <EventsSidebar />
           </SidebarsContainer>
         </Content>
       </BodyContainer>

@@ -796,6 +796,20 @@ export type PopularClubsQuery = {
   }>;
 };
 
+export type PopularEventsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type PopularEventsQuery = {
+  __typename?: "Query";
+  popularEvents: Array<{
+    __typename?: "ClubEvent";
+    id: number;
+    title: string;
+    duration: string;
+    date: any;
+    club: { __typename?: "Club"; id: number; name: string };
+  }>;
+};
+
 export type PopularPostsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
   cursor?: InputMaybe<Scalars["Int"]["input"]>;
@@ -2845,6 +2859,45 @@ export const PopularClubsDocument = {
     },
   ],
 } as unknown as DocumentNode<PopularClubsQuery, PopularClubsQueryVariables>;
+export const PopularEventsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "PopularEvents" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "popularEvents" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "duration" } },
+                { kind: "Field", name: { kind: "Name", value: "date" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "club" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PopularEventsQuery, PopularEventsQueryVariables>;
 export const PopularPostsDocument = {
   kind: "Document",
   definitions: [

@@ -27,6 +27,9 @@ const theme: CustomTheme = {
       dark: "#1A202C",
       main: "#C5D0E6",
     },
+    blue: {
+      main: "#5D95E8",
+    },
   },
   styles: {
     global: (props: StyleFunctionProps) => ({
