@@ -25,6 +25,8 @@ const documents = {
     types.CreateCommentDocument,
   "mutation CreatePost($clubId: Int!, $content: String!, $title: String!) {\n  createPost(clubId: $clubId, content: $content, title: $title) {\n    errors {\n      field\n      message\n    }\n    post {\n      id\n    }\n  }\n}":
     types.CreatePostDocument,
+  "mutation DeleteClubEvent($id: Float!) {\n  deleteClubEvent(id: $id)\n}":
+    types.DeleteClubEventDocument,
   "mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}":
     types.DeleteCommentDocument,
   "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}":
@@ -38,6 +40,8 @@ const documents = {
     types.SignInDocument,
   "mutation Signup($password: String!, $email: String!, $username: String!) {\n  signup(password: $password, email: $email, username: $username) {\n    errors {\n      field\n      message\n    }\n    loggedInUser {\n      id\n      accessToken\n      username\n    }\n  }\n}":
     types.SignupDocument,
+  "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}":
+    types.UpdateClubEventDocument,
   "mutation Vote($value: Int!, $postId: Int!) {\n  vote(value: $value, postId: $postId) {\n    errors {\n      field\n      message\n    }\n    upvote {\n      creatorId\n      postId\n      value\n    }\n  }\n}":
     types.VoteDocument,
   "query Club($clubId: Float!) {\n  club(id: $clubId) {\n    id\n    name\n    description\n    dateCreated\n    hasJoined\n  }\n}":
@@ -117,6 +121,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "mutation DeleteClubEvent($id: Float!) {\n  deleteClubEvent(id: $id)\n}"
+): (typeof documents)["mutation DeleteClubEvent($id: Float!) {\n  deleteClubEvent(id: $id)\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}"
 ): (typeof documents)["mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}"];
 /**
@@ -155,6 +165,12 @@ export function graphql(
 export function graphql(
   source: "mutation Signup($password: String!, $email: String!, $username: String!) {\n  signup(password: $password, email: $email, username: $username) {\n    errors {\n      field\n      message\n    }\n    loggedInUser {\n      id\n      accessToken\n      username\n    }\n  }\n}"
 ): (typeof documents)["mutation Signup($password: String!, $email: String!, $username: String!) {\n  signup(password: $password, email: $email, username: $username) {\n    errors {\n      field\n      message\n    }\n    loggedInUser {\n      id\n      accessToken\n      username\n    }\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}"
+): (typeof documents)["mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -117,4 +117,58 @@ export class ClubEventsResolver {
       throw new GraphQLError("An error has occurred while updating club event");
     }
   }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async deleteClubEvent(
+    @Arg("id") id: number,
+    @Ctx() { res }: MyContext
+  ): Promise<boolean> {
+    try {
+      const clubEvent = await clubEventRepository.findOne({
+        where: { id },
+        relations: { creator: true },
+      });
+      if (clubEvent?.creator.id !== res.locals.userId) {
+        throw new GraphQLError("User did not create club event");
+      }
+      await clubEventRepository.delete({ id });
+      return true;
+    } catch (e) {
+      console.log(e);
+      throw new GraphQLError("Error occurred when deleting club event");
+    }
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async attendEvent(
+    @Arg("id") id: number,
+    @Ctx() { res }: MyContext
+  ): Promise<Boolean> {
+    try {
+      const user = await userRepository.findOneBy({ id: res.locals.userId });
+      if (!user) {
+        throw new GraphQLError("Could not find user");
+      }
+      const clubEvent = await clubEventRepository.findOne({
+        where: { id },
+        relations: { attendees: true },
+      });
+      if (!clubEvent) {
+        throw new GraphQLError("Could not find club event");
+      }
+
+      if (clubEvent.attendees.some((attendee) => attendee.id === user.id)) {
+        throw new Error("User is already an attendee");
+      }
+
+      clubEvent.attendees.push(user);
+      await clubEventRepository.save(clubEvent);
+      return true;
+    } catch (e) {
+      console.log(e);
+      throw new GraphQLError("Could not update club event");
+    }
+  }
 }

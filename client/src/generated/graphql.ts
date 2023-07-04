@@ -141,10 +141,12 @@ export type LoggedInUser = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  attendEvent: Scalars["Boolean"]["output"];
   createClub: ClubResponse;
   createClubEvent: ClubEvent;
   createComment: UserCommentResponse;
   createPost: PostResponse;
+  deleteClubEvent: Scalars["Boolean"]["output"];
   deleteComment: Scalars["Boolean"]["output"];
   deletePost: Scalars["Boolean"]["output"];
   forgetPassword: BooleanResponse;
@@ -158,6 +160,10 @@ export type Mutation = {
   updatePost: PostResponse;
   vote?: Maybe<UpvoteResponse>;
   voteComment: CommentUpvoteResponse;
+};
+
+export type MutationAttendEventArgs = {
+  id: Scalars["Float"]["input"];
 };
 
 export type MutationCreateClubArgs = {
@@ -183,6 +189,10 @@ export type MutationCreatePostArgs = {
   clubId: Scalars["Int"]["input"];
   content: Scalars["String"]["input"];
   title: Scalars["String"]["input"];
+};
+
+export type MutationDeleteClubEventArgs = {
+  id: Scalars["Float"]["input"];
 };
 
 export type MutationDeleteCommentArgs = {
@@ -469,6 +479,15 @@ export type CreatePostMutation = {
   };
 };
 
+export type DeleteClubEventMutationVariables = Exact<{
+  id: Scalars["Float"]["input"];
+}>;
+
+export type DeleteClubEventMutation = {
+  __typename?: "Mutation";
+  deleteClubEvent: boolean;
+};
+
 export type DeleteCommentMutationVariables = Exact<{
   commentId: Scalars["Float"]["input"];
 }>;
@@ -570,6 +589,27 @@ export type SignupMutation = {
       accessToken: string;
       username: string;
     } | null;
+  };
+};
+
+export type UpdateClubEventMutationVariables = Exact<{
+  duration: Scalars["String"]["input"];
+  meetingLink: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
+  description: Scalars["String"]["input"];
+  title: Scalars["String"]["input"];
+  id: Scalars["Float"]["input"];
+}>;
+
+export type UpdateClubEventMutation = {
+  __typename?: "Mutation";
+  updateClubEvent: {
+    __typename?: "ClubEvent";
+    id: number;
+    title: string;
+    description: string;
+    meetingLink: string;
+    date: any;
   };
 };
 
@@ -1363,6 +1403,48 @@ export const CreatePostDocument = {
     },
   ],
 } as unknown as DocumentNode<CreatePostMutation, CreatePostMutationVariables>;
+export const DeleteClubEventDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteClubEvent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteClubEvent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteClubEventMutation,
+  DeleteClubEventMutationVariables
+>;
 export const DeleteCommentDocument = {
   kind: "Document",
   definitions: [
@@ -1860,6 +1942,165 @@ export const SignupDocument = {
     },
   ],
 } as unknown as DocumentNode<SignupMutation, SignupMutationVariables>;
+export const UpdateClubEventDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateClubEvent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "duration" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "meetingLink" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "date" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "DateTime" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "title" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateClubEvent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "duration" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "duration" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "meetingLink" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "meetingLink" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "date" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "date" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "title" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "title" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "description" } },
+                { kind: "Field", name: { kind: "Name", value: "meetingLink" } },
+                { kind: "Field", name: { kind: "Name", value: "date" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateClubEventMutation,
+  UpdateClubEventMutationVariables
+>;
 export const VoteDocument = {
   kind: "Document",
   definitions: [

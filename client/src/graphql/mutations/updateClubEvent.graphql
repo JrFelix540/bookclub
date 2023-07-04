@@ -1,0 +1,23 @@
+mutation UpdateClubEvent(
+  $duration: String!
+  $meetingLink: String!
+  $date: DateTime!
+  $description: String!
+  $title: String!
+  $id: Float!
+) {
+  updateClubEvent(
+    duration: $duration
+    meetingLink: $meetingLink
+    date: $date
+    description: $description
+    title: $title
+    id: $id
+  ) {
+    id
+    title
+    description
+    meetingLink
+    date
+  }
+}

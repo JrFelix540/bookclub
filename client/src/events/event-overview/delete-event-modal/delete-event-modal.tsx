@@ -1,39 +1,26 @@
-import { ApolloError } from "@apollo/client";
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
+import { DeleteClubEventDocument } from "@/generated/graphql";
+import { useMutation } from "@apollo/client";
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Button,
+  useDisclosure,
   IconButton,
   Modal,
+  ModalOverlay,
+  Button,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { SecondaryButton } from "../secondary-button/secondary-button";
 
-interface DeleteModalProps {
-  id: number;
-  entity: "post" | "comment";
-  error: ApolloError | undefined;
-  loading: boolean;
-  deleteEntityFunction: () => void;
-}
-export const DeleteModal: React.FC<DeleteModalProps> = ({
-  entity,
-  loading,
-  error,
-  deleteEntityFunction,
-}) => {
+export const DeleteEventModal: React.FC<{ id: number }> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const deleteFunction = () => {
-    deleteEntityFunction();
-    onClose();
-  };
-  console.log(error);
+  const [deleteClubEvent, { loading }] = useMutation(DeleteClubEventDocument, {
+    variables: { id },
+  });
   return (
     <>
       <IconButton
@@ -42,14 +29,13 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
         icon={<DeleteIcon />}
         onClick={onOpen}
       />
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader />
           <ModalCloseButton />
           <ModalBody>
-            <Text>Proceed to delete {entity} ?</Text>
+            <Text>Proceed to delete event ?</Text>
           </ModalBody>
 
           <ModalFooter>
@@ -59,7 +45,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
             <Button
               colorScheme="red"
               variant="outline"
-              onClick={deleteFunction}
+              onClick={() => deleteClubEvent()}
               isLoading={loading}
             >
               Delete

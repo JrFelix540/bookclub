@@ -20,6 +20,7 @@ import styled from "@emotion/styled";
 import { NextPage } from "next";
 import Link from "next/link";
 import { AttendeesSection } from "./attendees-section/attendees-section";
+import { DeleteEventModal } from "./delete-event-modal/delete-event-modal";
 
 export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data, loading } = useQuery(ClubEventDocument, {
@@ -61,9 +62,12 @@ export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
             <Flex justifyContent="space-between">
               <Text fontSize="2xl">{title}</Text>
               {meData?.me?.id === creator.id && (
-                <Link href={`/club/events/${data.clubEvent.id}/edit`}>
-                  <EditIcon />
-                </Link>
+                <Flex alignItems={"center"}>
+                  <Link href={`/clubs/events/edit/${data.clubEvent.id}`}>
+                    <EditIcon />
+                  </Link>
+                  <DeleteEventModal id={id} />
+                </Flex>
               )}
             </Flex>
             <time dateTime={date}>{formattedDate}</time>
