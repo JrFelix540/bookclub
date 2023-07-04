@@ -123,7 +123,7 @@ export const CreateEventForm = () => {
       </div>
       <ButtonContainer>
         <PrimaryButton type="submit" isLoading={loading}>
-          Create BookClub
+          Create Event
         </PrimaryButton>
       </ButtonContainer>
     </Form>
