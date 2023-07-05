@@ -8,6 +8,7 @@ query Post($postId: Float!) {
     points
     joinStatus
     creator {
+      id
       username
     }
     club {

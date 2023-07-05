@@ -329,8 +329,7 @@ export type QueryClubEventArgs = {
 
 export type QueryClubEventsWithIdArgs = {
   clubId: Scalars["Float"]["input"];
-  cursor?: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
+  limit: Scalars["Float"]["input"];
 };
 
 export type QueryClubPostsArgs = {
@@ -504,6 +503,15 @@ export type DeleteCommentMutation = {
   deleteComment: boolean;
 };
 
+export type DeletePostMutationVariables = Exact<{
+  deletePostId: Scalars["Int"]["input"];
+}>;
+
+export type DeletePostMutation = {
+  __typename?: "Mutation";
+  deletePost: boolean;
+};
+
 export type ForgetPasswordMutationVariables = Exact<{
   email: Scalars["String"]["input"];
 }>;
@@ -660,7 +668,7 @@ export type ClubQuery = {
 };
 
 export type ClubEventsWithIdQueryVariables = Exact<{
-  limit: Scalars["Int"]["input"];
+  limit: Scalars["Float"]["input"];
   clubId: Scalars["Float"]["input"];
 }>;
 
@@ -877,7 +885,7 @@ export type PostQuery = {
     isOwner?: boolean | null;
     points: number;
     joinStatus?: boolean | null;
-    creator: { __typename?: "User"; username: string };
+    creator: { __typename?: "User"; id: number; username: string };
     club: {
       __typename?: "Club";
       id: number;
@@ -1528,6 +1536,48 @@ export const DeleteCommentDocument = {
   DeleteCommentMutation,
   DeleteCommentMutationVariables
 >;
+export const DeletePostDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeletePost" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "deletePostId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deletePost" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "deletePostId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeletePostMutation, DeletePostMutationVariables>;
 export const ForgetPasswordDocument = {
   kind: "Document",
   definitions: [
@@ -2305,7 +2355,7 @@ export const ClubEventsWithIdDocument = {
           },
           type: {
             kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
           },
         },
         {
@@ -3183,6 +3233,7 @@ export const PostDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "username" },

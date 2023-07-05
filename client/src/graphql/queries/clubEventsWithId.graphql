@@ -1,4 +1,4 @@
-query ClubEventsWithId($limit: Int!, $clubId: Float!) {
+query ClubEventsWithId($limit: Float!, $clubId: Float!) {
   clubEventsWithId(limit: $limit, clubId: $clubId) {
     id
     title

@@ -29,6 +29,8 @@ const documents = {
     types.DeleteClubEventDocument,
   "mutation DeleteComment($commentId: Float!) {\n  deleteComment(commentId: $commentId)\n}":
     types.DeleteCommentDocument,
+  "mutation DeletePost($deletePostId: Int!) {\n  deletePost(id: $deletePostId)\n}":
+    types.DeletePostDocument,
   "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}":
     types.ForgetPasswordDocument,
   "mutation JoinClub($clubId: Int!) {\n  joinClub(id: $clubId) {\n    ok\n    errors {\n      field\n      message\n    }\n  }\n}":
@@ -46,7 +48,7 @@ const documents = {
     types.VoteDocument,
   "query Club($clubId: Float!) {\n  club(id: $clubId) {\n    id\n    name\n    description\n    dateCreated\n    hasJoined\n  }\n}":
     types.ClubDocument,
-  "query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}":
+  "query ClubEventsWithId($limit: Float!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}":
     types.ClubEventsWithIdDocument,
   "query ClubPosts($limit: Int!, $clubId: Float!, $cursor: String) {\n  clubPosts(limit: $limit, clubId: $clubId, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      creator {\n        username\n      }\n      points\n      hasVoted\n    }\n  }\n}":
     types.ClubPostsDocument,
@@ -65,7 +67,7 @@ const documents = {
     types.PopularEventsDocument,
   "query PopularPosts($limit: Int!, $cursor: Int) {\n  popularPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}":
     types.PopularPostsDocument,
-  "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
+  "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
     types.PostDocument,
   "query PostComments($postId: Float!) {\n  postComments(postId: $postId) {\n    id\n    content\n    isOwner\n    creator {\n      id\n      username\n    }\n  }\n}":
     types.PostCommentsDocument,
@@ -137,6 +139,12 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
+  source: "mutation DeletePost($deletePostId: Int!) {\n  deletePost(id: $deletePostId)\n}"
+): (typeof documents)["mutation DeletePost($deletePostId: Int!) {\n  deletePost(id: $deletePostId)\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
   source: "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}"
 ): (typeof documents)["mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}"];
 /**
@@ -191,8 +199,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"
-): (typeof documents)["query ClubEventsWithId($limit: Int!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"];
+  source: "query ClubEventsWithId($limit: Float!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"
+): (typeof documents)["query ClubEventsWithId($limit: Float!, $clubId: Float!) {\n  clubEventsWithId(limit: $limit, clubId: $clubId) {\n    id\n    title\n    description\n    duration\n    date\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -251,8 +259,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"
-): (typeof documents)["query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"];
+  source: "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"
+): (typeof documents)["query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -2,10 +2,11 @@ import { Avatar } from "@/components/avatar/avatar";
 import { Upvote } from "@/components/upvote/upvote";
 import { MeDocument, PostQuery } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
-import { Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
+import { PostDelete } from "../post-delete/post-delete";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -19,7 +20,7 @@ export const PostMeta: React.FC<PostMetaProps> = ({
   content,
 }) => {
   const { data } = useQuery(MeDocument);
-
+  const isOwner = creator.id === data?.me?.id;
   return (
     <Container>
       <DetailsContainer>
@@ -32,9 +33,14 @@ export const PostMeta: React.FC<PostMetaProps> = ({
               <Avatar size="xs" value={creator.username} />
               <Text fontSize="xs">
                 Posted by {creator.username} in{" "}
-                <Link href={`/clubs/${id}`}>{club.name}</Link>
+                <Link href={`/clubs/${club.id}`}>{club.name}</Link>
               </Text>
             </UserProfile>
+            {isOwner && (
+              <Flex justifyContent="flex-end" alignItems="center">
+                <PostDelete id={id} clubId={club.id} />
+              </Flex>
+            )}
           </ContentBody>
         </ContentContainer>
       </DetailsContainer>
