@@ -1,39 +1,34 @@
-import { ApolloError } from "@apollo/client";
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
+import {
+  DeleteCommentDocument,
+  PostCommentsDocument,
+} from "@/generated/graphql";
+import { useMutation } from "@apollo/client";
 import { DeleteIcon } from "@chakra-ui/icons";
 import {
-  Button,
   IconButton,
   Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { SecondaryButton } from "../secondary-button/secondary-button";
 
-interface DeleteModalProps {
-  id: number;
-  entity: "post" | "comment";
-  error: ApolloError | undefined;
-  loading: boolean;
-  deleteEntityFunction: () => void;
-}
-export const DeleteModal: React.FC<DeleteModalProps> = ({
-  entity,
-  loading,
-  error,
-  deleteEntityFunction,
-}) => {
+export const DeleteComment: React.FC<{ id: number }> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const deleteFunction = () => {
-    deleteEntityFunction();
+  const [deleteComment, { loading, error }] = useMutation(
+    DeleteCommentDocument,
+    { variables: { commentId: id }, refetchQueries: [PostCommentsDocument] }
+  );
+  const handleDelete = () => {
+    deleteComment();
     onClose();
   };
-  console.log(error);
   return (
     <>
       <IconButton
@@ -42,14 +37,13 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
         icon={<DeleteIcon />}
         onClick={onOpen}
       />
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader />
           <ModalCloseButton />
           <ModalBody>
-            <Text>Proceed to delete {entity} ?</Text>
+            <Text>Proceed to delete comment ?</Text>
           </ModalBody>
 
           <ModalFooter>
@@ -59,7 +53,7 @@ export const DeleteModal: React.FC<DeleteModalProps> = ({
             <Button
               colorScheme="red"
               variant="outline"
-              onClick={deleteFunction}
+              onClick={handleDelete}
               isLoading={loading}
             >
               Delete

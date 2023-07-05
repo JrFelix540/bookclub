@@ -36,7 +36,7 @@ export const CreatePostForm = () => {
       }
       router.push(`/posts/${postData?.createPost.post?.id}`);
     },
-    validationSchema: createPostSchema,
+    // validationSchema: createPostSchema,
     enableReinitialize: true,
   });
 
@@ -46,6 +46,8 @@ export const CreatePostForm = () => {
         id="clubId"
         name="clubId"
         placeholder="Select bookclub"
+        error={formik.errors.clubId}
+        label="Select community"
         touched={formik.touched.clubId}
         value={formik.values.clubId}
         onBlur={formik.handleBlur}

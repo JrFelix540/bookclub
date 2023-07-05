@@ -1,12 +1,7 @@
+import { DeleteComment } from "@/posts/post-overview/delete-comment/delete-comment";
+import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { Avatar } from "../avatar/avatar";
-import { Text } from "@chakra-ui/react";
-import { DeleteModal } from "../delete-modal/delete-modal";
-import { useMutation } from "@apollo/client";
-import {
-  DeleteCommentDocument,
-  PostCommentsDocument,
-} from "@/generated/graphql";
 
 interface CommentProps {
   id: number;
@@ -22,11 +17,6 @@ export const Comment: React.FC<CommentProps> = ({
   content,
   isOwner,
 }) => {
-  const [deleteComment, { loading, error }] = useMutation(
-    DeleteCommentDocument,
-    { variables: { commentId: id }, refetchQueries: [PostCommentsDocument] }
-  );
-
   return (
     <Container>
       <ContentContainer>
@@ -37,15 +27,9 @@ export const Comment: React.FC<CommentProps> = ({
         <Text>{content}</Text>
       </TextContainer>
       {isOwner && (
-        <DeleteComment>
-          <DeleteModal
-            id={id}
-            entity="comment"
-            error={error}
-            loading={loading}
-            deleteEntityFunction={deleteComment}
-          />
-        </DeleteComment>
+        <Flex justifyContent="flex-end">
+          <DeleteComment id={id} />
+        </Flex>
       )}
     </Container>
   );
@@ -67,9 +51,4 @@ const ContentContainer = styled("div")({
 
 const TextContainer = styled("div")({
   paddingLeft: "32px",
-});
-
-const DeleteComment = styled("div")({
-  display: "flex",
-  justifyContent: "flex-end",
 });

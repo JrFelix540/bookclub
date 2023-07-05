@@ -16,7 +16,7 @@ type PostCommentsProps = {
 };
 
 export const PostComments: React.FC<PostCommentsProps> = ({ postId }) => {
-  const { data, loading } = useQuery(MeDocument);
+  const { data } = useQuery(MeDocument);
   const { data: commentsData, loading: commentsLoading } = useQuery(
     PostCommentsDocument,
     { variables: { postId } }

@@ -10,7 +10,7 @@ import { NextPage } from "next";
 import { PostLoading } from "./post-loading/post-loading";
 import { PostMeta } from "./post-meta/post-meta";
 
-export const FullPost: NextPage<{ id: number }> = ({ id }) => {
+export const PostOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data: me, loading: meLoading } = useQuery(MeDocument);
   const { data: postData, loading } = useQuery(PostDocument, {
     variables: { postId: id },
