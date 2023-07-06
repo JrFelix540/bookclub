@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
 import { PostDelete } from "../post-delete/post-delete";
+import { EditIcon } from "@chakra-ui/icons";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -39,6 +40,9 @@ export const PostMeta: React.FC<PostMetaProps> = ({
             {isOwner && (
               <Flex justifyContent="flex-end" alignItems="center">
                 <PostDelete id={id} clubId={club.id} />
+                <Link href={`/posts/update/${id}`}>
+                  <EditIcon />
+                </Link>
               </Flex>
             )}
           </ContentBody>

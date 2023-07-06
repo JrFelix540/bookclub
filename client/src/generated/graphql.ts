@@ -628,6 +628,25 @@ export type UpdateClubEventMutation = {
   };
 };
 
+export type UpdatePostMutationVariables = Exact<{
+  updatePostId: Scalars["Float"]["input"];
+  title?: InputMaybe<Scalars["String"]["input"]>;
+  content?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type UpdatePostMutation = {
+  __typename?: "Mutation";
+  updatePost: {
+    __typename?: "PostResponse";
+    post?: { __typename?: "Post"; id: number } | null;
+    errors?: Array<{
+      __typename?: "FieldError";
+      field: string;
+      message: string;
+    }> | null;
+  };
+};
+
 export type VoteMutationVariables = Exact<{
   value: Scalars["Int"]["input"];
   postId: Scalars["Int"]["input"];
@@ -2189,6 +2208,109 @@ export const UpdateClubEventDocument = {
   UpdateClubEventMutation,
   UpdateClubEventMutationVariables
 >;
+export const UpdatePostDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdatePost" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "updatePostId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "title" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "content" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updatePost" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "updatePostId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "title" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "title" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "content" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "content" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "post" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "errors" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "field" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UpdatePostMutation, UpdatePostMutationVariables>;
 export const VoteDocument = {
   kind: "Document",
   definitions: [

@@ -1,0 +1,11 @@
+mutation UpdatePost($updatePostId: Float!, $title: String, $content: String) {
+  updatePost(id: $updatePostId, title: $title, content: $content) {
+    post {
+      id
+    }
+    errors {
+      field
+      message
+    }
+  }
+}

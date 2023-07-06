@@ -45,7 +45,7 @@ export const PostDelete: React.FC<{ id: number; clubId: number }> = ({
           <ModalHeader />
           <ModalCloseButton />
           <ModalBody>
-            <Text>Proceed to delete comment ?</Text>
+            <Text>Proceed to delete post ?</Text>
           </ModalBody>
 
           <ModalFooter>
