@@ -6,6 +6,7 @@ import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { updatePostSchema } from "./update-post-form.utils";
 
 interface UpdatePostFormProps {
   post: PostQuery["post"];
@@ -18,6 +19,7 @@ export const UpdatePostForm: React.FC<UpdatePostFormProps> = ({ post }) => {
       title: post.title,
       content: post.content,
     },
+    validationSchema: updatePostSchema,
     onSubmit: async (values) => {
       const { data } = await updateForm({
         variables: {
@@ -42,6 +44,7 @@ export const UpdatePostForm: React.FC<UpdatePostFormProps> = ({ post }) => {
         onChange={formik.handleChange}
         value={formik.values.title}
         error={formik.errors.title}
+        touched={formik.touched.title}
         onBlur={formik.handleBlur}
       />
       <Textarea
@@ -51,6 +54,7 @@ export const UpdatePostForm: React.FC<UpdatePostFormProps> = ({ post }) => {
         onChange={formik.handleChange}
         value={formik.values.content}
         error={formik.errors.content}
+        touched={formik.touched.content}
         onBlur={formik.handleBlur}
       />
       <Flex justifyContent={"flex-end"}>
