@@ -7,6 +7,7 @@ import { useMutation } from "@apollo/client";
 import { CreateClubDocument } from "@/generated/graphql";
 import { formatErrorMessage } from "@/auth/utils/formatErrors";
 import { useRouter } from "next/router";
+import { Flex } from "@chakra-ui/react";
 
 export const CreateClubForm = () => {
   const router = useRouter();
@@ -36,6 +37,7 @@ export const CreateClubForm = () => {
         onChange={formik.handleChange}
         value={formik.values.name}
         error={formik.errors.name}
+        touched={formik.touched.name}
         onBlur={formik.handleBlur}
       />
       <Textarea
@@ -45,11 +47,14 @@ export const CreateClubForm = () => {
         onChange={formik.handleChange}
         value={formik.values.description}
         error={formik.errors.description}
+        touched={formik.touched.description}
         onBlur={formik.handleBlur}
       />
-      <PrimaryButton type="submit" isLoading={loading}>
-        Create BookClub
-      </PrimaryButton>
+      <Flex justifyContent="flex-end">
+        <PrimaryButton type="submit" isLoading={loading}>
+          Create BookClub
+        </PrimaryButton>
+      </Flex>
     </Form>
   );
 };
