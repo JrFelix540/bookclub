@@ -405,8 +405,8 @@ export class PostResolver {
   @Mutation(() => PostResponse)
   async updatePost(
     @Arg("id") id: number,
-    @Arg("title", () => String, { nullable: true }) title: string,
-    @Arg("content", () => String, { nullable: true }) content: string,
+    @Arg("title", () => String) title: string,
+    @Arg("content", () => String) content: string,
     @Ctx() { res }: MyContext
   ): Promise<PostResponse> {
     const post = await Post.findOneBy({ id });
@@ -431,14 +431,8 @@ export class PostResolver {
       };
     }
 
-    if (title && post?.title) {
-      post.title = title;
-    }
-
-    if (content && post?.content) {
-      post.content = content;
-    }
-
+    post.title = title;
+    post.content = content;
     try {
       await post.save();
     } catch (err) {

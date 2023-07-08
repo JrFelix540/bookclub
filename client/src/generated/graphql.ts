@@ -241,9 +241,9 @@ export type MutationUpdateClubEventArgs = {
 };
 
 export type MutationUpdatePostArgs = {
-  content?: InputMaybe<Scalars["String"]["input"]>;
+  content: Scalars["String"]["input"];
   id: Scalars["Float"]["input"];
-  title?: InputMaybe<Scalars["String"]["input"]>;
+  title: Scalars["String"]["input"];
 };
 
 export type MutationVoteArgs = {
@@ -630,8 +630,8 @@ export type UpdateClubEventMutation = {
 
 export type UpdatePostMutationVariables = Exact<{
   updatePostId: Scalars["Float"]["input"];
-  title?: InputMaybe<Scalars["String"]["input"]>;
-  content?: InputMaybe<Scalars["String"]["input"]>;
+  title: Scalars["String"]["input"];
+  content: Scalars["String"]["input"];
 }>;
 
 export type UpdatePostMutation = {
@@ -2233,7 +2233,13 @@ export const UpdatePostDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "title" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
         {
           kind: "VariableDefinition",
@@ -2241,7 +2247,13 @@ export const UpdatePostDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "content" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {
