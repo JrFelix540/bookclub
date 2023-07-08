@@ -9,7 +9,7 @@ export const createPostSchema = object({
     }),
   content: string()
     .ensure()
-    .required("Title is required")
+    .required("Content is required")
     .test("Is Empty", "Cannot be only empty characters", (value) => {
       return value.split(" ").join("").length !== 0;
     })
