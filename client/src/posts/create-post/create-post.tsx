@@ -1,18 +1,21 @@
+import { LoadingPage } from "@/components/loading-page/loading-page";
 import { MainContainer } from "@/components/main-container/main-container";
 import { Navbar } from "@/components/navbar/navbar";
-import { MeDocument } from "@/generated/graphql";
+import { useUser } from "@/hooks/useUser";
 import { BaseLayout } from "@/layouts/base-layout";
-import { useQuery } from "@apollo/client";
+import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CreatePostForm } from "./create-post-form/create-post-form";
-import { Text } from "@chakra-ui/react";
 import { CreatePostSidebar } from "./create-post-sidebar/create-post-sidebar";
 
 export const CreatePost: React.FC = () => {
-  const { data, loading } = useQuery(MeDocument);
+  const { me, loading } = useUser({ redirect: true });
+  if (loading) {
+    return <LoadingPage />;
+  }
   return (
     <BaseLayout title="BookClub | Create Post">
-      <Navbar {...data?.me} loading={loading} />
+      <Navbar {...me} />
       <ContentContainer>
         <FormContainer>
           <Text fontSize="2xl" fontWeight="bold">

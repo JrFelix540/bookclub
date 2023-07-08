@@ -1,19 +1,24 @@
+import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 import { MainContainer } from "@/components/main-container/main-container";
 import { Navbar } from "@/components/navbar/navbar";
 import { RulesSidebar } from "@/components/rules-sidebar/rules-sidebar";
-import { MeDocument } from "@/generated/graphql";
+import { useUser } from "@/hooks/useUser";
 import { BaseLayout } from "@/layouts/base-layout";
-import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CreateClubForm } from "./create-club-form/create-club-form";
-import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
 
 export const CreateClub = () => {
-  const { data, loading } = useQuery(MeDocument);
+  const { me, loading } = useUser({ redirect: true });
+
+  if (loading) {
+    return <LoadingPage />;
+  }
+
   return (
     <BaseLayout title="BookClub | Create a Club">
-      <Navbar loading={loading} {...data?.me} />
+      <Navbar {...me} />
       <ContentContainer>
         <FormContainer>
           <Text fontSize="2xl" fontWeight="bold">

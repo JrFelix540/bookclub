@@ -12,7 +12,7 @@ import { SecondaryButton } from "../secondary-button/secondary-button";
 interface NavbarProps {
   id?: number | undefined | null;
   username?: string | undefined | null;
-  loading: boolean;
+  loading?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ username, loading }) => {

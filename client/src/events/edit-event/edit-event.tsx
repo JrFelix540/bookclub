@@ -10,18 +10,22 @@ import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { EditEventForm } from "./edit-event-form/edit-event-form";
+import { useUser } from "@/hooks/useUser";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const EditEvent: NextPage<{ id: number }> = ({ id }) => {
+  const { me, loading: meLoading } = useUser({ redirect: true });
+
   const { data, loading } = useQuery(ClubEventDocument, {
     variables: { clubEventId: id },
   });
-  const { data: meData, loading: meLoading } = useQuery(MeDocument);
+
   if (!data) {
-    return loading ? <p>Loading</p> : <ErrorPage />;
+    return loading || meLoading ? <LoadingPage /> : <ErrorPage />;
   }
   return (
     <BaseLayout title="">
-      <Navbar loading={meLoading} {...meData?.me} />
+      <Navbar loading={meLoading} {...me} />
       <Container>
         <FormContainer>
           <Text fontSize="2xl" fontWeight="bold">

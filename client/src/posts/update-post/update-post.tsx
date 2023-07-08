@@ -10,20 +10,23 @@ import { UpdatePostForm } from "./update-post-form/update-post-form";
 import { RulesSidebar } from "@/components/rules-sidebar/rules-sidebar";
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
 import { MainContainer } from "@/components/main-container/main-container";
+import { useUser } from "@/hooks/useUser";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const UpdatePost: NextPage<{ id: number }> = ({ id }) => {
+  const { me, loading: meLoading } = useUser({ redirect: true });
+
   const { data, loading } = useQuery(PostDocument, {
     variables: { postId: id },
   });
-  const { data: meData, loading: meLoading } = useQuery(MeDocument);
   if (!data) {
-    return loading ? <p>Loading</p> : <ErrorPage />;
+    return loading || meLoading ? <LoadingPage /> : <ErrorPage />;
   }
 
   const title = data.post.title;
   return (
     <BaseLayout title={title}>
-      <Navbar loading={meLoading} {...meData?.me} />
+      <Navbar {...me} />
       <Container>
         <FormContainer>
           <Text fontSize="2xl" fontWeight="bold">

@@ -8,12 +8,18 @@ import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CreateEventForm } from "./create-event-form/create-event-form";
+import { useUser } from "@/hooks/useUser";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const CreateEvent = () => {
-  const { data, loading } = useQuery(MeDocument);
+  const { me, loading } = useUser({ redirect: true });
+
+  if (loading) {
+    return <LoadingPage />;
+  }
   return (
     <BaseLayout title="BookClub | Create a Bookclub Event">
-      <Navbar loading={loading} {...data?.me} />
+      <Navbar {...me} />
       <ContentContainer>
         <FormContainer>
           <Text fontSize="2xl" fontWeight="bold">
