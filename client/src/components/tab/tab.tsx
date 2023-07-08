@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Theme } from "@chakra-ui/react";
+import { Button, ButtonProps } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 interface TabProps extends ButtonProps {

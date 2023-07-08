@@ -12,8 +12,8 @@ type SelectProps = Pick<
 > & {
   label?: string;
   placeholder: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  onBlur: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (_e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onBlur: (_e: React.ChangeEvent<HTMLSelectElement>) => void;
   children: React.ReactNode;
 };
 

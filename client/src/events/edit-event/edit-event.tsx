@@ -1,8 +1,10 @@
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 import { MainContainer } from "@/components/main-container/main-container";
 import { Navbar } from "@/components/navbar/navbar";
 import { RulesSidebar } from "@/components/rules-sidebar/rules-sidebar";
-import { ClubEventDocument, MeDocument } from "@/generated/graphql";
+import { ClubEventDocument } from "@/generated/graphql";
+import { useUser } from "@/hooks/useUser";
 import { BaseLayout } from "@/layouts/base-layout";
 import { ErrorPage } from "@/layouts/error";
 import { useQuery } from "@apollo/client";
@@ -10,8 +12,6 @@ import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { EditEventForm } from "./edit-event-form/edit-event-form";
-import { useUser } from "@/hooks/useUser";
-import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const EditEvent: NextPage<{ id: number }> = ({ id }) => {
   const { me, loading: meLoading } = useUser({ redirect: true });

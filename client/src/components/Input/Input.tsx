@@ -9,8 +9,8 @@ import { ChangeEvent } from "react";
 
 export interface InputProps {
   label?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onBlur: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (_e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur: (_e: ChangeEvent<HTMLInputElement>) => void;
   touched?: boolean;
   id: string;
   name: string;
@@ -48,8 +48,8 @@ export const Input: React.FC<InputProps> = ({
 };
 
 type TextareaProps = Omit<InputProps, "onChange" | "onBlur" | "type"> & {
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onBlur: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+  onChange: (_e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur: (_e: React.FocusEvent<HTMLTextAreaElement>) => void;
 };
 export const Textarea: React.FC<TextareaProps> = ({
   id,

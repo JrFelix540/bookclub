@@ -47,10 +47,10 @@ const StyledItem = styled(ListItem)({
   padding: "10px 0",
 });
 
-const StyledLink = styled(Link)(({ theme }) => ({
+const StyledLink = styled(Link)({
   display: "flex",
   gap: "5px",
-}));
+});
 
 const TextContainer = styled("div")({
   display: "flex",

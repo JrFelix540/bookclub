@@ -1,12 +1,11 @@
+import { formatErrorMessage } from "@/auth/utils/formatErrors";
 import { Input, Textarea } from "@/components/Input/Input";
 import { PrimaryButton } from "@/components/primary-button/primary-button";
+import { SelectInput } from "@/components/select-input/select-input";
 import { CreatePostDocument, MyClubsDocument } from "@/generated/graphql";
 import { useMutation, useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
-import { createPostSchema } from "./create-post-form.utils";
-import { SelectInput } from "@/components/select-input/select-input";
-import { formatErrorMessage } from "@/auth/utils/formatErrors";
 import { useRouter } from "next/router";
 
 export const CreatePostForm = () => {

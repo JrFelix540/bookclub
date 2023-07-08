@@ -77,5 +77,3 @@ const SidebarsContainer = styled("div")({
   flexDirection: "column",
   gap: "10px",
 });
-
-const SidebarLoading = styled("div")({});

@@ -14,7 +14,6 @@ export const EventPreview: React.FC<EventPreviewProps> = ({
   title,
   description,
   date,
-  duration,
 }) => {
   const preciseDate = new Date(date).getDate();
   const preciseMonth = new Date(date).toLocaleDateString("en-us", {

@@ -1,5 +1,5 @@
 import { SecondaryButton } from "@/components/secondary-button/secondary-button";
-import { Button, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";

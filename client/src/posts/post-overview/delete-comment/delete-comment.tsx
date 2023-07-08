@@ -21,10 +21,10 @@ import {
 
 export const DeleteComment: React.FC<{ id: number }> = ({ id }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deleteComment, { loading, error }] = useMutation(
-    DeleteCommentDocument,
-    { variables: { commentId: id }, refetchQueries: [PostCommentsDocument] }
-  );
+  const [deleteComment, { loading }] = useMutation(DeleteCommentDocument, {
+    variables: { commentId: id },
+    refetchQueries: [PostCommentsDocument],
+  });
   const handleDelete = () => {
     deleteComment();
     onClose();

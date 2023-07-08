@@ -112,9 +112,3 @@ const ClubTitle = styled("div")(({ theme }) => ({
   borderRadius: "15px",
   gap: "10px",
 }));
-
-const PostsContainer = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-});

@@ -2,11 +2,9 @@ import { Textarea } from "@/components/Input/Input";
 import { PrimaryButton } from "@/components/primary-button/primary-button";
 import {
   CreateCommentDocument,
-  MeDocument,
   PostCommentsDocument,
-  PostDocument,
 } from "@/generated/graphql";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 

@@ -1,15 +1,13 @@
 import { ClubsSidebar } from "@/components/clubs-sidebar/clubs-sidebar";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 import { MainContainer } from "@/components/main-container/main-container";
 import { Navbar } from "@/components/navbar/navbar";
 import { RulesSidebar } from "@/components/rules-sidebar/rules-sidebar";
-import { MeDocument } from "@/generated/graphql";
+import { useUser } from "@/hooks/useUser";
 import { BaseLayout } from "@/layouts/base-layout";
-import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { CreateEventForm } from "./create-event-form/create-event-form";
-import { useUser } from "@/hooks/useUser";
-import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const CreateEvent = () => {
   const { me, loading } = useUser({ redirect: true });

@@ -1,8 +1,4 @@
-import {
-  MeDocument,
-  PostCommentsDocument,
-  PostQuery,
-} from "@/generated/graphql";
+import { MeDocument, PostCommentsDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";

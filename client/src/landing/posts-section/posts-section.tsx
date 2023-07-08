@@ -1,5 +1,4 @@
 import { Tab } from "@/components/tab/tab";
-import { Button } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 import React from "react";
@@ -49,13 +48,6 @@ const PostsHeading = styled("div")(({ theme }) => ({
   display: "flex",
   gap: "15px",
   borderRadius: "15px",
-}));
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  display: "flex",
-  gap: "10px",
-  alignItems: "center",
-  color: theme.palette.white,
 }));
 
 const PostsContainer = styled("div")({

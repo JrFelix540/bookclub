@@ -1,4 +1,4 @@
-import { Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { Skeleton, SkeletonCircle } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
 export const PostPreviewLoading = () => {

@@ -1,7 +1,13 @@
 {
   "extends": "next",
+  "ignorePatterns": ["**/generated/*.ts"],
   "rules": {
     "react/react-in-jsx": "off",
-    "no-unused-vars": 1
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
   }
 }

@@ -1,17 +1,12 @@
-import {
-  FeedPostsDocument,
-  MeDocument,
-  MeQuery,
-  SignOutDocument,
-} from "@/generated/graphql";
+import { MeDocument, MeQuery, SignOutDocument } from "@/generated/graphql";
 import { useMutation } from "@apollo/client";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Menu as ChakraMenu,
   MenuButton,
-  Button,
-  MenuList,
   MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";

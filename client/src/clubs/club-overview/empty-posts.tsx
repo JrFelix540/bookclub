@@ -28,11 +28,3 @@ const Container = styled("div")(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
 }));
-
-const Content = styled("div")({
-  display: "flex",
-  flexDirection: "column",
-  gap: "15px",
-  justifyContent: "center",
-  alignItems: "center",
-});
