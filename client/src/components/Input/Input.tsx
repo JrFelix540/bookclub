@@ -1,11 +1,13 @@
 import {
-  FormControl,
-  FormLabel,
   Input as ChakraInput,
   Textarea as ChakraTextarea,
+  FormControl,
   FormErrorMessage,
+  FormLabel,
+  forwardRef,
 } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
+import ResizeTextArea from "react-textarea-autosize";
 
 export interface InputProps {
   label?: string;
@@ -51,16 +53,11 @@ type TextareaProps = Omit<InputProps, "onChange" | "onBlur" | "type"> & {
   onChange: (_e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onBlur: (_e: React.FocusEvent<HTMLTextAreaElement>) => void;
 };
-export const Textarea: React.FC<TextareaProps> = ({
-  id,
-  name,
-  value,
-  label,
-  error,
-  touched,
-  onChange,
-  onBlur,
-}) => {
+export const Textarea: React.FC<TextareaProps> = forwardRef<
+  TextareaProps,
+  "textarea"
+>((props, ref) => {
+  const { id, name, value, label, error, touched, onChange, onBlur } = props;
   return (
     <FormControl isInvalid={!!error && touched}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
@@ -71,8 +68,11 @@ export const Textarea: React.FC<TextareaProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         variant="filled"
+        as={ResizeTextArea}
+        ref={ref}
+        transition="height none"
       />
       {touched && error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
-};
+});
