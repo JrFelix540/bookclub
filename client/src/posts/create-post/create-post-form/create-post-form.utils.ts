@@ -1,7 +1,18 @@
 import { object, string } from "yup";
 
 export const createPostSchema = object({
-  title: string().required("Title is required"),
-  content: string().required("Content is required"),
-  communityId: string().required("Select a community"),
+  title: string()
+    .ensure()
+    .required("Title is required")
+    .test("Is Empty", "Cannot be only empty characters", (value) => {
+      return value.split(" ").join("").length !== 0;
+    }),
+  content: string()
+    .ensure()
+    .required("Title is required")
+    .test("Is Empty", "Cannot be only empty characters", (value) => {
+      return value.split(" ").join("").length !== 0;
+    })
+    .required("Content is required"),
+  clubId: string().required("Select a community"),
 });

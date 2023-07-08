@@ -7,6 +7,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { createPostSchema } from "./create-post-form.utils";
+import { Flex } from "@chakra-ui/react";
 
 export const CreatePostForm = () => {
   const router = useRouter();
@@ -35,10 +37,11 @@ export const CreatePostForm = () => {
       }
       router.push(`/posts/${postData?.createPost.post?.id}`);
     },
-    // validationSchema: createPostSchema,
+    validationSchema: createPostSchema,
     enableReinitialize: true,
   });
 
+  console.log(formik.errors);
   return (
     <Form onSubmit={formik.handleSubmit}>
       <SelectInput
@@ -66,6 +69,7 @@ export const CreatePostForm = () => {
         onChange={formik.handleChange}
         value={formik.values.title}
         error={formik.errors.title}
+        touched={formik.touched.title}
         onBlur={formik.handleBlur}
       />
       <Textarea
@@ -75,11 +79,14 @@ export const CreatePostForm = () => {
         onChange={formik.handleChange}
         value={formik.values.content}
         error={formik.errors.content}
+        touched={formik.touched.content}
         onBlur={formik.handleBlur}
       />
-      <PrimaryButton type="submit" isLoading={loading}>
-        Create Post
-      </PrimaryButton>
+      <Flex justifyContent={"flex-end"}>
+        <PrimaryButton type="submit" isLoading={loading}>
+          Create Post
+        </PrimaryButton>
+      </Flex>
     </Form>
   );
 };
