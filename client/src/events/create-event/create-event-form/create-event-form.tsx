@@ -7,6 +7,7 @@ import { CreateClubEventDocument, MyClubsDocument } from "@/generated/graphql";
 import { SelectInput } from "@/components/select-input/select-input";
 import { useRouter } from "next/router";
 import { createEventSchema } from "./create-event-form.utils";
+import { Flex } from "@chakra-ui/react";
 
 export const CreateEventForm = () => {
   const router = useRouter();
@@ -52,6 +53,7 @@ export const CreateEventForm = () => {
         value={formik.values.clubId}
         onBlur={formik.handleBlur}
         onChange={formik.handleChange}
+        touched={formik.touched.clubId}
       >
         {data?.meWithClubs?.memberClubs.map((club) => (
           <option key={club.id} value={club.id}>
@@ -77,6 +79,7 @@ export const CreateEventForm = () => {
         onChange={formik.handleChange}
         value={formik.values.description}
         error={formik.errors.description}
+        touched={formik.touched.description}
         onBlur={formik.handleBlur}
       />
       <EventScheduleContainer>
@@ -121,11 +124,11 @@ export const CreateEventForm = () => {
           onChange={formik.handleChange}
         />
       </div>
-      <ButtonContainer>
+      <Flex justifyContent="flex-end">
         <PrimaryButton type="submit" isLoading={loading}>
           Create Event
         </PrimaryButton>
-      </ButtonContainer>
+      </Flex>
     </Form>
   );
 };
@@ -141,9 +144,4 @@ const EventScheduleContainer = styled("div")({
   display: "grid",
   gridTemplateColumns: "2fr 1fr",
   gap: "10px",
-});
-
-const ButtonContainer = styled("div")({
-  display: "flex",
-  justifyContent: "flex-end",
 });
