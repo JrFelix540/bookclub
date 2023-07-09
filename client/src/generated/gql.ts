@@ -67,7 +67,7 @@ const documents = {
     types.PopularClubsDocument,
   "query PopularEvents {\n  popularEvents {\n    id\n    title\n    duration\n    date\n    club {\n      id\n      name\n    }\n  }\n}":
     types.PopularEventsDocument,
-  "query PopularPosts($limit: Int!, $cursor: Int) {\n  popularPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}":
+  "query PopularPosts($limit: Int!, $offset: Int) {\n  popularPosts(limit: $limit, offset: $offset) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n      createdAt\n    }\n  }\n}":
     types.PopularPostsDocument,
   "query Post($postId: Float!) {\n  post(id: $postId) {\n    id\n    title\n    content\n    hasVoted\n    isOwner\n    points\n    joinStatus\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n    }\n  }\n}":
     types.PostDocument,
@@ -261,8 +261,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "query PopularPosts($limit: Int!, $cursor: Int) {\n  popularPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}"
-): (typeof documents)["query PopularPosts($limit: Int!, $cursor: Int) {\n  popularPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n    }\n  }\n}"];
+  source: "query PopularPosts($limit: Int!, $offset: Int) {\n  popularPosts(limit: $limit, offset: $offset) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n      createdAt\n    }\n  }\n}"
+): (typeof documents)["query PopularPosts($limit: Int!, $offset: Int) {\n  popularPosts(limit: $limit, offset: $offset) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n      createdAt\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

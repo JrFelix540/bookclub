@@ -205,7 +205,7 @@ export class PostResolver {
   @Query(() => PaginatedPosts, { nullable: true })
   async popularPosts(
     @Arg("limit", () => Int) limit: number,
-    @Arg("cursor", () => Int, { nullable: true }) cursor: number | null
+    @Arg("offset", () => Int, { nullable: true }) offset: number | null
   ): Promise<PaginatedPosts> {
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1;
@@ -213,7 +213,7 @@ export class PostResolver {
     const posts = await postRepository
       .createQueryBuilder("post")
       .orderBy("post.points", "DESC")
-      .skip(cursor ? cursor : 0)
+      .skip(offset ? offset : 0)
       .take(realLimitPlusOne)
       .getMany();
 

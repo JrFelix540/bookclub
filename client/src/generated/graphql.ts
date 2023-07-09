@@ -349,8 +349,8 @@ export type QueryMyClubsPostsArgs = {
 };
 
 export type QueryPopularPostsArgs = {
-  cursor?: InputMaybe<Scalars["Int"]["input"]>;
   limit: Scalars["Int"]["input"];
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QueryPostArgs = {
@@ -870,7 +870,7 @@ export type PopularEventsQuery = {
 
 export type PopularPostsQueryVariables = Exact<{
   limit: Scalars["Int"]["input"];
-  cursor?: InputMaybe<Scalars["Int"]["input"]>;
+  offset?: InputMaybe<Scalars["Int"]["input"]>;
 }>;
 
 export type PopularPostsQuery = {
@@ -890,6 +890,7 @@ export type PopularPostsQuery = {
       title: string;
       points: number;
       hasVoted?: number | null;
+      createdAt: string;
       club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; id: number; username: string };
     }>;
@@ -3220,7 +3221,7 @@ export const PopularPostsDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "cursor" },
+            name: { kind: "Name", value: "offset" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
         },
@@ -3242,10 +3243,10 @@ export const PopularPostsDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "cursor" },
+                name: { kind: "Name", value: "offset" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "cursor" },
+                  name: { kind: "Name", value: "offset" },
                 },
               },
             ],
@@ -3320,6 +3321,10 @@ export const PopularPostsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "hasVoted" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
                       },
                     ],
                   },

@@ -1,5 +1,5 @@
-query PopularPosts($limit: Int!, $cursor: Int) {
-  popularPosts(limit: $limit, cursor: $cursor) {
+query PopularPosts($limit: Int!, $offset: Int) {
+  popularPosts(limit: $limit, offset: $offset) {
     errors {
       field
       message
@@ -19,6 +19,7 @@ query PopularPosts($limit: Int!, $cursor: Int) {
       title
       points
       hasVoted
+      createdAt
     }
   }
 }
