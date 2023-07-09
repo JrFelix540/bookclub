@@ -6,7 +6,7 @@ import { useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { editEventSchema } from "./edit-event-form.utils";
+import { editEventSchema, updateEventCache } from "./edit-event-form.utils";
 
 interface EditEventFormProps {
   event: ClubEventQuery["clubEvent"];
@@ -27,6 +27,11 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
         variables: {
           id: event.id,
           ...values,
+        },
+        update: (cache, { data }) => {
+          if (data) {
+            updateEventCache(data.updateClubEvent, cache);
+          }
         },
       });
       if (errors) {

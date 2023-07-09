@@ -624,6 +624,7 @@ export type UpdateClubEventMutation = {
     title: string;
     description: string;
     meetingLink: string;
+    duration: string;
     date: any;
   };
 };
@@ -638,7 +639,12 @@ export type UpdatePostMutation = {
   __typename?: "Mutation";
   updatePost: {
     __typename?: "PostResponse";
-    post?: { __typename?: "Post"; id: number } | null;
+    post?: {
+      __typename?: "Post";
+      id: number;
+      title: string;
+      content: string;
+    } | null;
     errors?: Array<{
       __typename?: "FieldError";
       field: string;
@@ -2196,6 +2202,7 @@ export const UpdateClubEventDocument = {
                 { kind: "Field", name: { kind: "Name", value: "title" } },
                 { kind: "Field", name: { kind: "Name", value: "description" } },
                 { kind: "Field", name: { kind: "Name", value: "meetingLink" } },
+                { kind: "Field", name: { kind: "Name", value: "duration" } },
                 { kind: "Field", name: { kind: "Name", value: "date" } },
               ],
             },
@@ -2298,6 +2305,11 @@ export const UpdatePostDocument = {
                     kind: "SelectionSet",
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "title" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "content" },
+                      },
                     ],
                   },
                 },

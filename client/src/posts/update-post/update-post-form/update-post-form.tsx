@@ -6,7 +6,7 @@ import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { updatePostSchema } from "./update-post-form.utils";
+import { updateCache, updatePostSchema } from "./update-post-form.utils";
 
 interface UpdatePostFormProps {
   post: PostQuery["post"];
@@ -25,6 +25,12 @@ export const UpdatePostForm: React.FC<UpdatePostFormProps> = ({ post }) => {
         variables: {
           updatePostId: post.id,
           ...values,
+        },
+        update: (cache, { data }) => {
+          const post = data?.updatePost.post;
+          if (post) {
+            updateCache(post.title, post.content, cache, post.id);
+          }
         },
       });
 

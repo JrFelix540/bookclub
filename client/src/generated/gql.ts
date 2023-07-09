@@ -42,9 +42,9 @@ const documents = {
     types.SignInDocument,
   "mutation Signup($password: String!, $email: String!, $username: String!) {\n  signup(password: $password, email: $email, username: $username) {\n    errors {\n      field\n      message\n    }\n    loggedInUser {\n      id\n      accessToken\n      username\n    }\n  }\n}":
     types.SignupDocument,
-  "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}":
+  "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    duration\n    date\n  }\n}":
     types.UpdateClubEventDocument,
-  "mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n    }\n    errors {\n      field\n      message\n    }\n  }\n}":
+  "mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n      title\n      content\n    }\n    errors {\n      field\n      message\n    }\n  }\n}":
     types.UpdatePostDocument,
   "mutation Vote($value: Int!, $postId: Int!) {\n  vote(value: $value, postId: $postId) {\n    errors {\n      field\n      message\n    }\n    upvote {\n      creatorId\n      postId\n      value\n    }\n  }\n}":
     types.VoteDocument,
@@ -183,14 +183,14 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}"
-): (typeof documents)["mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    date\n  }\n}"];
+  source: "mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    duration\n    date\n  }\n}"
+): (typeof documents)["mutation UpdateClubEvent($duration: String!, $meetingLink: String!, $date: DateTime!, $description: String!, $title: String!, $id: Float!) {\n  updateClubEvent(\n    duration: $duration\n    meetingLink: $meetingLink\n    date: $date\n    description: $description\n    title: $title\n    id: $id\n  ) {\n    id\n    title\n    description\n    meetingLink\n    duration\n    date\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"
-): (typeof documents)["mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
+  source: "mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n      title\n      content\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"
+): (typeof documents)["mutation UpdatePost($updatePostId: Float!, $title: String!, $content: String!) {\n  updatePost(id: $updatePostId, title: $title, content: $content) {\n    post {\n      id\n      title\n      content\n    }\n    errors {\n      field\n      message\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

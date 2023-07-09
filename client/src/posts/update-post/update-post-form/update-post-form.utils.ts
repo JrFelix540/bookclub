@@ -1,3 +1,5 @@
+import { UpdatePostMutation } from "@/generated/graphql";
+import { ApolloCache, gql } from "@apollo/client";
 import { object, string } from "yup";
 
 export const updatePostSchema = object({
@@ -15,3 +17,38 @@ export const updatePostSchema = object({
     })
     .required("Content is required"),
 });
+
+export const updateCache = (
+  title: string,
+  content: string,
+  cache: ApolloCache<UpdatePostMutation>,
+  postId: number
+) => {
+  const data = cache.readFragment<{
+    id: number;
+    title: string;
+    content: string;
+  }>({
+    id: "Post:" + postId,
+    fragment: gql`
+      fragment _ on Post {
+        id
+        title
+        content
+      }
+    `,
+  });
+
+  if (data) {
+    cache.writeFragment({
+      id: "Post:" + postId,
+      fragment: gql`
+        fragment _ on Post {
+          title
+          content
+        }
+      `,
+      data: { title, content },
+    });
+  }
+};
