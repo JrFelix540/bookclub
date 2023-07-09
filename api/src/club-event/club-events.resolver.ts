@@ -1,12 +1,4 @@
-import {
-  Query,
-  Resolver,
-  Arg,
-  Authorized,
-  Mutation,
-  Ctx,
-  Int,
-} from "type-graphql";
+import { Query, Resolver, Arg, Authorized, Mutation, Ctx } from "type-graphql";
 import { ClubEvent } from "./club-events.entity";
 import {
   appDataSource,
