@@ -37,17 +37,17 @@ export const PostMeta: React.FC<PostMetaProps> = ({
                 <Link href={`/clubs/${club.id}`}>{club.name}</Link>
               </Text>
             </UserProfile>
-            {isOwner && (
-              <Flex justifyContent="flex-end" alignItems="center">
-                <PostDelete id={id} clubId={club.id} />
-                <Link href={`/posts/update/${id}`}>
-                  <EditIcon />
-                </Link>
-              </Flex>
-            )}
           </ContentBody>
         </ContentContainer>
       </DetailsContainer>
+      {isOwner && (
+        <Flex justifyContent="flex-end" alignItems="center">
+          <PostDelete id={id} clubId={club.id} />
+          <Link href={`/posts/update/${id}`}>
+            <EditIcon />
+          </Link>
+        </Flex>
+      )}
       <PostComments postId={id} />
     </Container>
   );
