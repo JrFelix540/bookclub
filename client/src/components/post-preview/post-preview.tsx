@@ -34,8 +34,8 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
         <UserProfile>
           <Avatar size="xs" value={creator} />
           <Text fontSize="xs">
-            Posted by {creator} in{" "}
-            <Link href={`/clubs/${id}`}>{club.name}</Link>
+            Posted by {creator} in
+            <Link href={`/clubs/${club.id}`}>{club.name}</Link>
           </Text>
         </UserProfile>
       </ContentSection>
