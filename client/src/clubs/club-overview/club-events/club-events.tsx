@@ -1,7 +1,7 @@
 import { EventPreview } from "@/components/event-preview/event-preview";
 import { ClubEventsWithIdDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
-import styled from "@emotion/styled";
+import { Flex } from "@chakra-ui/react";
 
 export const ClubEvents: React.FC<{ id: number }> = ({ id }) => {
   const { data } = useQuery(ClubEventsWithIdDocument, {
@@ -9,7 +9,7 @@ export const ClubEvents: React.FC<{ id: number }> = ({ id }) => {
   });
 
   return (
-    <Container>
+    <Flex direction="column" gap="10px">
       {data?.clubEventsWithId.map((event) => (
         <EventPreview
           key={event.id}
@@ -20,10 +20,6 @@ export const ClubEvents: React.FC<{ id: number }> = ({ id }) => {
           duration={event.duration}
         />
       ))}
-    </Container>
+    </Flex>
   );
 };
-
-const Container = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.background.secondary,
-}));

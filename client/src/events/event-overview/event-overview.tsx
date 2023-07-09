@@ -130,7 +130,7 @@ const Container = styled(MainContainer)({
 
 const EventDetails = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.secondary,
-  padding: "10px",
+  padding: "20px",
   display: "flex",
   borderRadius: "15px",
   flexDirection: "column",
