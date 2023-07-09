@@ -786,6 +786,7 @@ export type FeedPostsQuery = {
       content: string;
       points: number;
       hasVoted?: number | null;
+      createdAt: string;
       club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; username: string };
     }>;
@@ -2887,6 +2888,10 @@ export const FeedPostsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "hasVoted" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
                       },
                       {
                         kind: "Field",

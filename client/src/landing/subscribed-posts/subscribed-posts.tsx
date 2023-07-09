@@ -4,9 +4,11 @@ import { PostPreview } from "@/components/post-preview/post-preview";
 import { EmptyPosts } from "@/components/empty-posts/empty-posts";
 import { PostsLoading } from "@/components/posts-loading/posts-loading";
 import { ErrorPage } from "@/layouts/error";
+import { Flex } from "@chakra-ui/react";
+import { SecondaryButton } from "@/components/secondary-button/secondary-button";
 
 export const SubscribedPosts = () => {
-  const { data, loading, error } = useQuery(FeedPostsDocument, {
+  const { data, loading, error, fetchMore } = useQuery(FeedPostsDocument, {
     variables: { limit: 10 },
   });
   if (error) {
@@ -37,6 +39,25 @@ export const SubscribedPosts = () => {
           hasVoted={post.hasVoted}
         />
       ))}
+      {data.myClubsPosts.hasMore && (
+        <Flex justifyContent="center">
+          <SecondaryButton
+            variant="outline"
+            onClick={() => {
+              fetchMore({
+                variables: {
+                  cursor:
+                    data.myClubsPosts?.posts[data.myClubsPosts.posts.length - 1]
+                      .createdAt,
+                  limit: 10,
+                },
+              });
+            }}
+          >
+            Load More
+          </SecondaryButton>
+        </Flex>
+      )}
     </>
   );
 };

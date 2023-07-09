@@ -195,7 +195,6 @@ export class PostResolver {
       replacements
     );
 
-    console.log("posts", posts);
     return {
       posts: posts.slice(0, realLimit),
       hasMore: posts.length === realLimitPlusOne,
@@ -266,8 +265,8 @@ export class PostResolver {
     select p.*
     from post p
     where (p."clubId" in (${clubIds}))
-    ${cursor ? `and p."updatedAt" < $2` : ``}
-    order by p."updatedAt" DESC
+    ${cursor ? `and p."createdAt" < $2` : ``}
+    order by p."createdAt" DESC
     limit $1
 
     `,

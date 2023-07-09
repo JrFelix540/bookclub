@@ -64,6 +64,18 @@ function createApolloClient() {
                 };
               },
             },
+            myClubsPosts: {
+              keyArgs: false,
+              merge(
+                existing: PaginatedPosts,
+                incoming: PaginatedPosts
+              ): PaginatedPosts {
+                return {
+                  ...incoming,
+                  posts: [...(existing?.posts || []), ...incoming.posts],
+                };
+              },
+            },
           },
         },
       },

@@ -56,7 +56,7 @@ const documents = {
     types.ClubPostsDocument,
   "query ClubEvent($clubEventId: Float!) {\n  clubEvent(id: $clubEventId) {\n    id\n    title\n    description\n    duration\n    creator {\n      id\n      username\n    }\n    club {\n      id\n      name\n      description\n      dateCreated\n      hasJoined\n    }\n    attendees {\n      id\n      username\n    }\n    date\n    meetingLink\n  }\n}":
     types.ClubEventDocument,
-  "query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}":
+  "query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      createdAt\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}":
     types.FeedPostsDocument,
   "query LatestPosts($limit: Int!, $cursor: String) {\n  latestPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      content\n      club {\n        id\n        name\n      }\n      creator {\n        id\n        username\n      }\n      title\n      points\n      hasVoted\n      createdAt\n    }\n  }\n}":
     types.LatestPostsDocument,
@@ -225,8 +225,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}"
-): (typeof documents)["query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}"];
+  source: "query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      createdAt\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}"
+): (typeof documents)["query FeedPosts($limit: Int!, $cursor: String) {\n  myClubsPosts(limit: $limit, cursor: $cursor) {\n    errors {\n      field\n      message\n    }\n    hasMore\n    posts {\n      id\n      title\n      content\n      points\n      hasVoted\n      createdAt\n      club {\n        id\n        name\n      }\n      creator {\n        username\n      }\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

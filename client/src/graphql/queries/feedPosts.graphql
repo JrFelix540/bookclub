@@ -11,6 +11,7 @@ query FeedPosts($limit: Int!, $cursor: String) {
       content
       points
       hasVoted
+      createdAt
       club {
         id
         name
