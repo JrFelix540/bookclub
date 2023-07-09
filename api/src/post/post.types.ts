@@ -22,7 +22,7 @@ export class UpvoteResponse {
 
 @ObjectType()
 export class PaginatedPosts {
-  @Field(() => [Post], { nullable: true })
+  @Field(() => [Post])
   posts: Post[];
 
   @Field(() => Boolean)

@@ -19,6 +19,7 @@ query LatestPosts($limit: Int!, $cursor: String) {
       title
       points
       hasVoted
+      createdAt
     }
   }
 }

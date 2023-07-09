@@ -188,13 +188,14 @@ export class PostResolver {
       `
     select p.* 
     from post p
-    ${cursor ? `where p."updatedAt" < $2` : ``}
-    order by p."updatedAt" DESC
+    ${cursor ? `where p."createdAt" < $2` : ``}
+    order by p."createdAt" DESC
     limit $1
     `,
       replacements
     );
 
+    console.log("posts", posts);
     return {
       posts: posts.slice(0, realLimit),
       hasMore: posts.length === realLimitPlusOne,

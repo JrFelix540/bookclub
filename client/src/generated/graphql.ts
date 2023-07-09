@@ -260,7 +260,7 @@ export type PaginatedPosts = {
   __typename?: "PaginatedPosts";
   errors?: Maybe<Array<FieldError>>;
   hasMore: Scalars["Boolean"]["output"];
-  posts?: Maybe<Array<Post>>;
+  posts: Array<Post>;
 };
 
 export type Post = {
@@ -725,7 +725,7 @@ export type ClubPostsQuery = {
       field: string;
       message: string;
     }> | null;
-    posts?: Array<{
+    posts: Array<{
       __typename?: "Post";
       id: number;
       title: string;
@@ -733,7 +733,7 @@ export type ClubPostsQuery = {
       points: number;
       hasVoted?: number | null;
       creator: { __typename?: "User"; username: string };
-    }> | null;
+    }>;
   } | null;
 };
 
@@ -779,7 +779,7 @@ export type FeedPostsQuery = {
       field: string;
       message: string;
     }> | null;
-    posts?: Array<{
+    posts: Array<{
       __typename?: "Post";
       id: number;
       title: string;
@@ -788,7 +788,7 @@ export type FeedPostsQuery = {
       hasVoted?: number | null;
       club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; username: string };
-    }> | null;
+    }>;
   } | null;
 };
 
@@ -807,16 +807,17 @@ export type LatestPostsQuery = {
       field: string;
       message: string;
     }> | null;
-    posts?: Array<{
+    posts: Array<{
       __typename?: "Post";
       id: number;
       content: string;
       title: string;
       points: number;
       hasVoted?: number | null;
+      createdAt: string;
       club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; id: number; username: string };
-    }> | null;
+    }>;
   };
 };
 
@@ -882,7 +883,7 @@ export type PopularPostsQuery = {
       field: string;
       message: string;
     }> | null;
-    posts?: Array<{
+    posts: Array<{
       __typename?: "Post";
       id: number;
       content: string;
@@ -891,7 +892,7 @@ export type PopularPostsQuery = {
       hasVoted?: number | null;
       club: { __typename?: "Club"; id: number; name: string };
       creator: { __typename?: "User"; id: number; username: string };
-    }> | null;
+    }>;
   } | null;
 };
 
@@ -3050,6 +3051,10 @@ export const LatestPostsDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "hasVoted" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
                       },
                     ],
                   },
