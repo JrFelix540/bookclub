@@ -45,11 +45,7 @@ export const Menu = () => {
         <StyledMenuItem>
           <Link href="/posts/create">Create a post</Link>
         </StyledMenuItem>
-        <StyledMenuItem>
-          <Button variant={"ghost"} color="white" onClick={logout}>
-            Log Out
-          </Button>
-        </StyledMenuItem>
+        <StyledMenuItem onClick={logout}>Log Out</StyledMenuItem>
       </StyledMenuList>
     </ChakraMenu>
   );
