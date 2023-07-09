@@ -6,6 +6,7 @@ import { useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { editEventSchema } from "./edit-event-form.utils";
 
 interface EditEventFormProps {
   event: ClubEventQuery["clubEvent"];
@@ -17,7 +18,7 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
     initialValues: {
       title: event.title,
       description: event.description,
-      date: event.date as string,
+      date: new Date(event.date).toISOString().slice(0, 16),
       meetingLink: event.meetingLink,
       duration: event.duration,
     },
@@ -36,6 +37,7 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
       }
     },
     enableReinitialize: true,
+    validationSchema: editEventSchema,
   });
 
   return (
@@ -59,6 +61,7 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
         value={formik.values.description}
         error={formik.errors.description}
         onBlur={formik.handleBlur}
+        touched={formik.touched.description}
       />
       <EventScheduleContainer>
         <Input
