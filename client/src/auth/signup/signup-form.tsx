@@ -58,6 +58,7 @@ export const SignUpForm: React.FC = () => {
         value={formik.values.email}
         error={formik.errors.email}
         onBlur={formik.handleBlur}
+        touched={formik.touched.email}
       />
       <Input
         id="username"
@@ -68,6 +69,7 @@ export const SignUpForm: React.FC = () => {
         value={formik.values.username}
         error={formik.errors.username}
         onBlur={formik.handleBlur}
+        touched={formik.touched.username}
       />
       <Input
         id="password"
@@ -78,6 +80,7 @@ export const SignUpForm: React.FC = () => {
         value={formik.values.password}
         error={formik.errors.password}
         onBlur={formik.handleBlur}
+        touched={formik.touched.password}
       />
 
       <PrimaryButton type="submit" isLoading={loading}>

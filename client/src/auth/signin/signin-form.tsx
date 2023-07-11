@@ -57,6 +57,7 @@ export const SignInForm = () => {
         value={formik.values.email}
         error={formik.errors.email}
         onBlur={formik.handleBlur}
+        touched={formik.touched.email}
       />
       <Flex direction="column" gap="5px">
         <Input
@@ -68,6 +69,7 @@ export const SignInForm = () => {
           value={formik.values.password}
           error={formik.errors.password}
           onBlur={formik.handleBlur}
+          touched={formik.touched.password}
         />
         <Flex justifyContent="flex-end">
           <StyledLink href="/auth/password/forget">
