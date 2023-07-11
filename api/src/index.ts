@@ -41,10 +41,6 @@ const main = async () => {
 
   await server.start();
 
-  // Set up our Express middleware to handle CORS, body parsing,
-
-  // and our expressMiddleware function.
-
   app.use(
     "/",
 
@@ -55,10 +51,6 @@ const main = async () => {
 
     bodyParser.json(),
 
-    // expressMiddleware accepts the same arguments:
-
-    // an Apollo Server instance and optional configuration options
-
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         return {
@@ -68,8 +60,6 @@ const main = async () => {
       },
     })
   );
-
-  // Modified server startup
 
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve)
