@@ -5,7 +5,7 @@ import {
   PostDocument,
 } from "@/generated/graphql";
 import { useMutation, useQuery } from "@apollo/client";
-import { Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -51,7 +51,12 @@ export const ClubSidebar: React.FC<ClubSidebarProps> = ({
       <Text>{description}</Text>
       <Text>Created on {dateCreated}</Text>
       {hasJoined ? (
-        <JoinedContainer>Joined</JoinedContainer>
+        <Flex direction="column" gap="10px">
+          <Link href="/clubs/events/create">
+            <SecondaryButton width="100%">Create Club Event</SecondaryButton>
+          </Link>
+          <JoinedContainer>Joined</JoinedContainer>
+        </Flex>
       ) : (
         <SecondaryButton onClick={join}>Join Club</SecondaryButton>
       )}

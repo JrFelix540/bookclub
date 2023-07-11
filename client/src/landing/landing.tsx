@@ -20,8 +20,8 @@ export const Landing: React.FC = () => {
           <PostsSection />
           <SidebarsContainer>
             {data?.me && <SideBar />}
-            <ClubsSidebar />
             <EventsSidebar />
+            <ClubsSidebar />
           </SidebarsContainer>
         </Content>
       </BodyContainer>
