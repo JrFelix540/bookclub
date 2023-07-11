@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import { formatErrorMessage } from "../utils/formatErrors";
 import { useRouter } from "next/router";
 import { signInSchema } from "./signin-utils";
+import { Flex, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
 export const SignInForm = () => {
   const router = useRouter();
@@ -56,19 +58,30 @@ export const SignInForm = () => {
         error={formik.errors.email}
         onBlur={formik.handleBlur}
       />
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        label="Password"
-        onChange={formik.handleChange}
-        value={formik.values.password}
-        error={formik.errors.password}
-        onBlur={formik.handleBlur}
-      />
+      <Flex direction="column" gap="5px">
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          label="Password"
+          onChange={formik.handleChange}
+          value={formik.values.password}
+          error={formik.errors.password}
+          onBlur={formik.handleBlur}
+        />
+        <Flex justifyContent="flex-end">
+          <StyledLink href="/auth/password/forget">
+            <Text fontSize="xs">Forgot Password?</Text>
+          </StyledLink>
+        </Flex>
+      </Flex>
       <PrimaryButton type="submit" isLoading={loading}>
         Sign In
       </PrimaryButton>
+      <Text fontSize="xs">
+        Don&apos;t have an account?
+        <StyledLink href="/auth/sign-up">&nbsp;Sign Up</StyledLink>
+      </Text>
     </StyledForm>
   );
 };
@@ -79,3 +92,7 @@ const StyledForm = styled("form")({
   gap: "16px",
   width: "320px",
 });
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary,
+}));

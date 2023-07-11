@@ -34,6 +34,10 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @Field()
+  @Column()
+  emailConfirmation: boolean;
+
   @Field(() => [Club])
   @OneToMany(() => Club, (club) => club.creator, {
     onDelete: "SET NULL",

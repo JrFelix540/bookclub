@@ -25,7 +25,9 @@ export const authChecker: AuthChecker<MyContext> = ({ context }) => {
   if (!context.token) {
     return false;
   }
-  const userId = getUserIdFromToken(context.token, TokenType.Auth);
+
+  const token = context.token.split(" ")[1];
+  const userId = getUserIdFromToken(token, TokenType.Auth);
   if (!userId) {
     return false;
   }

@@ -3,6 +3,7 @@ import { getEnvironmentVariables } from "../config/env";
 
 const ACCESS_TOKEN_DURATION = "1d";
 const RESET_TOKEN_DURATION = "1h";
+const CONFIRM_EMAIL_DURATION = "1h";
 
 const env = getEnvironmentVariables();
 
@@ -53,11 +54,27 @@ export const verifyToken = (token: string): JwtToken | null => {
   }
 };
 
+export const generateConfirmEmailToken = (tokenBody: { userId: number }) => {
+  try {
+    const payload = { ...tokenBody, type: TokenType.EmailConfirmation };
+    const confirmEmailToken = jwt.sign(payload, env.JWT_SECRET, {
+      expiresIn: CONFIRM_EMAIL_DURATION,
+    });
+    return confirmEmailToken;
+  } catch (e) {
+    console.log(
+      "failed to generate email confirmation token for",
+      tokenBody.userId
+    );
+    throw new Error(e);
+  }
+};
+
 export const getUserIdFromToken = (
   token: string,
   type: TokenType
 ): number | null => {
-  const decodedToken = verifyToken(token.split(" ")[1]);
+  const decodedToken = verifyToken(token);
   if (!decodedToken) {
     return null;
   }

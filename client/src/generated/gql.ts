@@ -31,11 +31,11 @@ const documents = {
     types.DeleteCommentDocument,
   "mutation DeletePost($deletePostId: Int!) {\n  deletePost(id: $deletePostId)\n}":
     types.DeletePostDocument,
-  "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}":
+  "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email)\n}":
     types.ForgetPasswordDocument,
   "mutation JoinClub($clubId: Int!) {\n  joinClub(id: $clubId) {\n    ok\n    errors {\n      field\n      message\n    }\n  }\n}":
     types.JoinClubDocument,
-  "mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token) {\n    errors {\n      field\n      message\n    }\n    ok\n  }\n}":
+  "mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token)\n}":
     types.ResetPasswordDocument,
   "mutation SignOut {\n  signOut\n}": types.SignOutDocument,
   "mutation SignIn($password: String!, $email: String!) {\n  signin(password: $password, email: $email) {\n    loggedInUser {\n      id\n      accessToken\n      username\n    }\n    errors {\n      field\n      message\n    }\n  }\n}":
@@ -147,8 +147,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}"
-): (typeof documents)["mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email) {\n    ok\n  }\n}"];
+  source: "mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email)\n}"
+): (typeof documents)["mutation ForgetPassword($email: String!) {\n  forgetPassword(email: $email)\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -159,8 +159,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: "mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token) {\n    errors {\n      field\n      message\n    }\n    ok\n  }\n}"
-): (typeof documents)["mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token) {\n    errors {\n      field\n      message\n    }\n    ok\n  }\n}"];
+  source: "mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token)\n}"
+): (typeof documents)["mutation ResetPassword($password: String!, $token: String!) {\n  resetPassword(password: $password, token: $token)\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

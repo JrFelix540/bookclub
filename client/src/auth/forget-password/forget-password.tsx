@@ -8,7 +8,7 @@ export const ForgetPassword: React.FC = () => {
     <>
       <PageHead title="Reset Password" />
       <AuthLayout>
-        <Heading fontSize="2xl">Send Reset Link to Email</Heading>
+        <Heading fontSize="2xl">Forgot Your Password?</Heading>
         <ForgetPasswordForm />
       </AuthLayout>
     </>

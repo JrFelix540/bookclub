@@ -49,12 +49,6 @@ export type BooleanFieldResponse = {
   ok?: Maybe<Scalars["Boolean"]["output"]>;
 };
 
-export type BooleanResponse = {
-  __typename?: "BooleanResponse";
-  errors?: Maybe<Array<FieldError>>;
-  ok?: Maybe<Scalars["Boolean"]["output"]>;
-};
-
 export type Club = {
   __typename?: "Club";
   createdAt: Scalars["DateTime"]["output"];
@@ -149,10 +143,10 @@ export type Mutation = {
   deleteClubEvent: Scalars["Boolean"]["output"];
   deleteComment: Scalars["Boolean"]["output"];
   deletePost: Scalars["Boolean"]["output"];
-  forgetPassword: BooleanResponse;
+  forgetPassword: Scalars["Boolean"]["output"];
   joinClub?: Maybe<BooleanFieldResponse>;
   leaveClub: BooleanFieldResponse;
-  resetPassword: BooleanResponse;
+  resetPassword: Scalars["Boolean"]["output"];
   signOut: Scalars["Boolean"]["output"];
   signin: AuthResponse;
   signup: AuthResponse;
@@ -374,6 +368,7 @@ export type User = {
   createdClubs: Array<Club>;
   createdEvents: Array<ClubEvent>;
   email: Scalars["String"]["output"];
+  emailConfirmation: Scalars["Boolean"]["output"];
   id: Scalars["Float"]["output"];
   memberClubs: Array<Club>;
   password: Scalars["String"]["output"];
@@ -518,7 +513,7 @@ export type ForgetPasswordMutationVariables = Exact<{
 
 export type ForgetPasswordMutation = {
   __typename?: "Mutation";
-  forgetPassword: { __typename?: "BooleanResponse"; ok?: boolean | null };
+  forgetPassword: boolean;
 };
 
 export type JoinClubMutationVariables = Exact<{
@@ -545,15 +540,7 @@ export type ResetPasswordMutationVariables = Exact<{
 
 export type ResetPasswordMutation = {
   __typename?: "Mutation";
-  resetPassword: {
-    __typename?: "BooleanResponse";
-    ok?: boolean | null;
-    errors?: Array<{
-      __typename?: "FieldError";
-      field: string;
-      message: string;
-    }> | null;
-  };
+  resetPassword: boolean;
 };
 
 export type SignOutMutationVariables = Exact<{ [key: string]: never }>;
@@ -1645,12 +1632,6 @@ export const ForgetPasswordDocument = {
                 },
               },
             ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                { kind: "Field", name: { kind: "Name", value: "ok" } },
-              ],
-            },
           },
         ],
       },
@@ -1783,26 +1764,6 @@ export const ResetPasswordDocument = {
                 },
               },
             ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "errors" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "field" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                { kind: "Field", name: { kind: "Name", value: "ok" } },
-              ],
-            },
           },
         ],
       },

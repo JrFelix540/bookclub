@@ -5,7 +5,6 @@ import { PrimaryButton } from "@/components/primary-button/primary-button";
 import { useRouter } from "next/router";
 import { ResetPasswordDocument } from "@/generated/graphql";
 import { useMutation } from "@apollo/client";
-import { formatErrorMessage } from "../utils/formatErrors";
 import { resetPasswordSchema } from "./reset-password.utils";
 
 export const ResetPasswordForm: React.FC = () => {
@@ -16,14 +15,11 @@ export const ResetPasswordForm: React.FC = () => {
     initialValues: {
       password: "",
     },
-    onSubmit: async (values, { setErrors }) => {
+    onSubmit: async (values) => {
       const { data } = await resetPassword({
         variables: { token, password: values.password },
       });
-      if (data?.resetPassword.errors) {
-        setErrors(formatErrorMessage(data.resetPassword.errors));
-      }
-      if (data?.resetPassword.ok) {
+      if (data?.resetPassword) {
         router.push("/auth/sign-in");
       }
     },

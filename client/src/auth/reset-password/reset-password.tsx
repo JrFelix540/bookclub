@@ -1,7 +1,7 @@
 import { PageHead } from "@/components/page-head/page-head";
 import { AuthLayout } from "../components/auth-layout/auth-layout";
 import { Heading } from "@chakra-ui/react";
-import { ResetPasswordForm } from "./reset-passord-form";
+import { ResetPasswordForm } from "./reset-password-form";
 
 export const ResetPassword: React.FC = () => {
   return (

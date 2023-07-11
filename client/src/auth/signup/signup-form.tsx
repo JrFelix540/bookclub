@@ -7,6 +7,8 @@ import { useFormik } from "formik";
 import { formatErrorMessage } from "../utils/formatErrors";
 import { useRouter } from "next/router";
 import { signUpSchema } from "./signup-utils";
+import Link from "next/link";
+import { Text } from "@chakra-ui/react";
 
 export const SignUpForm: React.FC = () => {
   const router = useRouter();
@@ -81,6 +83,10 @@ export const SignUpForm: React.FC = () => {
       <PrimaryButton type="submit" isLoading={loading}>
         Sign Up
       </PrimaryButton>
+      <Text fontSize="xs">
+        Already have an account?
+        <StyledLink href="/auth/sign-in">&nbsp;Sign In</StyledLink>
+      </Text>
     </StyledForm>
   );
 };
@@ -91,3 +97,7 @@ const StyledForm = styled("form")({
   gap: "16px",
   width: "320px",
 });
+
+const StyledLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary,
+}));
