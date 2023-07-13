@@ -66,6 +66,10 @@ const main = async () => {
   );
 
   console.log(`🚀 Server ready at port ${env.PORT}`);
+
+  app.get("/health", (_req, res) => {
+    res.status(200).send("Okay!");
+  });
 };
 
 main().catch((err) => console.log(err));
