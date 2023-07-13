@@ -16,6 +16,7 @@ export const appDataSource = new DataSource({
   url: env.DATABASE_URL,
   logging: true,
   synchronize: true,
+  ssl: process.env.NODE_ENV === "production",
   entities: [Club, PostUpvote, Comment, User, Post, CommentUpvote, ClubEvent],
   migrations: [path.join(__dirname, "./migration/*")],
   migrationsTableName: "bookclub_migration_table",
