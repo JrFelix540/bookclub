@@ -42,7 +42,7 @@ const main = async () => {
   await server.start();
 
   app.use(
-    "/",
+    "/graphql",
 
     cors<cors.CorsRequest>({
       origin: env.FRONTEND_URL,
@@ -62,10 +62,10 @@ const main = async () => {
   );
 
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 4000 }, resolve)
+    httpServer.listen({ port: env.PORT }, resolve)
   );
 
-  console.log(`🚀 Server ready at http://localhost:4000/`);
+  console.log(`🚀 Server ready at port ${env.PORT}`);
 };
 
 main().catch((err) => console.log(err));
