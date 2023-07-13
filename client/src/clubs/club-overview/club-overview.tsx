@@ -22,6 +22,7 @@ import { ErrorPage } from "@/layouts/error";
 import { Avatar } from "@/components/avatar/avatar";
 import Image from "next/image";
 import { ClubEvents } from "./club-events/club-events";
+import { breakpoint } from "@/theme/theme";
 
 export const ClubOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data: meData, loading: meLoading } = useQuery(MeDocument);
@@ -83,7 +84,14 @@ export const ClubOverview: NextPage<{ id: number }> = ({ id }) => {
             </TabPanels>
           </Tabs>
         </Flex>
-        <Flex direction="column" gap="10px">
+        <Flex
+          direction="column"
+          gap="10px"
+          display={{
+            base: "none",
+            lg: "flex",
+          }}
+        >
           <ClubSidebar
             id={clubData.club.id}
             name={clubData.club.name}
@@ -100,9 +108,12 @@ export const ClubOverview: NextPage<{ id: number }> = ({ id }) => {
 
 const Container = styled(MainContainer)({
   display: "grid",
-  gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr",
   gap: "20px",
   paddingTop: "20px",
+  [breakpoint("lg")]: {
+    gridTemplateColumns: "2fr 1fr",
+  },
 });
 
 const ClubTitle = styled("div")(({ theme }) => ({

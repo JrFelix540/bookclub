@@ -35,7 +35,9 @@ export const CreatePostForm = () => {
       if (postData?.createPost.errors) {
         setErrors(formatErrorMessage(postData?.createPost.errors));
       }
-      router.push(`/posts/${postData?.createPost.post?.id}`);
+      if (postData) {
+        router.push(`/posts/${postData?.createPost.post?.id}`);
+      }
     },
     validationSchema: createPostSchema,
     enableReinitialize: true,

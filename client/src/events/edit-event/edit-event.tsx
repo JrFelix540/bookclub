@@ -12,6 +12,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { EditEventForm } from "./edit-event-form/edit-event-form";
+import { breakpoint } from "@/theme/theme";
 
 export const EditEvent: NextPage<{ id: number }> = ({ id }) => {
   const { me, loading: meLoading } = useUser({ redirect: true });
@@ -33,7 +34,11 @@ export const EditEvent: NextPage<{ id: number }> = ({ id }) => {
           </Text>
           <EditEventForm event={data.clubEvent} />
         </FormContainer>
-        <Flex direction="column" gap="10px">
+        <Flex
+          direction="column"
+          gap="10px"
+          display={{ base: "none", lg: "flex" }}
+        >
           <RulesSidebar />
           <ClubsSidebar />
         </Flex>
@@ -44,9 +49,12 @@ export const EditEvent: NextPage<{ id: number }> = ({ id }) => {
 
 const Container = styled(MainContainer)({
   display: "grid",
-  gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr",
   gap: "20px",
   paddingTop: "20px",
+  [breakpoint("lg")]: {
+    gridTemplateColumns: "2fr 1fr",
+  },
 });
 
 const FormContainer = styled("div")(({ theme }) => ({

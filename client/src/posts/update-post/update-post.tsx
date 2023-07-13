@@ -12,6 +12,7 @@ import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { UpdatePostForm } from "./update-post-form/update-post-form";
+import { breakpoint } from "@/theme/theme";
 
 export const UpdatePost: NextPage<{ id: number }> = ({ id }) => {
   const { me, loading: meLoading } = useUser({ redirect: true });
@@ -34,7 +35,11 @@ export const UpdatePost: NextPage<{ id: number }> = ({ id }) => {
           </Text>
           <UpdatePostForm post={data.post} />
         </FormContainer>
-        <Flex direction="column" gap="10px">
+        <Flex
+          direction="column"
+          gap="10px"
+          display={{ base: "none", lg: "flex" }}
+        >
           <RulesSidebar />
           <ClubsSidebar />
         </Flex>
@@ -44,9 +49,12 @@ export const UpdatePost: NextPage<{ id: number }> = ({ id }) => {
 };
 const Container = styled(MainContainer)({
   display: "grid",
-  gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr",
   gap: "20px",
   paddingTop: "20px",
+  [breakpoint("sm")]: {
+    gridTemplateColumns: "2fr 1fr",
+  },
 });
 
 const FormContainer = styled("div")(({ theme }) => ({

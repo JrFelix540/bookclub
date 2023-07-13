@@ -45,6 +45,9 @@ export const Menu = () => {
         <StyledMenuItem>
           <Link href="/posts/create">Create a post</Link>
         </StyledMenuItem>
+        <StyledMenuItem>
+          <Link href="/clubs/events/create">Create a club event</Link>
+        </StyledMenuItem>
         <StyledMenuItem onClick={logout}>Log Out</StyledMenuItem>
       </StyledMenuList>
     </ChakraMenu>

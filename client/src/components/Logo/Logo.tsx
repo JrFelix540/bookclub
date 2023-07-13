@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { breakpoint } from "@/theme/theme";
 
 export const Logo = () => {
   return (
@@ -20,6 +21,9 @@ const Container = styled("div")({
 const StyledText = styled(Text)(({ theme }) => ({
   color: theme.palette.white,
   fontWeight: 900,
-  lineHeight: "38px",
-  fontSize: "26px",
+  lineHeight: "24px",
+  fontSize: "18px",
+  [breakpoint("lg")]: {
+    fontSize: "28px",
+  },
 }));

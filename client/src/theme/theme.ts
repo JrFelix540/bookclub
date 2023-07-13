@@ -45,4 +45,19 @@ const theme: CustomTheme = {
   },
 };
 
+const breakpoints = [480, 768, 1200];
+
+const mq = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
+
+export const breakpoint = (variant: "sm" | "md" | "lg") => {
+  if (variant === "sm") {
+    return mq[0];
+  }
+  if (variant === "md") {
+    return mq[1];
+  } else {
+    return mq[2];
+  }
+};
+
 export default extendTheme(theme);

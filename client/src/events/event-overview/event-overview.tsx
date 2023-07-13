@@ -21,6 +21,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { AttendeesSection } from "./attendees-section/attendees-section";
 import { DeleteEventModal } from "./delete-event-modal/delete-event-modal";
+import { breakpoint } from "@/theme/theme";
 
 export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data, loading } = useQuery(ClubEventDocument, {
@@ -107,7 +108,11 @@ export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
             </Flex>
           </Flex>
         </EventDetails>
-        <Flex direction="column" gap="10px">
+        <Flex
+          direction="column"
+          gap="10px"
+          display={{ base: "none", lg: "flex" }}
+        >
           <ClubSidebar
             id={data.clubEvent.club.id}
             name={data.clubEvent.club.name}
@@ -123,9 +128,12 @@ export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
 
 const Container = styled(MainContainer)({
   display: "grid",
-  gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr",
   gap: "20px",
   paddingTop: "20px",
+  [breakpoint("lg")]: {
+    gridTemplateColumns: "2fr 1fr",
+  },
 });
 
 const EventDetails = styled("div")(({ theme }) => ({

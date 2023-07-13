@@ -9,6 +9,7 @@ import styled from "@emotion/styled";
 import { NextPage } from "next";
 import { PostLoading } from "./post-loading/post-loading";
 import { PostMeta } from "./post-meta/post-meta";
+import { breakpoint } from "@/theme/theme";
 
 export const PostOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data: me, loading: meLoading } = useQuery(MeDocument);
@@ -52,13 +53,19 @@ export const PostOverview: NextPage<{ id: number }> = ({ id }) => {
 
 const ContentContainer = styled(MainContainer)({
   display: "grid",
-  gridTemplateColumns: "2fr 1fr",
+  gridTemplateColumns: "1fr",
   gap: "20px",
   paddingTop: "20px",
+  [breakpoint("lg")]: {
+    gridTemplateColumns: "2fr 1fr",
+  },
 });
 
 const SidebarsContainer = styled("div")({
-  display: "flex",
+  display: "none",
   flexDirection: "column",
   gap: "10px",
+  [breakpoint("lg")]: {
+    display: "flex",
+  },
 });

@@ -5,6 +5,7 @@ import React from "react";
 import { LatestPosts } from "../latest-posts/latest-posts";
 import { PopularPosts } from "../popular-posts/popular-posts";
 import { SubscribedPosts } from "../subscribed-posts/subscribed-posts";
+import { breakpoint } from "@/theme/theme";
 
 export const PostsSection: React.FC = () => {
   const [feed, setFeed] = React.useState<"popular" | "latest" | "joined">(
@@ -12,7 +13,7 @@ export const PostsSection: React.FC = () => {
   );
   return (
     <Container>
-      <PostsHeading>
+      <TabsContainer>
         <Tab selected={feed === "latest"} onClick={() => setFeed("latest")}>
           <Image src="/latest-posts.png" alt="feed" width={25} height={25} />
           Newest
@@ -26,7 +27,7 @@ export const PostsSection: React.FC = () => {
           <Image src="/joined-clubs.png" alt="explore" width={15} height={15} />
           Joined Clubs
         </Tab>
-      </PostsHeading>
+      </TabsContainer>
       <PostsContainer>
         {feed === "popular" && <PopularPosts />}
         {feed === "latest" && <LatestPosts />}
@@ -42,12 +43,15 @@ const Container = styled("div")({
   gap: "20px",
 });
 
-const PostsHeading = styled("div")(({ theme }) => ({
+const TabsContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.secondary,
-  padding: "20px",
+  padding: "5px",
   display: "flex",
   gap: "15px",
   borderRadius: "15px",
+  [breakpoint("md")]: {
+    padding: "20px",
+  },
 }));
 
 const PostsContainer = styled("div")({

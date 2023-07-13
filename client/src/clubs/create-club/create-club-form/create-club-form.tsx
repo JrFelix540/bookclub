@@ -4,14 +4,16 @@ import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { createClubSchema } from "./create-club-util";
 import { useMutation } from "@apollo/client";
-import { CreateClubDocument } from "@/generated/graphql";
+import { CreateClubDocument, MyClubsDocument } from "@/generated/graphql";
 import { formatErrorMessage } from "@/auth/utils/formatErrors";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 
 export const CreateClubForm = () => {
   const router = useRouter();
-  const [createClub, { loading }] = useMutation(CreateClubDocument);
+  const [createClub, { loading }] = useMutation(CreateClubDocument, {
+    refetchQueries: [MyClubsDocument],
+  });
   const formik = useFormik({
     initialValues: {
       name: "",
