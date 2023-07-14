@@ -7,6 +7,7 @@ import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { editEventSchema, updateEventCache } from "./edit-event-form.utils";
+import { DateInput } from "@/components/date-picker/date-picker";
 
 interface EditEventFormProps {
   event: ClubEventQuery["clubEvent"];
@@ -44,7 +45,9 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
     enableReinitialize: true,
     validationSchema: editEventSchema,
   });
-
+  const handleDateChange = (date: Date) => {
+    formik.setFieldValue("date", date.toISOString());
+  };
   return (
     <Form onSubmit={formik.handleSubmit}>
       <Input
@@ -69,16 +72,15 @@ export const EditEventForm: React.FC<EditEventFormProps> = ({ event }) => {
         touched={formik.touched.description}
       />
       <EventScheduleContainer>
-        <Input
+        <DateInput
           id="date"
           name="date"
-          type="datetime-local"
           value={formik.values.date}
           error={formik.errors.date}
           touched={formik.touched.date}
           label="Start Time"
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onChange={handleDateChange}
         />
         <SelectInput
           id="duration"
