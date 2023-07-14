@@ -8,6 +8,7 @@ import { SelectInput } from "@/components/select-input/select-input";
 import { useRouter } from "next/router";
 import { createEventSchema } from "./create-event-form.utils";
 import { Flex } from "@chakra-ui/react";
+import { DateInput } from "@/components/date-picker/date-picker";
 
 export const CreateEventForm = () => {
   const router = useRouter();
@@ -44,6 +45,10 @@ export const CreateEventForm = () => {
     enableReinitialize: true,
     validationSchema: createEventSchema,
   });
+
+  const handleDateChange = (date: Date) => {
+    formik.setFieldValue("date", date.toISOString());
+  };
   return (
     <Form onSubmit={formik.handleSubmit}>
       <SelectInput
@@ -83,16 +88,15 @@ export const CreateEventForm = () => {
         onBlur={formik.handleBlur}
       />
       <EventScheduleContainer>
-        <Input
+        <DateInput
           id="date"
           name="date"
-          type="datetime-local"
           value={formik.values.date}
           error={formik.errors.date}
           touched={formik.touched.date}
           label="Start Time"
           onBlur={formik.handleBlur}
-          onChange={formik.handleChange}
+          onChange={handleDateChange}
         />
         <SelectInput
           id="duration"
