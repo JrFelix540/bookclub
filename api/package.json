@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
+    "postbuild": "mv node_modules ./dist",
     "watch": "tsc -w",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
-    "start": "node ./dist/index.js",
+    "start": "node src/index.js",
     "lint": "eslint --ext .ts .",
     "precommit": "lint-staged"
   },
