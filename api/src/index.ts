@@ -21,7 +21,6 @@ const env = getEnvironmentVariables();
 
 const main = async () => {
   await appDataSource.initialize();
-  console.log("db-url", env.DATABASE_URL);
   const app = express();
   const httpServer = http.createServer(app);
   const server = new ApolloServer<MyContext>({
