@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { createPostSchema } from "./create-post-form.utils";
-import { Flex } from "@chakra-ui/react";
+import { Alert, AlertDescription, AlertIcon, Flex } from "@chakra-ui/react";
 
 export const CreatePostForm = () => {
   const router = useRouter();
@@ -16,7 +16,7 @@ export const CreatePostForm = () => {
 
   const { data } = useQuery(MyClubsDocument);
 
-  const defaultClubId = data?.meWithClubs?.memberClubs[0].id.toString();
+  const defaultClubId = data?.meWithClubs?.memberClubs[0]?.id.toString();
 
   const formik = useFormik({
     initialValues: {
@@ -43,9 +43,16 @@ export const CreatePostForm = () => {
     enableReinitialize: true,
   });
 
-  console.log(formik.errors);
   return (
     <Form onSubmit={formik.handleSubmit}>
+      {!defaultClubId && (
+        <Alert>
+          <AlertIcon />
+          <AlertDescription>
+            Oops! You need to join or create a bookclub to make a post!
+          </AlertDescription>
+        </Alert>
+      )}
       <SelectInput
         id="clubId"
         name="clubId"
