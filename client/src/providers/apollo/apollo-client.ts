@@ -64,7 +64,7 @@ function createApolloClient() {
                 };
               },
             },
-            myClubsPosts: {
+            feedPosts: {
               keyArgs: false,
               merge(
                 existing: PaginatedPosts,

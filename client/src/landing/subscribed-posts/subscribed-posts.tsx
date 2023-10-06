@@ -1,16 +1,19 @@
-import { FeedPostsDocument } from "@/generated/graphql";
-import { useQuery } from "@apollo/client";
 import { PostPreview } from "@/components/post-preview/post-preview";
-import { EmptyPosts } from "@/components/empty-posts/empty-posts";
 import { PostsLoading } from "@/components/posts-loading/posts-loading";
-import { ErrorPage } from "@/layouts/error";
-import { Flex } from "@chakra-ui/react";
 import { SecondaryButton } from "@/components/secondary-button/secondary-button";
+import { FeedPostsDocument, MeDocument } from "@/generated/graphql";
+import { ErrorPage } from "@/layouts/error";
+import { useQuery } from "@apollo/client";
+import { Flex } from "@chakra-ui/react";
+import { LandingEmptyPosts } from "../empty-posts/empty-posts";
 
 export const SubscribedPosts = () => {
+  const { data: meData } = useQuery(MeDocument);
+
   const { data, loading, error, fetchMore } = useQuery(FeedPostsDocument, {
     variables: { limit: 10 },
   });
+
   if (error) {
     return <ErrorPage />;
   }
@@ -19,9 +22,11 @@ export const SubscribedPosts = () => {
     return loading ? (
       <PostsLoading />
     ) : (
-      <EmptyPosts>
-        <p>Join some clubs to get posts here </p>
-      </EmptyPosts>
+      <LandingEmptyPosts>
+        {meData?.me
+          ? "Join some clubs to get posts here"
+          : "Kindly login to get a custom home feed"}
+      </LandingEmptyPosts>
     );
   }
 

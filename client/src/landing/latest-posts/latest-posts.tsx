@@ -5,6 +5,7 @@ import { LatestPostsDocument } from "@/generated/graphql";
 import { ErrorPage } from "@/layouts/error";
 import { useQuery } from "@apollo/client";
 import { Flex } from "@chakra-ui/react";
+import { LandingEmptyPosts } from "../empty-posts/empty-posts";
 
 export const LatestPosts = () => {
   const { data, error, loading, fetchMore } = useQuery(LatestPostsDocument, {
@@ -15,10 +16,13 @@ export const LatestPosts = () => {
   }
 
   if (!data) {
-    return loading ? <PostsLoading /> : <p>Wait a minute</p>;
+    return loading ? <PostsLoading /> : <ErrorPage />;
   }
   return (
     <>
+      {data.latestPosts.posts.length === 0 && (
+        <LandingEmptyPosts>There are no posts currently</LandingEmptyPosts>
+      )}
       {data.latestPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
