@@ -60,8 +60,8 @@ export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
       <Container>
         <EventDetails>
           <Flex direction="column" gap="20px">
-            <Flex justifyContent="space-between">
-              <Text fontSize="2xl">{title}</Text>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Title>{title}</Title>
               {meData?.me?.id === creator.id && (
                 <Flex alignItems={"center"}>
                   <Link href={`/clubs/events/edit/${data.clubEvent.id}`}>
@@ -154,3 +154,12 @@ const MeetingLinkText = styled("div")(({ theme }) => ({
 const GoingIcon = styled(CheckCircleIcon)(({ theme }) => ({
   color: theme.palette.primary,
 }));
+
+const Title = styled("h1")({
+  fontSize: "20px",
+  fontWeight: 600,
+  lineHeight: "normal",
+  [breakpoint("md")]: {
+    fontSize: "24px",
+  },
+});

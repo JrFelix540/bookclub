@@ -8,6 +8,7 @@ import Link from "next/link";
 import { PostComments } from "../post-comments/post-comments";
 import { PostDelete } from "../post-delete/post-delete";
 import { EditIcon } from "@chakra-ui/icons";
+import { breakpoint } from "@/theme/theme";
 
 type PostMetaProps = Omit<PostQuery["post"], "__typename">;
 
@@ -28,7 +29,7 @@ export const PostMeta: React.FC<PostMetaProps> = ({
         <Upvote hasVoted={hasVoted} points={points} postId={id} />
         <ContentContainer>
           <ContentBody>
-            <Text fontSize="2xl">{title}</Text>
+            <Title>{title}</Title>
             <Text>{content}</Text>
             <UserProfile>
               <Avatar size="xs" value={creator.username} />
@@ -56,16 +57,21 @@ export const PostMeta: React.FC<PostMetaProps> = ({
 const Container = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  gap: "15px",
+  gap: "10px",
   backgroundColor: theme.palette.background.secondary,
-  padding: "10px 20px",
+  padding: "10px",
   borderRadius: "10px",
-  marginBottom: "10px",
+  [breakpoint("sm")]: {
+    gap: "15px",
+  },
 }));
 
 const DetailsContainer = styled("div")({
   display: "flex",
-  gap: "15px",
+  gap: "10px",
+  [breakpoint("sm")]: {
+    gap: "15px",
+  },
 });
 
 const ContentContainer = styled("div")({
@@ -77,11 +83,23 @@ const ContentContainer = styled("div")({
 const ContentBody = styled("div")({
   display: "flex",
   flexDirection: "column",
-  gap: "15px",
+  gap: "10px",
+  [breakpoint("sm")]: {
+    gap: "15px",
+  },
 });
 
 const UserProfile = styled("div")({
   display: "flex",
   gap: "5px",
   alignItems: "center",
+});
+
+const Title = styled("h2")({
+  fontSize: "20px",
+  fontWeight: 600,
+  lineHeight: "normal",
+  [breakpoint("md")]: {
+    fontSize: "24px",
+  },
 });

@@ -1,9 +1,9 @@
+import { breakpoint } from "@/theme/theme";
 import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { Upvote } from "../upvote/upvote";
 import Link from "next/link";
 import { Avatar } from "../avatar/avatar";
-import { breakpoint } from "@/theme/theme";
+import { Upvote } from "../upvote/upvote";
 
 interface PostPreviewProps {
   id: number;
@@ -28,10 +28,10 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
     <Container>
       <Upvote hasVoted={hasVoted} points={points} postId={id} />
       <ContentSection>
-        <Link href={`/posts/${id}`}>
-          <Text fontSize={"2xl"}>{title}</Text>
+        <StyledLink href={`/posts/${id}`}>
+          <Title>{title}</Title>
           <TextContent>{content}</TextContent>
-        </Link>
+        </StyledLink>
         <UserProfile>
           <Avatar size="xs" value={creator} />
           <Text fontSize="xs">
@@ -74,4 +74,19 @@ const UserProfile = styled("div")({
   display: "flex",
   gap: "5px",
   alignItems: "center",
+});
+
+const Title = styled("h2")({
+  fontSize: "20px",
+  fontWeight: 600,
+  lineHeight: "normal",
+  [breakpoint("md")]: {
+    fontSize: "24px",
+  },
+});
+
+const StyledLink = styled(Link)({
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
 });

@@ -1,3 +1,4 @@
+import { breakpoint } from "@/theme/theme";
 import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
@@ -31,7 +32,7 @@ export const EventPreview: React.FC<EventPreviewProps> = ({
           </DateTypography>
         </DateSection>
         <Flex direction="column" gap="5px">
-          <Text fontSize="xl">{title}</Text>
+          <Title>{title}</Title>
           <Flex>
             <EventTag>
               <SecondaryTypography fontSize="xs">Online</SecondaryTypography>
@@ -78,3 +79,12 @@ const EventTag = styled(Flex)(({ theme }) => ({
   background: theme.palette.background.tertiary,
   borderRadius: "20px",
 }));
+
+const Title = styled("h2")({
+  fontSize: "20px",
+  fontWeight: 600,
+  lineHeight: "normal",
+  [breakpoint("md")]: {
+    fontSize: "24px",
+  },
+});
