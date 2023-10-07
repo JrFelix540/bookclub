@@ -4,8 +4,12 @@ import { ApolloCache, gql } from "@apollo/client";
 export const updateAfterVote = (
   value: number,
   postId: number,
-  cache: ApolloCache<VoteMutation>
+  cache: ApolloCache<VoteMutation>,
+  loggedIn: boolean
 ) => {
+  if (!loggedIn) {
+    return;
+  }
   const data = cache.readFragment<{
     id: number;
     points: number;

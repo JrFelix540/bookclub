@@ -30,7 +30,7 @@ export const Upvote: React.FC<UpvoteProps> = ({
     await vote({
       variables: { postId, value: 1 },
       update: (cache) => {
-        updateAfterVote(1, postId, cache);
+        updateAfterVote(1, postId, cache, !!data?.me);
       },
     });
   };
@@ -42,21 +42,21 @@ export const Upvote: React.FC<UpvoteProps> = ({
     await vote({
       variables: { postId, value: -1 },
       update: (cache) => {
-        updateAfterVote(-1, postId, cache);
+        updateAfterVote(-1, postId, cache, !!data?.me);
       },
     });
   };
 
   return (
     <Container align={align}>
-      <IconButton
+      <StyledIconButton
         aria-label="upvote"
         icon={<TriangleUpIcon color={hasVoted === 1 ? "#FF4401" : "#C5D0E6"} />}
         onClick={handleUpvote}
         variant="ghost"
-      ></IconButton>
+      />
       {points}
-      <IconButton
+      <StyledIconButton
         aria-label="downvote"
         icon={
           <TriangleDownIcon color={hasVoted === -1 ? "blue.900" : "#C5D0E6"} />
@@ -76,3 +76,9 @@ const Container = styled("div")<{ align: UpvoteProps["align"] }>(
     gap: "5px",
   })
 );
+
+const StyledIconButton = styled(IconButton)({
+  minWidth: "fit-content",
+  height: "fit-content",
+  padding: "5px",
+});
