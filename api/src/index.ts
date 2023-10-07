@@ -44,7 +44,7 @@ const main = async () => {
     "/graphql",
 
     cors<cors.CorsRequest>({
-      origin: env.FRONTEND_URL,
+      origin: [/vercel.app/],
       credentials: true,
     }),
 
