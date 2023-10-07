@@ -1,6 +1,6 @@
 import { PopularClubsDocument } from "@/generated/graphql";
 import { useQuery } from "@apollo/client";
-import { List, ListItem, Text } from "@chakra-ui/react";
+import { List, ListItem, Text, Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { Avatar } from "../avatar/avatar";
@@ -18,6 +18,11 @@ export const ClubsSidebar = () => {
         Trending Bookclubs
       </Text>
       <List>
+        {data.popularClubs.length === 0 && (
+          <Flex justifyContent="center" alignItems="center" height="72">
+            <p>No top clubs for now :(</p>
+          </Flex>
+        )}
         {data.popularClubs.map((club) => (
           <StyledItem key={club.id}>
             <StyledLink href={`/clubs/${club.id}`}>

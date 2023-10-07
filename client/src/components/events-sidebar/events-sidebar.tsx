@@ -6,11 +6,17 @@ import { TopEvent } from "../top-event/top-event";
 
 export const EventsSidebar = () => {
   const { data } = useQuery(PopularEventsDocument);
+
   return (
     <Container direction="column" gap="20px">
       <Text fontWeight="extrabold" fontSize="xl">
         Trending Events
       </Text>
+      {data?.popularEvents.length === 0 && (
+        <Flex justifyContent="center" alignItems="center" height="72">
+          <p>No top events for now :(</p>
+        </Flex>
+      )}
       {data?.popularEvents.map((event) => (
         <TopEvent
           key={event.id}
