@@ -22,7 +22,7 @@ export const SubscribedPosts = () => {
     return <PostsLoading />;
   }
 
-  if (data?.myClubsPosts?.posts.length === 0) {
+  if (data?.myClubsPosts === null || data?.myClubsPosts?.posts.length === 0) {
     return (
       <LandingEmptyPosts>
         {meData?.me
