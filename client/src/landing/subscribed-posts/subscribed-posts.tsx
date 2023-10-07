@@ -18,10 +18,12 @@ export const SubscribedPosts = () => {
     return <ErrorPage />;
   }
 
-  if (!data?.myClubsPosts) {
-    return loading ? (
-      <PostsLoading />
-    ) : (
+  if (loading) {
+    return <PostsLoading />;
+  }
+
+  if (data?.myClubsPosts?.posts.length === 0) {
+    return (
       <LandingEmptyPosts>
         {meData?.me
           ? "Join some clubs to get posts here"
@@ -32,7 +34,7 @@ export const SubscribedPosts = () => {
 
   return (
     <>
-      {data.myClubsPosts.posts?.map((post) => (
+      {data?.myClubsPosts?.posts?.map((post) => (
         <PostPreview
           id={post.id}
           club={post.club}
@@ -44,7 +46,7 @@ export const SubscribedPosts = () => {
           hasVoted={post.hasVoted}
         />
       ))}
-      {data.myClubsPosts.hasMore && (
+      {data?.myClubsPosts?.hasMore && (
         <Flex justifyContent="center">
           <SecondaryButton
             variant="outline"
