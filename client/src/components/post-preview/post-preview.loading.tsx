@@ -5,7 +5,7 @@ export const PostPreviewLoading = () => {
   return (
     <Container>
       <SkeletonContainer>
-        <Skeleton height="15px" width="550px" />
+        <Skeleton height="15px" width="70%" />
         <Skeleton height="250px" width="100%" />
         <SkeletonCircle />
       </SkeletonContainer>
