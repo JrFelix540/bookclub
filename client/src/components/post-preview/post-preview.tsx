@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Upvote } from "../upvote/upvote";
 import Link from "next/link";
 import { Avatar } from "../avatar/avatar";
+import { breakpoint } from "@/theme/theme";
 
 interface PostPreviewProps {
   id: number;
@@ -45,10 +46,13 @@ export const PostPreview: React.FC<PostPreviewProps> = ({
 
 const Container = styled("div")(({ theme }) => ({
   display: "flex",
-  gap: "15px",
+  gap: "5px",
   backgroundColor: theme.palette.background.secondary,
   padding: "10px",
   borderRadius: "15px",
+  [breakpoint("sm")]: {
+    gap: "15px",
+  },
 }));
 
 const ContentSection = styled("div")({

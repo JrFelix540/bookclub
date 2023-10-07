@@ -47,10 +47,11 @@ const TabsContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.secondary,
   padding: "5px",
   display: "flex",
-  gap: "15px",
+  gap: "5px",
   borderRadius: "15px",
   [breakpoint("md")]: {
     padding: "20px",
+    gap: "10px",
   },
 }));
 

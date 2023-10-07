@@ -18,7 +18,7 @@ export const MainContainer: React.FC<MainContainerProps & BoxProps> = ({
         xl: "1140px",
       }}
       paddingX={{
-        base: "20px",
+        base: "10px",
         sm: "20px",
         md: "none",
         lg: "none",

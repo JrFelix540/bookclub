@@ -7,7 +7,7 @@ interface TabProps extends ButtonProps {
 }
 
 export const Tab: React.FC<TabProps> = (props) => {
-  return <StyledTab {...props} />;
+  return <StyledTab {...props} fontSize={{ base: "12px", sm: "16px" }} />;
 };
 
 const StyledTab = styled(Button)<TabProps>(({ theme, selected }) => ({
