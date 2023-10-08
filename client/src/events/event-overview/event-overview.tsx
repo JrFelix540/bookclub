@@ -22,6 +22,7 @@ import Link from "next/link";
 import { AttendeesSection } from "./attendees-section/attendees-section";
 import { DeleteEventModal } from "./delete-event-modal/delete-event-modal";
 import { breakpoint } from "@/theme/theme";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data, loading } = useQuery(ClubEventDocument, {
@@ -30,7 +31,7 @@ export const EventOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data: meData, loading: meLoading } = useQuery(MeDocument);
 
   if (!data) {
-    return loading ? <p>Loading Event</p> : <ErrorPage />;
+    return loading ? <LoadingPage /> : <ErrorPage />;
   }
   const { title, description, date, attendees, creator, meetingLink } =
     data.clubEvent;

@@ -17,12 +17,12 @@ import {
   TabPanel,
   Flex,
 } from "@chakra-ui/react";
-import { ClubLoading } from "./club-loading";
 import { ErrorPage } from "@/layouts/error";
 import { Avatar } from "@/components/avatar/avatar";
 import Image from "next/image";
 import { ClubEvents } from "./club-events/club-events";
 import { breakpoint } from "@/theme/theme";
+import { LoadingPage } from "@/components/loading-page/loading-page";
 
 export const ClubOverview: NextPage<{ id: number }> = ({ id }) => {
   const { data: meData, loading: meLoading } = useQuery(MeDocument);
@@ -31,7 +31,7 @@ export const ClubOverview: NextPage<{ id: number }> = ({ id }) => {
   });
 
   if (!clubData) {
-    return clubLoading ? <ClubLoading /> : <ErrorPage />;
+    return clubLoading ? <LoadingPage /> : <ErrorPage />;
   }
 
   const title = `${clubData.club.name}` || "";
