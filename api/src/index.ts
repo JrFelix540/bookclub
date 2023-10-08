@@ -20,6 +20,7 @@ import { authChecker } from "./auth/auth.utils";
 const env = getEnvironmentVariables();
 
 const main = async () => {
+  console.log(env.FRONTEND_URL);
   await appDataSource.initialize();
   const app = express();
   const httpServer = http.createServer(app);
@@ -44,7 +45,7 @@ const main = async () => {
     "/graphql",
 
     cors<cors.CorsRequest>({
-      origin: [/vercel.app/],
+      origin: env.FRONTEND_URL,
       credentials: true,
     }),
 
