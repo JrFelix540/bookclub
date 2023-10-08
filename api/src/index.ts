@@ -20,6 +20,7 @@ import { authChecker } from "./auth/auth.utils";
 const env = getEnvironmentVariables();
 
 const main = async () => {
+  console.log(env.MODE);
   await appDataSource.initialize();
   const app = express();
   const httpServer = http.createServer(app);
