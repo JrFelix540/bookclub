@@ -20,7 +20,6 @@ import { authChecker } from "./auth/auth.utils";
 const env = getEnvironmentVariables();
 
 const main = async () => {
-  console.log(env.FRONTEND_URL);
   await appDataSource.initialize();
   const app = express();
   const httpServer = http.createServer(app);
@@ -45,7 +44,10 @@ const main = async () => {
     "/graphql",
 
     cors<cors.CorsRequest>({
-      origin: env.FRONTEND_URL,
+      origin:
+        env.MODE === "development"
+          ? env.FRONTEND_URL
+          : `https://${env.FRONTEND_URL}`,
       credentials: true,
     }),
 
