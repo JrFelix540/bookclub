@@ -1,13 +1,11 @@
-FROM node:14-alpine
-
-RUN apk add --no-cache bash
-
-WORKDIR /app
-VOLUME [ "/app" ]
+FROM oven/bun
 
 ENV NODE_ENV=development
+
+WORKDIR /app
+
 COPY . .
 
-RUN npm install
+RUN bun install 
 
-CMD ["npm", "run", "dev"]
+CMD ["bun", "run", "start"]

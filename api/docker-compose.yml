@@ -28,4 +28,3 @@ services:
 
 volumes:
   bookclub-postgres-data:
-  bookclub-redis-data:
