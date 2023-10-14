@@ -11,6 +11,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm";
+import type { Relation } from "typeorm";
 
 @ObjectType()
 @Entity()
@@ -49,11 +50,11 @@ export class ClubEvent {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.createdEvents)
-  creator: User;
+  creator: Relation<User>;
 
   @Field(() => Club)
   @ManyToOne(() => Club, (club) => club.events)
-  club: Club;
+  club: Relation<Club>;
 
   @Field(() => [User])
   @ManyToMany(() => User)

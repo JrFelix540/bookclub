@@ -2,7 +2,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { AuthenticatedUser } from "../auth/auth.types";
 import { userRepository } from "../database/database";
 import { User } from "./user.entity";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 import {
   TokenType,
   generateResetToken,

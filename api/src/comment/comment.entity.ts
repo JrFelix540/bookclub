@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from "type-graphql";
+import type { Relation } from "typeorm";
 import { CommentUpvote } from "../comment-upvote/comment-upvote.entity";
 import { Post } from "../post/post.entity";
 import { User } from "../user/user.entity";
@@ -28,14 +29,14 @@ export class Comment extends BaseEntity {
   @ManyToOne(() => User, (user) => user.comments, {
     onDelete: "CASCADE",
   })
-  creator!: User;
+  creator!: Relation<User>;
 
   @Field(() => Post)
   @ManyToOne(() => Post, (post) => post.comments, {
     nullable: true,
     onDelete: "CASCADE",
   })
-  post: Post;
+  post: Relation<Post>;
 
   @Field(() => [Int])
   @Column("int", { array: true, nullable: true })

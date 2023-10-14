@@ -7,7 +7,7 @@ import {
   userRepository,
 } from "../database/database";
 import { GraphQLError } from "graphql";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 
 @Resolver()
 export class ClubEventsResolver {

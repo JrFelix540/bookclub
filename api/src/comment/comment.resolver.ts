@@ -18,7 +18,7 @@ import { CommentUpvote } from "../comment-upvote/comment-upvote.entity";
 import { Post } from "../post/post.entity";
 import { User } from "../user/user.entity";
 import { Comment } from "./comment.entity";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 import { CommentUpvoteResponse, UserCommentResponse } from "./comment.type";
 
 @Resolver(Comment)

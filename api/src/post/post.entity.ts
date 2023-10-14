@@ -14,6 +14,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
+import type { Relation } from "typeorm";
 
 @ObjectType()
 @Entity()
@@ -32,7 +33,7 @@ export class Post extends BaseEntity {
 
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.posts)
-  creator!: User;
+  creator!: Relation<User>;
 
   @Field(() => Int)
   @Column()
@@ -42,7 +43,7 @@ export class Post extends BaseEntity {
   @ManyToOne(() => Club, (club) => club.posts, {
     onDelete: "SET NULL",
   })
-  club!: Club;
+  club!: Relation<Club>;
 
   @Field(() => Int)
   @Column({ nullable: true })

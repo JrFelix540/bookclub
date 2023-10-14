@@ -12,7 +12,7 @@ import {
 import { In } from "typeorm";
 import { clubRepository, userRepository } from "../database/database";
 import { User } from "../user/user.entity";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 import { Club } from "./club.entity";
 import { BooleanFieldResponse, ClubResponse } from "./club.types";
 

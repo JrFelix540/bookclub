@@ -6,7 +6,7 @@ import cors from "cors";
 import express from "express";
 import http from "http";
 import { buildSchema } from "type-graphql";
-import { AuthResolver } from "./auth/auth.resolver";
+import { AuthResolver } from "./auth/auth.resolver.ts";
 import { ClubResolver } from "./club/club.resolver";
 import { PostResolver } from "./post/post.resolver";
 import { CommentResolver } from "./comment/comment.resolver";
@@ -14,8 +14,8 @@ import { ClubEventsResolver } from "./club-event/club-events.resolver";
 import { getEnvironmentVariables } from "./config/env";
 import { appDataSource } from "./database/database";
 import { UserResolver } from "./user/user.resolver";
-import { MyContext } from "./types";
 import { authChecker } from "./auth/auth.utils";
+import type { MyContext } from "./types";
 
 const env = getEnvironmentVariables();
 

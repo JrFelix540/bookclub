@@ -18,7 +18,7 @@ import {
 } from "../database/database";
 import { Post } from "./post.entity";
 import { User } from "../user/user.entity";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 import { PaginatedPosts, PostResponse, UpvoteResponse } from "./post.types";
 import { PostUpvote } from "../post-upvote/post-upvote.entity";
 import { userRepository } from "../database/database";

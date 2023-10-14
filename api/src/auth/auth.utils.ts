@@ -1,6 +1,6 @@
 import { signUpSchema } from "./auth.schema";
 import { FieldError, SignUpPayload } from "./auth.types";
-import { MyContext } from "../types";
+import type { MyContext } from "../types";
 import { AuthChecker } from "type-graphql";
 import { TokenType, getUserIdFromToken } from "./token";
 
