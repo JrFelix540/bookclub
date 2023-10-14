@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "module": "./src/index.ts",
-  "main": "./src/index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
