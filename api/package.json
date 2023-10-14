@@ -2,8 +2,8 @@
   "name": "bookclub-server",
   "version": "1.0.0",
   "description": "",
-  "module": "src/index.ts",
-  "main": "src/index.ts",
+  "module": "./src/index.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
