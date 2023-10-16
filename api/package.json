@@ -2,12 +2,11 @@
   "name": "bookclub-server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
   "scripts": {
+    "start": "bun src/index.ts",
     "build": "tsc",
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
-    "start": "node ./build/index.js",
     "lint": "eslint --ext .ts .",
     "precommit": "lint-staged"
   },
