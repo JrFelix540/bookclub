@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "bun ./src/index.ts",
+    "build": "tsc",
+    "start": "node ./src/index.js",
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
     "lint": "eslint --ext .ts .",
