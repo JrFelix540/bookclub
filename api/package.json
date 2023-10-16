@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "bun ./src/index.ts",
     "build": "tsc",
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
