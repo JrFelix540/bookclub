@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "tsc",
-    "start": "node ./src/index.js",
+    "start": "node ./build/index.js",
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
     "lint": "eslint --ext .ts .",
