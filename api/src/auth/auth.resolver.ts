@@ -6,6 +6,7 @@ import { AuthResponse } from "./auth.types";
 import { validateUserRegisterInput } from "./auth.utils";
 import { hashPassword } from "./hash";
 import { generateAuthToken } from "./token";
+import { QueryFailedError } from "typeorm";
 
 @Resolver()
 export class AuthResolver {
@@ -37,34 +38,36 @@ export class AuthResolver {
       user.emailConfirmation = false;
       await userRepository.save(user);
     } catch (err) {
-      if (
-        err.detail.includes("already exists") &&
-        err.constraint === "UQ_78a916df40e02a9deb1c4b75edb"
-      ) {
-        return {
-          errors: [
-            {
-              field: "username",
-              message: "username already exists",
-            },
-          ],
-        };
-      }
+      if (err instanceof QueryFailedError) {
+        if (
+          err.message ===
+          'duplicate key value violates unique constraint "UQ_78a916df40e02a9deb1c4b75edb"'
+        ) {
+          return {
+            errors: [
+              {
+                field: "username",
+                message: "username already exists",
+              },
+            ],
+          };
+        }
 
-      if (
-        err.detail.includes("already exists") &&
-        err.constraint === "UQ_e12875dfb3b1d92d7d7c5377e22"
-      ) {
-        return {
-          errors: [
-            {
-              field: "email",
-              message: "A user of this email already exists",
-            },
-          ],
-        };
+        if (
+          err.message ===
+          'duplicate key value violates unique constraint "UQ_e12875dfb3b1d92d7d7c5377e22"'
+        ) {
+          return {
+            errors: [
+              {
+                field: "email",
+                message: "A user of this email already exists",
+              },
+            ],
+          };
+        }
+        throw err;
       }
-      throw new Error(err);
     }
 
     const userId = user.id;

@@ -6,7 +6,7 @@ import cors from "cors";
 import express from "express";
 import http from "http";
 import { buildSchema } from "type-graphql";
-import { AuthResolver } from "./auth/auth.resolver.ts";
+import { AuthResolver } from "./auth/auth.resolver";
 import { ClubResolver } from "./club/club.resolver";
 import { PostResolver } from "./post/post.resolver";
 import { CommentResolver } from "./comment/comment.resolver";

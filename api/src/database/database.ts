@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { getEnvironmentVariables } from "../config/env";
-import path from "path";
+import { join } from "path";
 import { Club } from "../club/club.entity";
 import { User } from "../user/user.entity";
 import { Comment } from "../comment/comment.entity";
@@ -18,7 +18,7 @@ export const appDataSource = new DataSource({
   synchronize: true,
   ssl: process.env.NODE_ENV === "production",
   entities: [Club, PostUpvote, Comment, User, Post, CommentUpvote, ClubEvent],
-  migrations: [path.join(__dirname, "./migration/*")],
+  migrations: [join(__dirname, "./migration/*")],
   migrationsTableName: "bookclub_migration_table",
 });
 

@@ -27,7 +27,7 @@ export const generateAuthToken = (tokenBody: { userId: number }): string => {
     return authToken;
   } catch (e) {
     console.log("failed to generate tokens for", tokenBody.userId);
-    throw new Error(e);
+    throw e;
   }
 };
 
@@ -40,7 +40,7 @@ export const generateResetToken = (tokenBody: { userId: number }) => {
     return resetToken;
   } catch (e) {
     console.log("failed to generate token for", tokenBody.userId);
-    throw new Error(e);
+    throw e;
   }
 };
 
@@ -66,7 +66,7 @@ export const generateConfirmEmailToken = (tokenBody: { userId: number }) => {
       "failed to generate email confirmation token for",
       tokenBody.userId
     );
-    throw new Error(e);
+    throw e;
   }
 };
 

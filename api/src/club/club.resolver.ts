@@ -9,7 +9,7 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { In } from "typeorm";
+import { In, QueryFailedError } from "typeorm";
 import { clubRepository, userRepository } from "../database/database";
 import { User } from "../user/user.entity";
 import type { MyContext } from "../types";
@@ -117,18 +117,21 @@ export class ClubResolver {
     try {
       await clubRepository.save(club);
     } catch (err) {
-      if (err.detail.includes("already exists")) {
-        return {
-          errors: [
-            {
-              field: "name",
-              message: "Another group of the same name exists!",
-            },
-          ],
-        };
+      if (err instanceof QueryFailedError) {
+        if (
+          err.message.includes("duplicate key value violates unique constraint")
+        ) {
+          return {
+            errors: [
+              {
+                field: "name",
+                message: "Another group of the same name exists!",
+              },
+            ],
+          };
+        }
+        throw err;
       }
-
-      console.log(err);
     }
 
     return {
@@ -185,22 +188,7 @@ export class ClubResolver {
     club.members = [...club.members, user];
     club.memberIds = [...club.memberIds, user.id];
 
-    try {
-      await club.save();
-    } catch (err) {
-      console.log(err);
-
-      if (err.detail.includes("already exists")) {
-        return {
-          errors: [
-            {
-              field: "club",
-              message: `You've already joined this club`,
-            },
-          ],
-        };
-      }
-    }
+    await club.save();
 
     return {
       ok: true,

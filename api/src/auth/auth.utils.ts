@@ -3,6 +3,7 @@ import { FieldError, SignUpPayload } from "./auth.types";
 import type { MyContext } from "../types";
 import { AuthChecker } from "type-graphql";
 import { TokenType, getUserIdFromToken } from "./token";
+import { ValidationError } from "yup";
 
 export const ACCESS_TOKEN_HEADER_NAME = "Authorization";
 
@@ -13,10 +14,12 @@ export const validateUserRegisterInput = async (
     signUpSchema.validateSync(input, { abortEarly: false });
     return [];
   } catch (error) {
-    const errors: FieldError[] = error.inner.map((err: any) => ({
-      field: err.path,
-      message: err.message,
-    }));
+    const errors: FieldError[] = (error as ValidationError).inner.map(
+      (err: any) => ({
+        field: err.path,
+        message: err.message,
+      })
+    );
     return errors;
   }
 };
