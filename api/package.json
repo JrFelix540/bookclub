@@ -4,7 +4,6 @@
   "description": "",
   "scripts": {
     "start": "bun ./src/index.ts",
-    "build": "tsc",
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
     "lint": "eslint --ext .ts .",
