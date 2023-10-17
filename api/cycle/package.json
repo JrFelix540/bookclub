@@ -1,9 +1,0 @@
-{
-  "scripts": {
-    "start": "bun ./src/index.ts",
-    "watch": "tsc -w",
-    "dev": "bun --watch run ./src/index.ts",
-    "lint": "eslint --ext .ts .",
-    "precommit": "lint-staged"
-  }
-}
