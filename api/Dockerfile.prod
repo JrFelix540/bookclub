@@ -1,13 +1,11 @@
-FROM node:14-alpine
-
-RUN apk add --no-cache bash
+FROM node:18
 
 WORKDIR /app
-VOLUME [ "/app" ]
 
-ENV NODE_ENV=development
 COPY . .
 
 RUN npm install
+
+RUN npm run build
 
 CMD ["npm", "run", "start"]
