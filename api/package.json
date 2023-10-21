@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "dev": "bun --watch run ./src/index.ts",
     "lint": "eslint --ext .ts .",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "boo": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,8 @@
     "@typescript-eslint/parser": "^5.59.11",
     "eslint": "^8.42.0",
     "lint-staged": "^13.2.2",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
