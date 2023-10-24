@@ -10,7 +10,7 @@
     "dev": "bun --watch run ./src/index.ts",
     "lint": "eslint --ext .ts .",
     "precommit": "lint-staged",
-    "boo": "nodemon src/index.ts"
+    "node:dev": "nodemon src/index.ts"
   },
   "keywords": [],
   "author": "",
