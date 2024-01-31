@@ -1,5 +1,7 @@
 # Bookclub
 
+![Bookclub screenshot](./client/public/bookclub-screenshot.png)
+
 Bookclub is an online platform where readers from all walks of life can gather to share their thoughts, engage in discussions, and connect with fellow book enthusiasts. Users can create clubs based on genres, authors, or themes, and make posts about their favorite books, reviews, or thought-provoking topics in these clubs. With the option to upvote, downvote, and comment on posts, each community collaboratively can curate the most valuable and engaging content.
 
 ## Getting Started
