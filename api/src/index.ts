@@ -20,6 +20,7 @@ import type { MyContext } from "./types";
 const env = getEnvironmentVariables();
 
 const main = async () => {
+  console.log("cors", env.FRONTEND_URL);
   await appDataSource.initialize();
   const app = express();
   const httpServer = http.createServer(app);
