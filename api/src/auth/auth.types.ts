@@ -47,10 +47,6 @@ export class AuthenticatedUser {
   username: string;
 }
 
-export type CustomAuthChecker<ContextType> = (
-  resolverData: ResolverData<ContextType>
-) => Promise<boolean>;
-
 export interface SignUpPayload {
   username: string;
   email: string;
