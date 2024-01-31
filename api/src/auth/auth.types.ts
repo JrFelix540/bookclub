@@ -1,4 +1,4 @@
-import { Field, Float, ObjectType, ResolverData } from "type-graphql";
+import { Field, Float, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class FieldError {
