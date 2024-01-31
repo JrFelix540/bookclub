@@ -44,10 +44,7 @@ const main = async () => {
     "/graphql",
 
     cors<cors.CorsRequest>({
-      origin:
-        env.MODE === "development"
-          ? env.FRONTEND_URL
-          : `https://${env.FRONTEND_URL}`,
+      origin: env.FRONTEND_URL,
       credentials: true,
     }),
 
